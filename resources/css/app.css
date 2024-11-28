@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    font-family: "Encode Sans", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
