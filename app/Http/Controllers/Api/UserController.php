@@ -136,28 +136,31 @@ class UserController extends Controller
             $roles = $user->roles()->pluck('name');
 
             $rolesCount = $user->roles()->count();
-            if( $rolesCount > 1 ){
 
-                foreach ($roles as $rol) {
-                    $user->removeRole($rol[0]);    
-                }
-
-            } else {
-                $user->removeRole($roles[0]);   
+            switch ($rolesCount) {
+                case ($rolesCount > 1):
+                    foreach ($roles as $rol) {
+                        $user->removeRole($rol[0]);    
+                    }
+                    break;
+                case ($rolesCount == 1):
+                    $user->removeRole($roles[0]);  
+                    break;
             }
 
             // Has Permissions
             $permissions = $user->permissions()->pluck('name');
             $permissionsCount = $user->permissions()->count();
-
-            if( $permissionsCount > 1 ){
-
-                foreach ($permissions as $permission) {
-                    $user->removePermission($permission[0]);    
-                }
-
-            } else {
-                $user->removeRole($permissions[0]);   
+            
+            switch ($permissionsCount) {
+                case ($permissionsCount > 1):
+                    foreach ($permissions as $permission) {
+                        $user->removePermission($permission[0]);    
+                    }
+                    break;
+                case ($permissionsCount == 1):
+                    $user->removeRole($permissions[0]);   
+                    break;
             }
 
             $user->delete();

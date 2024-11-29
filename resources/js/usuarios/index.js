@@ -46,7 +46,8 @@ const getUsers = async () => {
 }
 
 // Mandamos llamar los usuarios al hacer click
-addUser.onclick = () => {
+addUser.onclick = (event) => {
+    event.preventDefault();
     getUsers();
 }
 
