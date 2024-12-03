@@ -2,6 +2,16 @@
 @section('content')
 <div class="container">
     <div class="row">
+        <div class="col-6">
+
+        </div>
+        <div class="col-6">
+            <span class="btn btn-success btn-sm add-permission">
+                Agregar Permiso
+            </span>
+        </div>
+    </div>
+    <div class="row">
         <table class="table table-striped table-sm">
             <thead>
                 <tr>

@@ -14,7 +14,7 @@
                     <tr>
                         <th>Roles</th>
                         <th>
-                            <a type="button" class="btn btn-outline-success atach-role btn-sm">Agregar Rol</a>
+                            <span type="button" class="btn btn-outline-success atach-role btn-sm">Agregar Rol</span>
                         </th>
                     </tr>
                 </thead>
@@ -40,7 +40,7 @@
                     <tr>
                         <th>Permisos</th>
                         <th>
-                            <a class="btn btn-outline-success atach-permission btn-sm">Agregar Permiso</a>
+                            <span class="btn btn-outline-success atach-permission btn-sm">Agregar Permiso</span>
                         </th>
                     </tr>
                 </thead>

@@ -9,6 +9,8 @@ const loadData =  (data) => {
     divContent.innerHTML = "";
 
     divContent.innerHTML = data;
+    
+    eventListener('.add-permission', addPermissionForm);
 
 }
 
@@ -92,6 +94,58 @@ const availablePermissions = async () => {
     const responseText = await response.text();
     openModal(responseText);
     eventListener('.atach-permission', atachPermission);
+}
+
+const addPermissionForm = async () => {
+
+    const response = await fetch('/permissions/add', {
+        method: "GET",
+        headers: {
+            Authorization: 'Bearer '+localStorage.getItem('token')
+        }
+    });
+
+    const responseText = await response.text();
+    openModal(responseText);
+    const permissionForm = document.getElementById('addPermission');
+    addPermission(permissionForm)
+
+}
+
+const addPermission = (permissionForm) => {
+
+    $('#addPermission').validate({
+        rules: {
+            name: { required: true }
+        },
+        messages: {
+            name: {
+                required: 'El nombre es requerido',
+            }
+        }
+    });
+
+    permissionForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if(!$("#addPermission").valid()){
+            return;
+        }
+
+        const form = new FormData(event.target);
+        const response = await fetch('api/permissions', {
+            method: "POST",
+            headers: {
+                Authorization: 'Bearer '+localStorage.getItem('token'),
+                Accept: 'application/json'
+            },
+            body: form
+        });
+
+        const responseJson = await response.json();
+        console.log(responseJson);
+        
+    })
 }
 
 export {availablePermissions, detachPermission}

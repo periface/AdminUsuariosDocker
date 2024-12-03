@@ -7,9 +7,9 @@
 
         </div>
         <div class="col-6">
-            <a class="btn btn-success btn-sm add-role">
-                Agregar Usuario
-            </a>
+            <span class="btn btn-success btn-sm add-role">
+                Agregar Rol
+            </span>
         </div>
     </div>
     <div class="row">

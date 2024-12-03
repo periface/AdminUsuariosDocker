@@ -11,15 +11,15 @@ class PermissionService{
         $permissionsDtoList = array();
 
         $permissionsDb = Permission::all();
-
         if(count($permissionsDb) > 0){
+            
             foreach ($permissionsDb as $permission) {
                 $permissionDto = new PermissionDTO();
 
                 $permissionDto->id = $permission->id;
                 $permissionDto->name = $permission->name;
 
-                $permissionDtoList[] = $permissionDto;
+                $permissionsDtoList[] = $permissionDto;
             }
         }
 

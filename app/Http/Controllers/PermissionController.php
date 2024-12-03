@@ -16,8 +16,8 @@ class PermissionController extends Controller
     }
 
     public function index(){
+        
         $permissions = $this->permissionService->getAllPermissions();
-
         return view('permissions.index', compact('permissions'));
     }
 
@@ -26,5 +26,11 @@ class PermissionController extends Controller
         $availablePermissions = $this->permissionService->getAvailablePermissions($user);
 
         return view('permissions.availablePermissions', compact('availablePermissions'));
+    }
+
+    public function addPermissionForm(){
+
+        return view('permissions.add');
+
     }
 }

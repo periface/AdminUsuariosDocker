@@ -29,8 +29,9 @@ Route::middleware('auth:sanctum')->group(function(){
 
     // Permissions
     Route::get('/permissions',                              [PermissionController::class, 'index']);
-    Route::get('/permissions/{user}',                       [PermissionController::class, 'getPermissions']);
+    // Route::get('/permissions/{user}',                       [PermissionController::class, 'getPermissions']);
     Route::get('/permissions/{user}/available-permissions', [PermissionController::class, 'getAvailablePermissions']);
+    Route::get('/permissions/add',                          [PermissionController::class, 'addPermissionForm']);
     
     // Usuarios
     Route::middleware('role:ADM')->group(function(){
