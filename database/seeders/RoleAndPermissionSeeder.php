@@ -10,10 +10,13 @@ class RoleAndPermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     */
+    */
     public function run(): void
     {
-        $roleAdmin = Role::create(['name' => 'admin']);
-        $editorAdmin = Role::create(['name' => 'editor']);
+        $roleAdmin = Role::create([
+            'name' => 'ADM',
+            'description' => 'Acceso total al sistema: puede ver y administrar todos los módulos, roles, usuarios, indicadores, catálogos, etc.',
+            'alias' => 'Administrador'
+        ]);
     }
 }

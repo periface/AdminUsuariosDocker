@@ -23,7 +23,7 @@ class PermissionService{
             }
         }
 
-        return $permissionDtoList;
+        return $permissionsDtoList;
     }
 
     public function getUserPermissions($user){

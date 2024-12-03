@@ -22,7 +22,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',                                  [AuthController::class, 'logout'])->name('logout');
     
     // Roles
+    Route::get('/roles',                                    [RoleController::class, 'allRoles']);
+    Route::get('/roles/add',                                [RoleController::class, 'formRole']);
     Route::get('/roles/{user}',                             [RoleController::class, 'index']);
+    Route::get('/roles/edit-role/{role}',                   [RoleController::class, 'editar']);
 
     // Permissions
     Route::get('/permissions',                              [PermissionController::class, 'index']);
@@ -30,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/permissions/{user}/available-permissions', [PermissionController::class, 'getAvailablePermissions']);
     
     // Usuarios
-    Route::middleware('role:admin')->group(function(){
+    Route::middleware('role:ADM')->group(function(){
         Route::get('/users',                                [UserController::class, 'index']);
         // Route::get('/users/{user}',                      [UserController::class, 'config']);
         Route::get('/users/{user}/roles-permissions',       [UserController::class, 'userRolesAndPermissions']);

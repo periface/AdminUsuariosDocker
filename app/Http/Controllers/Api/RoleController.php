@@ -51,10 +51,14 @@ class RoleController extends Controller
         
         try {
 
+            $request->merge(['guard_name' => 'web']);
+
             $request->validate([
-                'name' => 'required|min:4',
+                'name' => 'required',
+                'description' => 'nullable',
+                'alias' => 'nullable'
             ]);
-    
+
             $role = Role::create($request->all());
     
             return response()->json([
@@ -113,7 +117,6 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role){
         try {
-            
             $request->validate([
                 'name' => 'required|min:4',
             ]);
@@ -148,7 +151,6 @@ class RoleController extends Controller
 
     public function destroy(Role $role){
         try {
-            
             $role->delete();
 
             return response()->json([

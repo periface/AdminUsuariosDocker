@@ -8,7 +8,39 @@ use Spatie\Permission\Models\Role;
 
 class RoleService{
 
-    public function getAllRoles($user){
+
+    public function getRole(Role $role){
+
+        $roleDto = new RoleDTO();
+        $roleDto->id = $role->id;
+        $roleDto->name = $role->name;
+
+        return $roleDto;
+
+    }
+
+    public function getAllRoles(){
+        $roleDtoList = array();
+
+        $rolesDb = Role::all();
+
+        if(count($rolesDb) > 0) {
+            foreach ($rolesDb as $role) {
+
+                $roleDto = new RoleDTO();
+
+                $roleDto->id = $role->id;
+                $roleDto->name = $role->name;
+                $roleDto->description = $role->description;
+                $roleDto->alias = $role->alias;
+            
+                $roleDtoList[] = $roleDto;
+            }
+        }
+        return $roleDtoList;
+    }
+
+    public function getAvailableRoles($user){
         
         $roleDtoList = array();
         $roleId = DB::table('model_has_roles')

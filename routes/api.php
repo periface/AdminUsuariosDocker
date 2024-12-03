@@ -19,7 +19,7 @@ Route::post('/login', [AuthController::class, 'store']);
 Route::middleware('auth:sanctum')->group(function(){
 
     // Users
-    Route::middleware('role:admin')->group(function(){
+    Route::middleware('role:ADM')->group(function(){
 
         Route::get('users',                                     [UserController::class, 'index']);
         Route::post('users/register',                           [UserController::class, 'store']);
@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::put('users/{user}',                              [UserController::class, 'update']);
         Route::delete('users/{user}',                           [UserController::class, 'destroy']);
         Route::get('users/{user}/roles-permissions',            [UserController::class, 'userRolesAndPermissions']);
-        
+
         // Roles
         Route::get('roles',                                     [RoleController::class, 'index']);
         Route::post('roles',                                    [RoleController::class, 'store']);
