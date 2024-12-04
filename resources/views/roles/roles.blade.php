@@ -17,7 +17,7 @@
                         @foreach ($roles as $role)
                             <tr>
                                 <td>
-                                    {{ $role->name }}
+                                    {{ $role->alias }}
                                 </td>
                                 <td>
                                     <a id="{{ $role->id }}" class="atach-role" data-role="{{ $role->id }}">

@@ -25,7 +25,8 @@ class UserController extends Controller
     public function index(){
         $users = $this->userService->getAllUsers();
 
-        return view('users.table', compact('users'));
+        return view('users.index', compact('users'));
+        // return view('users.table', compact('users'));
     }
 
     public function showForm(){

@@ -20,7 +20,8 @@ class RoleController extends Controller
     public function allRoles(){
         $roles = $this->roleService->getAllRoles();
 
-        return view('roles.table', compact('roles'));
+        // return view('roles.table', compact('roles'));
+        return view('roles.index', compact('roles'));
     }
 
     // Esta función debe cambiar de nombre al mismo del método utilizado

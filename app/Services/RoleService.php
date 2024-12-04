@@ -57,7 +57,8 @@ class RoleService{
         
                         $roleDto->id = $role->id;
                         $roleDto->name = $role->name;
-        
+                        $roleDto->alias = $role->alias;
+
                         $roleDtoList[] = $roleDto;
                     }
                 break;
@@ -85,7 +86,7 @@ class RoleService{
         $rolesDb = DB::table('model_has_roles')
                     ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
                     ->where('model_has_roles.model_id', $user->id)
-                    ->get(['roles.id','roles.name']);
+                    ->get(['roles.id','roles.name', 'roles.alias']);
 
         $roleDtoList = array();
 
@@ -96,6 +97,7 @@ class RoleService{
 
                 $roleDto->id    = $role->id;
                 $roleDto->name  = $role->name;
+                $roleDto->alias = $role->alias;
              
                 $roleDtoList[] = $roleDto;
             }

@@ -18,6 +18,7 @@ class PermissionService{
 
                 $permissionDto->id = $permission->id;
                 $permissionDto->name = $permission->name;
+                $permissionDto->fechaCreacion = $permission->created_at;
 
                 $permissionsDtoList[] = $permissionDto;
             }

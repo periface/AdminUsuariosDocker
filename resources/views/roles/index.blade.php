@@ -1,0 +1,75 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar bg-body-tertiary bg-inst">
+                <div class="col-6">
+                    <div class="container-fluid">
+                        <span class="navbar-text text-bold text-white">
+                            <i class="fa-solid fa-user-shield"></i> | ROLES REGISTRADOS EN EL SISTEMA
+                        </span>
+                      </div>
+                </div>
+                <div class="col-6 d-flex justify-content-end pe-3 pt-2">
+                    <span class="mb-2 btn btn-success btn-sm add-role btn-inst2">
+                        <i class="fa-regular fa-plus"></i> | Agregar Rol
+                    </span>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class=" col-12">
+        <hr>
+            <table class="table table-striped table-sm mt-2"> 
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="text-center w-1/3">Rol</th>
+                        <th class="text-left">Siglas</th>
+                        <th class="text-left w-1/3">Descripcion</th>
+                        <th class="text-center">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (count($roles)>0)
+                        @foreach ($roles as $role)
+                            <tr>
+                                <td>
+                                -
+                                </td>
+                                <td class="text-center w-1/3">
+                                    {{ $role->alias }}
+                                </td>
+                                <td class="text-left">
+                                    {{ $role->name }}
+                                </td>
+                                <td class="text-left w-1/3">
+                                    <p class="text-break">
+                                        {{ $role->description }}
+                                    </p>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">
+                                        Administrar
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item edit-role" id="{{ $role->id }}" style="cursor: pointer">Editar</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item delete-role" id="{{ $role->id }}" style="cursor: pointer">Eliminar</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
