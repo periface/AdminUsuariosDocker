@@ -13,7 +13,11 @@
         <textarea name="description" id="description" cols="30" rows="5" class="form-control"></textarea>
     </div>
     <div class=" modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit">Guardar</button>
+        <button type="button" class="btn btn-inst3 btn-sm" data-bs-dismiss="modal">
+            <small>CANCELAR</small>
+        </button>
+        <button type="submit" class="btn btn-inst btn-sm">
+            <small>GUARDAR</small>
+        </button>
     </div>
 </form>

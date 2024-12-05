@@ -25,16 +25,26 @@ body{
 .btn-inst{
     background-color: #ab0033;
     border-color: #ab0033;
+    color: #fff;
+}
+
+
+.btn-inst:hover,.btn-inst:active{
+    background-color: #ab0033 !important;
+    border-color: #ab0033 !important;
+    color: #fff !important;
 }
 
 .btn-inst2{
     background-color: #bc955c;
     border-color: #bc955c;
+    color: #fff;
 }
 
-.btn:hover{
+.btn-inst2:active,.btn-inst2:hover{
     background-color: #bc955c !important;
     border-color: #bc955c !important;
+    color: #fff !important;
 }
 
 .btn.show{
@@ -49,6 +59,13 @@ body{
 .btn-inst3{
     background-color: #54565a;
     border-color: #54565a;
+    color: #fff;
+}
+
+.btn-inst3:hover,.btn-inst3:active{
+    background-color: #54565a !important;
+    border-color: #54565a !important;
+    color: #fff !important;
 }
 
 .sidebar-container{

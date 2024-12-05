@@ -12,8 +12,12 @@
         <label for="password">Contraseña:</label>
         <input type="password" name="password" class="form-control" placeholder="Contraseña">
     </div>
-    <div class="row mt-2">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit">Guardar</button>
+    <div class=" modal-footer">
+        <button type="button" class="btn btn-inst3 btn-sm" data-bs-dismiss="modal">
+            <small>CANCELAR</small>
+        </button>
+        <button type="submit" class="btn btn-inst btn-sm">
+            <small>GUARDAR</small>
+        </button>
     </div>
 </form>

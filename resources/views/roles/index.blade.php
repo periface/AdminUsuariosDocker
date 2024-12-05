@@ -10,7 +10,7 @@
                       </div>
                 </div>
                 <div class="col-6 d-flex justify-content-end pe-3 pt-2">
-                    <span class="mb-2 btn btn-success btn-sm add-role btn-inst2">
+                    <span class="mb-2 btn btn-sm add-role btn-inst2">
                         <i class="fa-regular fa-plus"></i> | Agregar Rol
                     </span>
                 </div>
@@ -50,7 +50,7 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">
+                                        <button type="button" class="btn dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">
                                         Administrar
                                         </button>
                                         <ul class="dropdown-menu">
