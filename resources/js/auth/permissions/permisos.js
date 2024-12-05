@@ -106,7 +106,7 @@ const addPermissionForm = async () => {
     });
 
     const responseText = await response.text();
-    openModal(responseText);
+    openModal(responseText, 'Agregar Permiso');
     const permissionForm = document.getElementById('addPermission');
     addPermission(permissionForm)
 

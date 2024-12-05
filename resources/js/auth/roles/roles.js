@@ -78,7 +78,7 @@ const showRoles = async () => {
 
     const responseText = await response.text();
     console.log(user);
-    openModal(responseText);
+    openModal(responseText, 'Roles Disponibles');
     eventListener('.atach-role', atachRole);
 }
 
@@ -113,7 +113,7 @@ const showFormEdit = async(data) => {
     });
 
     const responseText = await response.text();
-    openModal(responseText);
+    openModal(responseText, 'Editar Rol');
 
     const element = document.getElementById('editRol');
     editRole(element);
@@ -229,7 +229,9 @@ const showFormRole = async () => {
 
     let modal = new bootstrap.Modal(document.getElementById('modalConfig'));
     let modalBody = document.querySelector('.modal-body');
+    let modalTitle = document.querySelector('.modal-title');
 
+    modalTitle.innerHTML = "Agregar Rol";
     modalBody.innerHTML = "";
     modalBody.innerHTML = responseText;
 

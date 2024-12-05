@@ -37,6 +37,15 @@ body{
     border-color: #bc955c !important;
 }
 
+.btn.show{
+    background-color: #bc955c !important;
+    border-color: #bc955c !important;
+}
+
+.dropdown-item:active{
+    background-color: #54565a80 !important;
+}
+
 .btn-inst3{
     background-color: #54565a;
     border-color: #54565a;

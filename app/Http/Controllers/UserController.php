@@ -41,6 +41,6 @@ class UserController extends Controller
 
         $permissions = $this->permissionService->getUserPermissions($user);
 
-        return view('users.rolespermissions', compact('userDto', 'roles', 'permissions'));
+        return view('users.config', compact('userDto', 'roles', 'permissions'));
     }
 }

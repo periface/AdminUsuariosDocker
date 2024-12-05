@@ -4,10 +4,13 @@ const closeModal = () => {
     modal.hide();
 }
 
-const openModal = (data) => {
+const openModal = (data, title) => {
 
     let modal = new bootstrap.Modal(document.getElementById('modalConfig'));
     let modalBody = document.querySelector('.modal-body');
+    let modalTitle = document.querySelector('.modal-title');
+
+    modalTitle.innerHTML = title;
 
     modalBody.innerHTML = "";
     modalBody.innerHTML = data;

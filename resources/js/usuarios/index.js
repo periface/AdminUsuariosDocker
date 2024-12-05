@@ -64,9 +64,11 @@ const showFormUser = async () => {
 
     let modal = new bootstrap.Modal(document.getElementById('modalConfig'));
     let modalBody = document.querySelector('.modal-body');
+    let modalTitle = document.querySelector('.modal-title');
 
     const formResponseText = await formResponse.text();
 
+    modalTitle.innerHTML = "Agregar Usuario";
     modalBody.innerHTML = "";
     modalBody.innerHTML = formResponseText;
 
