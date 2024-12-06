@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-6">
                     <div class="d-flex justify-content-end mt-3">
-                        <span class="mb-2 btn btn-success btn-sm atach-role btn-inst2">
+                        <span class="mb-2 btn btn-success btn-sm atach-available-role btn-inst2">
                             <i class="fa-regular fa-plus"></i> | Agregar Rol
                         </span>
                     </div>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="col-6">
                     <div class="d-flex justify-content-end mt-3">
-                        <span class="mb-2 btn btn-success btn-sm atach-permission btn-inst2 atach-permission">
+                        <span class="mb-2 btn btn-success btn-sm atach-available-permission btn-inst2 atach-permission">
                             <i class="fa-regular fa-plus"></i> | Agregar Permiso
                         </span>
                     </div>

@@ -10,9 +10,9 @@ const loadData =  (data) => {
 
     divContent.innerHTML = data;
 
-    eventListener('.edit-role', showFormEdit);
-    eventListener('.delete-role', confirmDelete);
-    eventListener('.add-role', showFormRole);
+    eventListener('edit-role', showFormEdit);
+    eventListener('delete-role', confirmDelete);
+    eventListener('add-role', showFormRole);
 }
 
 const atachRole = async (role) => {
@@ -77,9 +77,8 @@ const showRoles = async () => {
     })
 
     const responseText = await response.text();
-    console.log(user);
     openModal(responseText, 'Roles Disponibles');
-    eventListener('.atach-role', atachRole);
+    eventListener('atach-role', atachRole);
 }
 
 const getRoles = async () => {

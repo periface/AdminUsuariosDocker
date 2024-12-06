@@ -11,7 +11,7 @@
                         <span class="fs-5 d-none d-sm-inline">Administración de Usuarios</span>
                     
                     </a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-4" id="menu">
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-4" >
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="evals">
                                 <i class="fa-solid fa-list-check"></i> <span class="ms-1 d-none d-sm-inline">Evaluaciones</span>

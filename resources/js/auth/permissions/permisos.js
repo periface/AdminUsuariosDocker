@@ -10,7 +10,7 @@ const loadData =  (data) => {
 
     divContent.innerHTML = data;
     
-    eventListener('.add-permission', addPermissionForm);
+    eventListener('add-permission', addPermissionForm);
 
 }
 
@@ -46,10 +46,10 @@ const getPermissions = async () => {
 }
 
 let element = document.getElementById('permissions');
-element.onclick = (event) => {
+element.addEventListener('click', (event) => {
     event.preventDefault();
     getPermissions();
-}
+});
 
 const atachPermission = async (permission) => {
     
@@ -110,7 +110,7 @@ const availablePermissions = async () => {
 
     const responseText = await response.text();
     openModal(responseText);
-    eventListener('.atach-permission', atachPermission);
+    eventListener('atach-permission', atachPermission);
 }
 
 const addPermissionForm = async () => {

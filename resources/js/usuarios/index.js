@@ -11,9 +11,9 @@ const loadData =  (data) => {
     divContent.innerHTML = "";
 
     divContent.innerHTML = data;
-    eventListener('.config-user', configUser);
-    eventListener('.add-user', showFormUser);
-    eventListener('.delete-user', confirmDelete);
+    eventListener('config-user', configUser);
+    eventListener('add-user', showFormUser);
+    eventListener('delete-user', confirmDelete);
 }
 
 // Función para obtener los usuarios
