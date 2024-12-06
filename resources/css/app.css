@@ -90,3 +90,10 @@ body{
     padding: 0;
     background-color: #54565ae0;
 }
+
+/*
+    Submenu
+*/
+.collapse {
+    visibility: visible;
+}

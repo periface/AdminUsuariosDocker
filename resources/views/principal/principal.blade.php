@@ -1,48 +1,6 @@
 @extends('layout')
 
 @section('content')
-{{-- <div class="container">
-    <input type="hidden" value="{{ $token }}" name="token" id="token">
-    <div class="row">
-        <div class="col-6">
-            <h4>Bienvenido
-                <small>
-                    @if (auth())
-                        <span>{{ auth()->user()->name }}</span>
-                    @endif
-                </small>
-            </h4>
-        </div>
-        <div class="col-6">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit">
-                    Cerrar Sessión
-                </button>
-            </form>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col">
-            <button id="users" style="cursor: pointer">
-                Ver Usuarios
-            </button><br>
-            <button id="permissions" style="cursor: pointer">
-                Ver Permisos
-            </button><br>
-            <button id="roles" style="cursor: pointer">
-                Ver Roles
-            </button>
-        </div>
-    </div>
-    <div class="row">
-        <hr>
-        <div class="col text-center" id="content">
-            <small>Sin información para mostrar</small>
-        </div>
-    </div>
-</div> --}}
 <div class="container-fluid">
     <input type="hidden" value="{{ $token }}" name="token" id="token">
     <div class="row flex-nowrap">
@@ -54,6 +12,21 @@
                     
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-4" id="menu">
+                        <li>
+                            <span class="nav-link px-0 align-middle text-white cursor-pointer" id="evals">
+                                <i class="fa-solid fa-list-check"></i> <span class="ms-1 d-none d-sm-inline">Evaluaciones</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="nav-link px-0 align-middle text-white cursor-pointer" id="areas">
+                                <i class="fa-solid fa-sitemap"></i> <span class="ms-1 d-none d-sm-inline">Áreas</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="nav-link px-0 align-middle text-white cursor-pointer" id="dimensiones">
+                                <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Dimensiones</span>
+                            </span>
+                        </li>
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="users">
                                 <i class="fa-solid fa-users"></i> <span class="ms-1 d-none d-sm-inline">Usuarios</span>

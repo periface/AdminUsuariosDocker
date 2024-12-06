@@ -13,13 +13,13 @@
                     <div class="row g-0">
                     <div class="col-12 col-md-6 bg-inst">
                         <div class="d-flex align-items-center justify-content-center h-100">
-                        <div class="col-10 col-xl-8 py-3 text-center text-white">
-                            <img class="img-fluid rounded mb-4" loading="lazy" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLcBubmZ-qQsYes0JJ-Dd9S_Gi5vGYqEXMaA&s" alt="BootstrapBrain Logo">
-                            <hr class="border-primary-subtle mb-4">
-                            <h2 class=" h3 mb-4">Sistema de Indicadores</h2>
-                            <p class="lead m-0">Secretaría de Administración <br>
-                            Gobierno del Estado de Tamaulipas</p>
-                        </div>
+                            <div class="col-10 col-xl-8 py-3 text-center text-white">
+                                <img class="img-fluid rounded mb-4" loading="lazy" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLcBubmZ-qQsYes0JJ-Dd9S_Gi5vGYqEXMaA&s" alt="BootstrapBrain Logo">
+                                <hr class="border-white-subtle mb-4 w-4/5 ml-7">
+                                <h2 class=" h3 mb-4">Sistema de Indicadores</h2>
+                                <p class="lead m-0">Secretaría de Administración <br>
+                                Gobierno del Estado de Tamaulipas</p>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 text-gray-500">
@@ -27,7 +27,7 @@
                         <div class="row">
                             <div class="col-12">
                             <div class="mb-5">
-                                <h1 class="h4">Iniciar sesión</h1>
+                                <h1 class="h4">Iniciar Sesión</h1>
                             </div>
                             </div>
                         </div>

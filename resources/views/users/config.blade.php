@@ -5,7 +5,7 @@
                 <div class="col-6">
                     <div class="container-fluid">
                         <span class="navbar-text text-bold text-white uppercase">
-                            <i class="fa-solid fa-user"></i> CONFIGURANDO <span>{{ $userDto->name }}</span><br>
+                            <i class="fa-solid fa-user"></i> CONFIGURANDO <span id="usuario" data-user={{ $userDto->id }}>{{ $userDto->name }}</span><br>
                         </span>
                       </div>
                 </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-6">
                     <div class="d-flex justify-content-end mt-3">
-                        <span class="mb-2 btn btn-success btn-sm add-user btn-inst2">
+                        <span class="mb-2 btn btn-success btn-sm atach-role btn-inst2">
                             <i class="fa-regular fa-plus"></i> | Agregar Rol
                         </span>
                     </div>
@@ -51,7 +51,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($roles as $role)
+                    @if (count($roles) > 0)
+                        @foreach ($roles as $role)
                         <tr>
                             <td>
                                 {{ $role->alias }}
@@ -65,7 +66,15 @@
                                 </span>
                             </td>
                         </tr>
-                    @endforeach
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                
+                                <small>NO CUENTA CON ROLES ASIGNADOS</small>
+                            </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -78,7 +87,7 @@
                 </div>
                 <div class="col-6">
                     <div class="d-flex justify-content-end mt-3">
-                        <span class="mb-2 btn btn-success btn-sm add-user btn-inst2 atach-permission">
+                        <span class="mb-2 btn btn-success btn-sm atach-permission btn-inst2 atach-permission">
                             <i class="fa-regular fa-plus"></i> | Agregar Permiso
                         </span>
                     </div>

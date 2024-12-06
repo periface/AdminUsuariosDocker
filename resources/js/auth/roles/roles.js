@@ -83,16 +83,32 @@ const showRoles = async () => {
 }
 
 const getRoles = async () => {
+    try {
+        const response = await fetch('/roles', {
+            method: "GET",
+            headers: {
+                'Authorization' : 'Bearer '+localStorage.getItem('token')
+            }
+        })
     
-    const response = await fetch('/roles', {
-        method: "GET",
-        headers: {
-            'Authorization' : 'Bearer '+localStorage.getItem('token')
+        if(!response.ok){
+            const responseJson = await response.json();
+            switch (response.status) {
+                case 403:
+                    toastr.error(responseJson.data, 'Acceso Denegado');
+                    break;
+                default:
+                    break;
+            }
         }
-    })
 
-    const responseText = await response.text();
-    loadData(responseText);
+        const responseText = await response.text();
+        loadData(responseText);
+
+    } catch (error) {
+        console.log('Es el response', error);
+    }
+    
     
 }
 

@@ -27,9 +27,10 @@ const getUsers = async () => {
         });
     
         if(!response.ok){
+            const responseJson = await response.json();
             switch (response.status) {
                 case 403:
-                    toastr.warning('No cuenta con los permisos para realizar esta acción', 'Acceso Denegado');
+                    toastr.error(responseJson.data, 'Acceso Denegado');
                     break;
                 default:
                     break;

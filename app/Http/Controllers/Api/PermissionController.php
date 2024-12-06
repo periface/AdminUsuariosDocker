@@ -44,11 +44,13 @@ class PermissionController extends Controller
 
     public function store(Request $request){
         try {
+
+            $request->merge(['guard_name' => 'web']);
             
             $request->validate([
                 'name' => 'required|min:4'
             ]);
-
+            
             $permission = Permission::create($request->all());
 
             return response()->json([

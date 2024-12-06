@@ -15,32 +15,32 @@ Route::get('/', function(){
 // Esta ruta no está protegida, dado que es el punto de entrada a la aplicación
 Route::post('/', [AuthController::class, 'store'])->name('login');
 
-
 Route::middleware('auth:sanctum')->group(function(){
-
-    // Auth
-    Route::post('/logout',                                  [AuthController::class, 'logout'])->name('logout');
-    
-    // Roles
-    Route::get('/roles',                                    [RoleController::class, 'allRoles']);
-    Route::get('/roles/add',                                [RoleController::class, 'formRole']);
-    Route::get('/roles/{user}',                             [RoleController::class, 'index']);
-    Route::get('/roles/edit-role/{role}',                   [RoleController::class, 'editar']);
-
-    // Permissions
-    Route::get('/permissions',                              [PermissionController::class, 'index']);
-    // Route::get('/permissions/{user}',                       [PermissionController::class, 'getPermissions']);
-    Route::get('/permissions/{user}/available-permissions', [PermissionController::class, 'getAvailablePermissions']);
-    Route::get('/permissions/add',                          [PermissionController::class, 'addPermissionForm']);
     
     // Usuarios
-    Route::middleware('role:ADM')->group(function(){
-        Route::get('/users',                                [UserController::class, 'index']);
-        // Route::get('/users/{user}',                      [UserController::class, 'config']);
-        Route::get('/users/{user}/roles-permissions',       [UserController::class, 'userRolesAndPermissions']);
-        Route::get('/users/add',                            [UserController::class, 'showForm']);
-    });
+    Route::group(['middleware' => ['role:ADM']], function(){
+        Route::get('/users',                                    [UserController::class, 'index']);
+        Route::get('/users/{user}/roles-permissions',           [UserController::class, 'userRolesAndPermissions']);
+        Route::get('/users/add',                                [UserController::class, 'showForm']);
 
+    // Roles
+        Route::get('/roles',                                    [RoleController::class, 'allRoles']);
+        Route::get('/roles/add',                                [RoleController::class, 'formRole']);
+        Route::get('/roles/{user}',                             [RoleController::class, 'index']);
+        Route::get('/roles/edit-role/{role}',                   [RoleController::class, 'editar']);
+
+    // Permissions
+        Route::get('/permissions',                              [PermissionController::class, 'index']);
+        Route::get('/permissions/{user}/available-permissions', [PermissionController::class, 'getAvailablePermissions']);
+        Route::get('/permissions/add',                          [PermissionController::class, 'addPermissionForm']);
+    });
+});
+
+Route::middleware('auth:sanctum')->group(function(){
+    
     // Dashboard
-    Route::get('/principal',                                [PrincipalController::class, 'index'])->name('principal');
+    Route::get('/principal',                                    [PrincipalController::class, 'index'])->name('principal');
+
+    // Auth
+    Route::post('/logout',                                      [AuthController::class, 'logout'])->name('logout');
 });

@@ -15,16 +15,33 @@ const loadData =  (data) => {
 }
 
 const getPermissions = async () => {
-    
-    const permissions = await fetch('/permissions', {
-        method: "GET",
-        headers: {
-            'Authorization' : 'Bearer '+ localStorage.getItem('token'),
-        }
-    });
+    try {
+        const permissions = await fetch('/permissions', {
+            method: "GET",
+            headers: {
+                'Authorization' : 'Bearer '+ localStorage.getItem('token'),
+            }
+        });
 
-    const permissionsText = await permissions.text();
-    loadData(permissionsText);
+        if(!permissions.ok){
+            const responseJson = await permissions.json();
+            switch (permissions.status) {
+                case 403:
+                    toastr.error(responseJson.data, 'Acceso Denegado');
+                    break;
+                default:
+                    break;
+            }
+            return;
+        }
+    
+        const permissionsText = await permissions.text();
+        loadData(permissionsText);
+
+    } catch (error) {
+        
+    }
+    
 
 }
 
@@ -40,15 +57,15 @@ const atachPermission = async (permission) => {
     let user = element.dataset.user;
     
     if(permission === null){
-        let roleElement = document.getElementsByClassName('.atach-role');
+        let roleElement = document.getElementsByClassName('.atach-permission');
         permission = roleElement.dataset.permission;
     }
 
     const response = await fetch(`api/users/${user}/permissions/${permission}`, {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ localStorage.getItem('token')
+            Authorization: 'Bearer '+ localStorage.getItem('token'),
+            Accept: 'application/json'
         }
     });
 
