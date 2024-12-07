@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid"  style="background-color:#fff;">
     <input type="hidden" value="{{ $token }}" name="token" id="token">
     <div class="row flex-nowrap">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar-container">

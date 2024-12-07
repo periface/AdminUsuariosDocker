@@ -1,9 +1,16 @@
 import { configUser } from './config';
 import { eventListener } from '../utils/event';
-import { closeModal } from '../utils/modal';
+import { closeModal, openModal } from '../utils/modal';
+import { showNotification } from '../utils/notification';
 
 let addUser = document.getElementById('users');
 let registerForm;
+
+const attachEventListeners = () => {
+    eventListener('config-user', configUser);
+    eventListener('add-user', showFormUser);
+    eventListener('delete-user', confirmDelete);
+};
 
 // Función para mostrar la lista de los usuarios
 const loadData =  (data) => {
@@ -11,9 +18,8 @@ const loadData =  (data) => {
     divContent.innerHTML = "";
 
     divContent.innerHTML = data;
-    eventListener('config-user', configUser);
-    eventListener('add-user', showFormUser);
-    eventListener('delete-user', confirmDelete);
+    attachEventListeners();
+    
 }
 
 // Función para obtener los usuarios
@@ -63,17 +69,10 @@ const showFormUser = async () => {
         }
     });
 
-    let modal = new bootstrap.Modal(document.getElementById('modalConfig'));
-    let modalBody = document.querySelector('.modal-body');
-    let modalTitle = document.querySelector('.modal-title');
-
     const formResponseText = await formResponse.text();
 
-    modalTitle.innerHTML = "Agregar Usuario";
-    modalBody.innerHTML = "";
-    modalBody.innerHTML = formResponseText;
+    openModal(formResponseText, 'Agregar Usuario');
 
-    modal.show();
     registerForm = document.getElementById('addUser');
     registerUser(registerForm);
 }
@@ -113,7 +112,8 @@ const registerUser = (registerForm) => {
         const response = await fetch('api/users/register', {
             method: "POST",
             headers: {
-                'Authorization': 'Bearer '+localStorage.getItem('token')
+                Authorization: 'Bearer '+localStorage.getItem('token'),
+                Accept: 'application/json'
             },
             body: formData
         });
@@ -121,6 +121,7 @@ const registerUser = (registerForm) => {
         const responseJson = await response.json();
         if(responseJson.data.attributes.statusCode === 201){
             closeModal();
+            showNotification('Éxito', 'Operacion realizada con éxito', 'success');
             getUsers();
         }
 
@@ -153,7 +154,6 @@ const deleteUser = async (user) => {
 
 // Confirm Elimina Usuario
 const confirmDelete = (user) => {
-    console.log('Delete User', user);
     Swal.fire({
         title: "¿Desea continuar?",
         text: "Está a punto de eliminar este usuario",

@@ -6,13 +6,14 @@ const closeModal = () => {
 
 const openModal = (data, title) => {
 
-    let modal = new bootstrap.Modal(document.getElementById('modalConfig'));
+    let modal = new bootstrap.Modal(document.getElementById('modalConfig'), {
+        backdrop: 'static'
+    });
     let modalBody = document.querySelector('.modal-body');
     let modalTitle = document.querySelector('.modal-title');
 
     modalTitle.innerHTML = title;
 
-    modalBody.innerHTML = "";
     modalBody.innerHTML = data;
     modal.show();
 

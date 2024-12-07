@@ -1,6 +1,11 @@
 import { eventListener } from '../../utils/event';
 import { openModal, closeModal } from '../../utils/modal';
 import { configUser } from '../../usuarios/config';
+import { showNotification } from '../../utils/notification';
+
+const attachEventListeners = () => {
+    eventListener('add-permission', addPermissionForm);
+};
 
 // Función para mostrar la lista de los usuarios
 const loadData =  (data) => {
@@ -9,9 +14,7 @@ const loadData =  (data) => {
     divContent.innerHTML = "";
 
     divContent.innerHTML = data;
-    
-    eventListener('add-permission', addPermissionForm);
-
+    attachEventListeners();
 }
 
 const getPermissions = async () => {
@@ -109,7 +112,7 @@ const availablePermissions = async () => {
     });
 
     const responseText = await response.text();
-    openModal(responseText);
+    openModal(responseText, 'Permisos Disponibles');
     eventListener('atach-permission', atachPermission);
 }
 
@@ -160,8 +163,11 @@ const addPermission = (permissionForm) => {
         });
 
         const responseJson = await response.json();
-        console.log(responseJson);
-        
+        if(responseJson.data.attributes.statusCode === 201){
+            closeModal();
+            showNotification('Éxito', 'Operacion realizada con éxito', 'success');
+            getPermissions();
+        }
     })
 }
 

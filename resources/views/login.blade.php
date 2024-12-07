@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="d-flex vh-100" style="background: #54565a20;">
+<div class="d-flex vh-100" style="">
     <div class="container-fluid my-auto">
         <div class="row">
             <div class="col px-52">

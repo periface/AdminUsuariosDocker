@@ -1,6 +1,13 @@
 import { configUser } from '../../usuarios/config';
 import { openModal, closeModal } from '../../utils/modal';
 import { eventListener } from '../../utils/event';
+import { showNotification } from '../../utils/notification';
+
+const attachEventListeners = () => {
+    eventListener('edit-role', showFormEdit);
+    eventListener('delete-role', confirmDelete);
+    eventListener('add-role', showFormRole);
+};
 
 // Función para mostrar la lista de los usuarios
 const loadData =  (data) => {
@@ -9,10 +16,8 @@ const loadData =  (data) => {
     divContent.innerHTML = "";
 
     divContent.innerHTML = data;
-
-    eventListener('edit-role', showFormEdit);
-    eventListener('delete-role', confirmDelete);
-    eventListener('add-role', showFormRole);
+    attachEventListeners();
+    
 }
 
 const atachRole = async (role) => {
@@ -242,15 +247,7 @@ const showFormRole = async () => {
 
     const responseText = await response.text();
 
-    let modal = new bootstrap.Modal(document.getElementById('modalConfig'));
-    let modalBody = document.querySelector('.modal-body');
-    let modalTitle = document.querySelector('.modal-title');
-
-    modalTitle.innerHTML = "Agregar Rol";
-    modalBody.innerHTML = "";
-    modalBody.innerHTML = responseText;
-
-    modal.show();
+    openModal(responseText, 'Agregar Rol');
 
     let registerForm = document.getElementById('addRole');
     addRole(registerForm);
@@ -289,7 +286,12 @@ const addRole = async(registerForm) => {
         });
 
         const responseJson = await response.json();
-        console.log(responseJson);
+        if(responseJson.data.attributes.statusCode === 201){
+            closeModal();
+            showNotification('Éxito', 'Operacion realizada con éxito', 'success');
+            getRoles();
+        }
+
     });
 }
 
