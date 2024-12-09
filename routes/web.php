@@ -34,13 +34,11 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('/permissions/{user}/available-permissions', [PermissionController::class, 'getAvailablePermissions']);
         Route::get('/permissions/add',                          [PermissionController::class, 'addPermissionForm']);
     });
-});
 
-Route::middleware('auth:sanctum')->group(function(){
-    
     // Dashboard
     Route::get('/principal',                                    [PrincipalController::class, 'index'])->name('principal');
 
     // Auth
     Route::post('/logout',                                      [AuthController::class, 'logout'])->name('logout');
+
 });

@@ -28,7 +28,7 @@ class RoleController extends Controller
     public function index(User $user){
         $roles = $this->roleService->getAvailableRoles($user);
 
-        return view('roles.roles', compact('roles'));
+        return view('roles.availableRoles', compact('roles'));
     }
 
     public function editar(Role $role){

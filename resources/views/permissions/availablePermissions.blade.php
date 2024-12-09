@@ -36,5 +36,10 @@
                 </tbody>
             </table>
         </div>
+        <div class=" modal-footer">
+            <button type="button" class="btn btn-inst3 btn-sm" data-bs-dismiss="modal">
+                <small>CANCELAR</small>
+            </button>
+        </div>
     </div>
 </div>

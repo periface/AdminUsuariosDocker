@@ -69,6 +69,7 @@ class RoleService{
 
                     $roleDto->id   = $role->id;
                     $roleDto->name = $role->name;
+                    $roleDto->alias = $role->alias;
 
                     $roleDtoList[] = $roleDto;
                 break;
