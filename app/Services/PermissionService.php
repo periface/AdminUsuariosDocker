@@ -7,6 +7,15 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionService{
 
+    /**
+     * Obtiene todos los permisos registrados en el sistema.
+     *
+     * Este método recupera todos los registros de la tabla de permisos,
+     * los transforma en una lista de objetos DTO (Data Transfer Object)
+     * para encapsular su información de manera estructurada.
+     *
+     * @return array Una lista de objetos PermissionDTO que representan los permisos.
+    */
     public function getAllPermissions(){
         $permissionsDtoList = array();
 
@@ -89,4 +98,27 @@ class PermissionService{
         return $permissionDtoList;
     }
 
+    public function getRolePermissions($role){
+
+        $permissionDtoList = array();
+
+        $permissionsDb = DB::Table('role_has_permissions')
+                        ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
+                        ->where('role_has_permissions.role_id', $role->id)
+                        ->get(['permissions.id', 'permissions.name']);
+
+        if(count($permissionsDb) > 0)
+        {
+            foreach ($permissionsDb as $permission) {
+                
+                $permissionDtoList[] = new PermissionDTO(
+                    $permission->id,
+                    $permission->name,
+                    $permission->created_at
+                );
+
+            }
+        }
+        return $permissionDtoList;
+    }
 }

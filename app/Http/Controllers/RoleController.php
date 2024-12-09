@@ -19,7 +19,6 @@ class RoleController extends Controller
 
     public function allRoles(){
         $roles = $this->roleService->getAllRoles();
-
         // return view('roles.table', compact('roles'));
         return view('roles.index', compact('roles'));
     }
@@ -32,13 +31,18 @@ class RoleController extends Controller
     }
 
     public function editar(Role $role){
-
         $role = $this->roleService->getRole($role);
         return view('roles.edit', compact('role'));
-
     }
 
     public function formRole(){
         return view('roles.add');
+    }
+
+    public function rolePermissions(Role $role){
+
+        $rolePermissions = $this->roleService->getRolePermissions($role);
+        return view('roles.rolePermissions', compact('rolePermissions'));
+
     }
 }

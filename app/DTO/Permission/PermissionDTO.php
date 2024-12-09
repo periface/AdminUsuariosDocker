@@ -2,7 +2,13 @@
 namespace App\DTO\Permission;
 
 class PermissionDto{
-    public int $id;
-    public string $name;
-    public string $fechaCreacion;
+    public $id;
+    public $name;
+    public $fechaCreacion;
+
+    public function __construct(int $id, string $name, string $fechaCreacion){
+        $this->id = $id;
+        $this->name = $name;
+        $this->fechaCreacion = $fechaCreacion;
+    }
 }

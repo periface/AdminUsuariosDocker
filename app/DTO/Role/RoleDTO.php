@@ -3,8 +3,22 @@
 namespace App\DTO\Role;
 
 class RoleDTO{
-    public int $id;
-    public string $name;
-    public string $description;
-    public string $alias;
+    public $id;
+    public $name;
+    public $description;
+    public $alias;
+
+
+    /**
+     * @var PermissionDTO;
+     */
+    public array $permissions;
+
+    public function __construct(int $id, string $name, string $description, string $alias, array $permissions = []){
+        $this->id = $id;
+        $this->name = $name;
+        $this->description = $description;
+        $this->alias = $alias;
+        $this->permissions = $permissions;
+    }
 }

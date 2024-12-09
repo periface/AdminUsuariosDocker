@@ -7,6 +7,7 @@ const attachEventListeners = () => {
     eventListener('edit-role', showFormEdit);
     eventListener('delete-role', confirmDelete);
     eventListener('add-role', showFormRole);
+    eventListener('permissions-role', rolePermissions);
 };
 
 // Función para mostrar la lista de los usuarios
@@ -293,6 +294,21 @@ const addRole = async(registerForm) => {
         }
 
     });
+}
+
+const rolePermissions = async(role) => {
+    
+    const response = await fetch(`/roles/rolePermissions/${role}`, {
+        method: "GET",
+        headers: {
+            Authorization: 'Bearer '+localStorage.getItem('token'),
+            Accept: 'application/json'
+        }
+    });
+
+    const responseText = await response.text();
+    loadData(responseText);
+
 }
 
 export {showRoles, detachRole};

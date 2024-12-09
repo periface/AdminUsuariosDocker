@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('/roles/add',                                [RoleController::class, 'formRole']);
         Route::get('/roles/{user}',                             [RoleController::class, 'index']);
         Route::get('/roles/edit-role/{role}',                   [RoleController::class, 'editar']);
+        Route::get('/roles/rolePermissions/{role}',                    [RoleController::class, 'rolePermissions']);
 
     // Permissions
         Route::get('/permissions',                              [PermissionController::class, 'index']);
