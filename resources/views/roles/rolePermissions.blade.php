@@ -5,7 +5,7 @@
                 <div class="col-6">
                     <div class="container-fluid">
                         <span class="navbar-text text-bold text-white uppercase">
-                            <i class="fa-solid fa-user-shield"></i> ROL <span id="usuario" data-role={{ $rolePermissions->id }}>{{ $rolePermissions->name }}</span><br>
+                            <i class="fa-solid fa-user-shield"></i> ROL <span id="role" data-role={{ $rolePermissions->id }}>{{ $rolePermissions->name }}</span><br>
                         </span>
                       </div>
                 </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end mt-3">
-                        <span class="mb-2 btn btn-success btn-sm btn-inst2 atach-permission-role">
+                        <span class="mb-2 btn btn-success btn-sm btn-inst2 atach-permission-role" id="{{ $rolePermissions->id }}">
                             <i class="fa-regular fa-plus"></i> | Agregar Permiso
                         </span>
                     </div>

@@ -62,7 +62,7 @@ addUser.onclick = (event) => {
 // Mostramos el form en el modal
 const showFormUser = async () => {
     
-    const formResponse = await fetch('/users/add', {
+    const formResponse = await fetch('/users/create', {
         method: "GET",
         headers: {
             'Authorization' : 'Bearer '+localStorage.getItem('token')

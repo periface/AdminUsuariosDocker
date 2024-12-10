@@ -29,8 +29,12 @@ class UserController extends Controller
         // return view('users.table', compact('users'));
     }
 
-    public function showForm(){
+    public function add(){
         return view('users.add');
+    }
+
+    public function edit(User $user){
+        return view('user.edit', compact('user'));
     }
 
     public function userRolesAndPermissions(User $user){

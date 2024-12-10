@@ -17,7 +17,7 @@ const loadData =  (data) => {
     attachEventListeners();
 }
 
-const getPermissions = async () => {
+export const getPermissions = async () => {
     try {
         const permissions = await fetch('/permissions', {
             method: "GET",
@@ -116,6 +116,19 @@ const availablePermissions = async () => {
     eventListener('atach-permission', atachPermission);
 }
 
+const availablePermissionsRole = async(role) => {
+    const response = await fetch(`/permissions/${role}/available-permissions-role`, {
+        method: "GET",
+        headers: {
+            'Authorization': 'Bearer '+localStorage.getItem('token')
+        }
+    });
+
+    const responseText = await response.text();
+    openModal(responseText, 'Permisos Disponibles');
+    eventListener('atach-permission', atachPermission);
+}
+
 const addPermissionForm = async () => {
 
     const response = await fetch('/permissions/add', {
@@ -171,4 +184,4 @@ const addPermission = (permissionForm) => {
     })
 }
 
-export {availablePermissions, detachPermission}
+export {availablePermissions, availablePermissionsRole, detachPermission}

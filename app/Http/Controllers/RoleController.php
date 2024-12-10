@@ -17,25 +17,25 @@ class RoleController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function allRoles(){
+    public function index(){
         $roles = $this->roleService->getAllRoles();
         // return view('roles.table', compact('roles'));
         return view('roles.index', compact('roles'));
     }
 
     // Esta función debe cambiar de nombre al mismo del método utilizado
-    public function index(User $user){
+    public function availableRoles(User $user){
         $roles = $this->roleService->getAvailableRoles($user);
 
         return view('roles.availableRoles', compact('roles'));
     }
 
-    public function editar(Role $role){
+    public function edit(Role $role){
         $role = $this->roleService->getRole($role);
         return view('roles.edit', compact('role'));
     }
 
-    public function formRole(){
+    public function add(){
         return view('roles.add');
     }
 

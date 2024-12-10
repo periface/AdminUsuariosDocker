@@ -194,6 +194,10 @@ class PermissionController extends Controller
         }
     }
 
+    public function atachPermissionRole_Test(Request $request){
+        
+    }
+
     public function detachPermissionRole(Role $role, Permission $permission){
         try {
             

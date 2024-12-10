@@ -98,3 +98,13 @@ body{
 .collapse {
     visibility: visible;
 }
+
+.form-check-input:checked {
+    background-color: #28a745; /* Verde */
+    border-color: #28a745;    /* Bordes verdes */
+  }
+  
+  /* Opcional: Añadir transición para un efecto más fluido */
+  .form-check-input {
+    transition: background-color 2s, border-color 2s;
+  }

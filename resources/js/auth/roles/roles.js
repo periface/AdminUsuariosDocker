@@ -2,12 +2,14 @@ import { configUser } from '../../usuarios/config';
 import { openModal, closeModal } from '../../utils/modal';
 import { eventListener } from '../../utils/event';
 import { showNotification } from '../../utils/notification';
+import { availablePermissionsRole } from '../permissions/permisos';
 
 const attachEventListeners = () => {
     eventListener('edit-role', showFormEdit);
     eventListener('delete-role', confirmDelete);
     eventListener('add-role', showFormRole);
     eventListener('permissions-role', rolePermissions);
+    eventListener('atach-permission-role', availablePermissionsRole);
 };
 
 // Función para mostrar la lista de los usuarios
@@ -123,9 +125,9 @@ element.onclick = (event) => {
     getRoles();
 }
 
-const showFormEdit = async(data) => {
+const showFormEdit = async(role) => {
 
-    const response = await fetch('/roles/edit-role/' + data, {
+    const response = await fetch(`/roles/${role}/edit`, {
         method: "GET",
         headers: {
             'Authorization' : 'Bearer '+localStorage.getItem('token'),
@@ -239,7 +241,7 @@ const confirmDelete = (rol) => {
 
 const showFormRole = async () => {
     
-    const response = await fetch('/roles/add', {
+    const response = await fetch('/roles/create', {
         method: "GET",
         headers:{
             Authorization: "Bearer "+localStorage.getItem('token')
@@ -298,7 +300,7 @@ const addRole = async(registerForm) => {
 
 const rolePermissions = async(role) => {
     
-    const response = await fetch(`/roles/rolePermissions/${role}`, {
+    const response = await fetch(`/roles/${role}/permissions`, {
         method: "GET",
         headers: {
             Authorization: 'Bearer '+localStorage.getItem('token'),
@@ -309,6 +311,25 @@ const rolePermissions = async(role) => {
     const responseText = await response.text();
     loadData(responseText);
 
+}
+
+const attachPermissionRole = async (permission) => {
+    
+    const document = document.getElementById('role');
+    const role = role.dataset.role;
+
+    const response = await fetch(`api/roles/${role}/permissions/${permission}`, {
+        method: "POST",
+        headers: {
+            Auhtorization: 'Bearer '+localStorage.getItem('token'),
+            Accept: 'application/json'
+        }
+    });
+
+    const responseJson = await response.json();
+    if(responseJson.data.attributes.statusCode === 200){
+        showNotification('Éxito', 'Operación realizada con éxito', 'success');
+    }
 }
 
 export {showRoles, detachRole};

@@ -23,13 +23,12 @@ class PermissionService{
         if(count($permissionsDb) > 0){
             
             foreach ($permissionsDb as $permission) {
-                $permissionDto = new PermissionDTO();
 
-                $permissionDto->id = $permission->id;
-                $permissionDto->name = $permission->name;
-                $permissionDto->fechaCreacion = $permission->created_at;
-
-                $permissionsDtoList[] = $permissionDto;
+                $permissionsDtoList[] = new PermissionDTO(
+                    $permission->id,
+                    $permission->name,
+                    $permission->created_at
+                );
             }
         }
 
@@ -72,12 +71,13 @@ class PermissionService{
         switch (count($permissionsDb)) {
             case (count($permissionsDb) > 1):
                 foreach ($permissionsDb as $permission) {
-                    $permissionDto = new PermissionDTO();
-    
-                    $permissionDto->id = $permission->id;
-                    $permissionDto->name = $permission->name;
-    
-                    $permissionDtoList[] = $permissionDto;
+
+                    $permissionDtoList[] =  new PermissionDTO(
+                        $permission->id,
+                        $permission->name,
+                        $permission->created_at
+                    );
+                    
                 }
                 break;
             case (count($permissionsDb) === 1):
@@ -89,6 +89,44 @@ class PermissionService{
                 $permissionDto->name = $permission->name;
 
                 $permissionDtoList[] = $permissionDto;
+                break;
+            default:
+                return $permissionDtoList;
+                break;
+        }
+
+        return $permissionDtoList;
+    }
+
+    public function getAvailablePermissionsRole($role){
+        $permissionDtoList = array();
+        
+        $permissionId = DB::table('role_has_permissions')
+                    ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
+                    ->where('role_has_permissions.role_id', [$role->id])
+                    ->pluck('permissions.id');
+
+        $permissionsDb = Permission::whereNotIn('id', $permissionId)->get();
+
+        switch (count($permissionsDb)) {
+            case (count($permissionsDb) > 1):
+                foreach ($permissionsDb as $permission) {
+
+                    $permissionDtoList[] = new PermissionDTO(
+                        $permission->id,
+                        $permission->name
+                    );
+                }
+                break;
+            case (count($permissionsDb) === 1):
+
+                $permission = $permissionsDb->first();
+
+                $permissionDtoList[] = new PermissionDTO(
+                    $permission->id,
+                    $permission->name
+                );
+
                 break;
             default:
                 return $permissionDtoList;

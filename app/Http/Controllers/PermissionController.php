@@ -28,6 +28,13 @@ class PermissionController extends Controller
         return view('permissions.availablePermissions', compact('availablePermissions'));
     }
 
+    public function getAvailablePermissionsRole(User $user){
+        
+        $availablePermissions = $this->permissionService->getAvailablePermissions($user);
+
+        return view('permissions.availablePermissions', compact('availablePermissions'));
+    }
+
     public function addPermissionForm(){
 
         return view('permissions.add');

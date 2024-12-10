@@ -19,10 +19,13 @@
                                 <td>
                                     {{ $permission->name }}
                                 </td>
-                                <td>
-                                    <a id="{{ $permission->id }}" class="atach-permission" data-permission="{{ $permission->id }}">
+                                <td class="text-center">
+                                    {{-- <a id="{{ $permission->id }}" class="atach-permission" data-permission="{{ $permission->id }}">
                                         <i class="fa fa-plus"></i>
-                                    </a>
+                                    </a> --}}
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="{{ $permission->id }}" data-permission="{{ $permission->id }}">
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -39,6 +42,9 @@
         <div class=" modal-footer">
             <button type="button" class="btn btn-inst3 btn-sm" data-bs-dismiss="modal">
                 <small>CANCELAR</small>
+            </button>
+            <button type="submit" class="btn btn-inst btn-sm">
+                <small>GUARDAR</small>
             </button>
         </div>
     </div>
