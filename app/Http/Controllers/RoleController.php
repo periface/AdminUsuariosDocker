@@ -19,11 +19,9 @@ class RoleController extends Controller
 
     public function index(){
         $roles = $this->roleService->getAllRoles();
-        // return view('roles.table', compact('roles'));
         return view('roles.index', compact('roles'));
     }
 
-    // Esta función debe cambiar de nombre al mismo del método utilizado
     public function availableRoles(User $user){
         $roles = $this->roleService->getAvailableRoles($user);
 

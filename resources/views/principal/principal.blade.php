@@ -97,6 +97,9 @@
     </script>
     @vite([
         'resources/js/usuarios/index.js',
-        'resources/js/auth/permissions/permisos.js'
+        'resources/js/auth/permissions/permisos.js',
+        'resources/js/evaluaciones/evaluaciones.js',
+        'resources/js/areas/index.js',
+        'resources/js/dimensiones/index.js'
     ]);
 @endsection

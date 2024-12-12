@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AreaController extends Controller
+class EvaluacionesController extends Controller
 {
     //
     public function index(){
-        return view('areas.index');
+        return view('evaluaciones.index');
     }
 }

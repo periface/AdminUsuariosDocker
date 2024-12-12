@@ -239,6 +239,7 @@ const confirmDelete = (rol) => {
       });
 }
 
+// Modal para agregar un rol
 const showFormRole = async () => {
     
     const response = await fetch('/roles/create', {
@@ -298,6 +299,7 @@ const addRole = async(registerForm) => {
     });
 }
 
+// Función para obtener los permisos de un rol
 const rolePermissions = async(role) => {
     
     const response = await fetch(`/roles/${role}/permissions`, {
