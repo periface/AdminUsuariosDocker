@@ -53,12 +53,18 @@
                                     <input type="password" name="password" class="form-control" placeholder="Contraseña"
                                     name="Passowrd" required>
                                 </div>
+                                @if ($message !== null)
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <span> {{ $message }} </span>
+                                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
                             </div>
-                            <div class="col-12">
-                                <div class="d-grid">
-                                <button class="btn bsb-btn-xl btn-inst" type="submit">Iniciar Sesión</button>
+                                <div class="col-12">
+                                    <div class="d-grid">
+                                        <button class="btn bsb-btn-xl btn-inst" type="submit">Iniciar Sesión</button>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </form>
                         <div class="row">

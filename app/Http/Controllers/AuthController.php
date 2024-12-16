@@ -20,8 +20,14 @@ class AuthController extends Controller
      * se procesan, se validan y si son correctas se genera el token y se redirige a la página princial,
      * caso contrario se retorna mensaje de error de autenticación
      */
+
+    public function login(){
+        $message = null;
+        return view('login', compact('message'));
+    }
+
     public function store(Request $request){
-        
+        $message = null;
         try {
 
             $request->validate([
@@ -32,16 +38,22 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if ($user->is_active == 0 && $user->email !== 'test@example.com') {
-                return response()->json([
-                    'message' => 'Tu cuenta no ha sido activada. Por favor revisa tu correo y activa tu cuenta.',
-                ], Response::HTTP_FORBIDDEN); // 403
+
+                $message = 'Cuenta inactiva. Por favor revise su correo busque el enlace de activación.';
+                return view('login', compact('message'));
+                // return response()->json([
+                //     'message' => 'Tu cuenta no ha sido activada. Por favor revisa tu correo y activa tu cuenta.',
+                // ], Response::HTTP_FORBIDDEN); // 403
+
             }
 
             if ( !$user || !Hash::check($request->password, $user->password)) {
+                $message = 'Las credenciales son incorrectas';
+                return view('login', compact('message'));
 
-                return response()->json([
-                    'message' => 'Las credenciales son incorrectas',
-                ], Response::HTTP_UNPROCESSABLE_ENTITY); //422
+                // return response()->json([
+                //     'message' => 'Las credenciales son incorrectas',
+                // ], Response::HTTP_UNPROCESSABLE_ENTITY); //422
             }
 
             auth()->login($user);
