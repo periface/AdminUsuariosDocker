@@ -82,7 +82,7 @@ class UserController extends Controller
 
         $wb_data = [
             "email" => $user->email,
-            "activation_route" => 'http://localhost:8000/activate/'.$user->activation_token
+            "activation_link" => 'http://localhost:8000/activate/'.$user->activation_token
         ];
 
 
