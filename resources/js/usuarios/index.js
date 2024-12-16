@@ -121,7 +121,7 @@ const registerUser = (registerForm) => {
         const responseJson = await response.json();
         if(responseJson.data.attributes.statusCode === 201){
             closeModal();
-            showNotification('Éxito', 'Operacion realizada con éxito', 'success');
+            showNotification('Éxito', responseJson.data.attributes.data, 'success');
             getUsers();
         }
 

@@ -9,13 +9,24 @@ use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DimensionesController;
 use App\Http\Controllers\EvaluacionesController;
+use App\Models\User;
 
 Route::get('/', function(){
     return view('login');
 });
 
+Route::get('/activate/{token}', function ($token) {
+    $user = User::where('activation_token', $token)->firstOrFail();
+    $user->update(['activation_token' => null]);
+
+    return redirect('/login')->with('message', 'Your account has been activated!');
+})->name('activate');
+
 // Esta ruta no está protegida, dado que es el punto de entrada a la aplicación
 Route::post('/', [AuthController::class, 'store'])->name('login');
+
+//Ruta para activar la cuenta
+Route::get('/activate/{token}', [UserController::class, 'activate']);
 
 Route::middleware('auth:sanctum')->group(function(){
     

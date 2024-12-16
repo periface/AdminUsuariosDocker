@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\RoleService;
 use App\Services\UserService;
 use App\Services\PermissionService;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -47,4 +48,27 @@ class UserController extends Controller
 
         return view('users.config', compact('userDto', 'roles', 'permissions'));
     }
+
+    public function activate($token){
+        $user = User::where('activation_token', $token)->first();
+
+        if( !$user ){
+            $message = 'Este enlace de activación no es válido o ya ha sido utilizado';
+            $ruta = null;
+            return view('users.activate', compact('message', 'ruta'));
+        }
+
+        $user->update([
+            'is_active' => 1,
+            'activation_token' => null
+        ]);
+
+
+        $message = 'Su cuenta ha sido activada con éxito, por favor inicie sesión';
+        $ruta = 'login';
+
+        return view('users.activate', compact('message', 'ruta'));
+
+    }
+    
 }

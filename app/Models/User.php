@@ -14,6 +14,11 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
+    public function scopeActivated($query)
+    {
+        return $query->whereNull('activation_token');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'activation_token',
+        'is_active'
     ];
 
     /**

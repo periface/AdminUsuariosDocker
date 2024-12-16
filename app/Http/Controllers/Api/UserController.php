@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\RoleService;
-use App\Services\UserService;
 
 // Services
+use App\Services\UserService;
 use App\Services\PermissionService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -72,13 +74,26 @@ class UserController extends Controller
             'email.unique' => 'La dirección de correo electrónico utilizada, ya se encuentra registrada'
         ]);
 
-        $user = User::create($request->all());
+        $data = $request->all();
+        $data['activation_token'] = Str::random(60);
+        $data['is_active'] = false;
+
+        $user = User::create($data);
+
+        $wb_data = [
+            "email" => $user->email,
+            "activation_route" => 'http://localhost:8000/activate/'.$user->activation_token
+        ];
+
+
+        $webhook_response = Http::post('https://servandodev.app.n8n.cloud/webhook-test/f45dc5db-14d6-4e1c-85d2-44fecabc8e69', $wb_data);
 
         return response()->json([
             'data' => [
                 'attributes' => [
                     'status' => 'success',
-                    'data' => $user,
+                    // 'data' => $user,
+                    'data' => 'Para la activación de la cuenta, enviamos un correo a la dirección registrada',
                     'statusCode' => Response::HTTP_CREATED
                 ]
             ]

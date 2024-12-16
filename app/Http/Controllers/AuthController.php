@@ -31,6 +31,12 @@ class AuthController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
+            if ($user->is_active == 0 && $user->email !== 'test@example.com') {
+                return response()->json([
+                    'message' => 'Tu cuenta no ha sido activada. Por favor revisa tu correo y activa tu cuenta.',
+                ], Response::HTTP_FORBIDDEN); // 403
+            }
+
             if ( !$user || !Hash::check($request->password, $user->password)) {
 
                 return response()->json([
