@@ -54,10 +54,7 @@
                                     name="Passowrd" required>
                                 </div>
                                 @if ($message !== null)
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <span> {{ $message }} </span>
-                                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
+                                <span class="text-danger">* {{ $message }}</span>
                                 @endif
                             </div>
                                 <div class="col-12">

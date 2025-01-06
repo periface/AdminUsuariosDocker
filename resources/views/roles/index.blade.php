@@ -60,9 +60,9 @@
                                             <li>
                                                 <a class="dropdown-item delete-role" id="{{ $role->id }}" style="cursor: pointer">Eliminar</a>
                                             </li>
-                                            <li>
+                                            {{-- <li>
                                                 <a class="dropdown-item permissions-role" id="{{ $role->id }}" style="cursor: pointer">Permisos</a>
-                                            </li>
+                                            </li> --}}
                                         </ul>
                                     </div>
                                 </td>

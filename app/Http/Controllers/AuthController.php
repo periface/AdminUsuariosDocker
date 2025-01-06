@@ -37,7 +37,7 @@ class AuthController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
-            if ($user->is_active == 0 && $user->email !== 'test@example.com') {
+            if ($user !== null && $user->is_active == 0 && $user->email !== 'test@example.com') {
 
                 $message = 'Cuenta inactiva. Por favor revise su correo busque el enlace de activación.';
                 return view('login', compact('message'));
