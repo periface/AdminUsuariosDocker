@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\AreaController;
+use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\LoginController;
 
@@ -55,9 +55,9 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     // Áreas
-    Route::middleware('role: ADM|ADC')->group(function(){
+    Route::group(['middleware' => ['role:ADM|ADC']], function(){
         Route::get('areas',                                     [AreaController::class, 'index'])->name('lista-areas');
-        Route::post('areas/{area}',                             [AreaController::class, 'store'])->name('crear-area');
+        Route::post('areas',                                    [AreaController::class, 'store']);
         Route::get('areas/{area}',                              [AreaController::class, 'show'])->name('mostrar-area');
         Route::put('areas/{area}',                              [AreaController::class, 'update'])->name('editar-area');
         Route::delete('areas/{area}',                           [AreaController::class, 'delete'])->name('eliminar-area');
