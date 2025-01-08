@@ -60,7 +60,8 @@ class UserController extends Controller
 
         $user->update([
             'is_active' => 1,
-            'activation_token' => null
+            'activation_token' => null,
+            'email_verified_at' =>  now()
         ]);
 
 
