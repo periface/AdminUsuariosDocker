@@ -23,18 +23,49 @@
             <table class="table table-striped table-sm mt-2"> 
                 <thead>
                     <tr>
-                        <th class=" w-1/3">#</th>
-                        <th class=" w-1/3">Permiso</th>
-                        <th class=" w-1/3">Fecha registro</th>
+                        <th class=" w-1/12">#</th>
+                        <th class=" w-1/5">Nombre</th>
+                        <th class=" w-1/5">Siglas</th>
+                        <th class=" w-1/5">Responsable</th>
+                        <th class=" w-1/5">Fecha registro</th>
                         <th class=" w-2/4">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($areas as $area)
                     <tr>
-                        <td colspan="4" class="text-center">
-                            <small>No hay información para mostrar</small>
+                        <td class=" w-1/12">
+                            -
+                        </td>
+                        <td class=" w-1/5">
+                            {{ $area->nombre }}
+                        </td>
+                        <td class=" w-1/5">
+                            {{ $area->siglas }}
+                        </td>
+                        <td class=" w-1/5">
+                            {{ $area->responsable }}
+                        </td>
+                        <td class=" w-1/5">
+                            {{ $area->fecha_creacion }}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">
+                                Administrar
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item edit-area" id="{{ $area->id }}" style="cursor: pointer">Editar</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item delete-area" id="{{ $area->id }}" style="cursor: pointer">Eliminar</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

@@ -1,5 +1,6 @@
-<form id="addArea">
+<form id="editArea">
     @csrf
+    <input type="hidden" value="{{ $area->id }}" name="id" id="area_id">
     <div class="mt-2">
         <label for="nombre" class="form-label text-sm">Nombre: </label>
         <input class="form-control" id="nombre" name="nombre" placeholder="Nombre del área" value="{{ $area['nombre'] ?? "" }}">

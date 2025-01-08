@@ -1,10 +1,13 @@
 import { eventListener } from "../utils/event";
-import { openModal } from "../utils/modal";
+import { openModal, closeModal } from "../utils/modal";
+import { showNotification } from "../utils/notification";
 
 const areas = document.getElementById('areas');
 
 const attachEventListeners = () => {
     eventListener('add-area', showFormArea);
+    eventListener('edit-area', showFormEdit);
+    eventListener('delete-area', confirmDelete);
 };
 
 const loadData =  (data) => {
@@ -89,10 +92,75 @@ const addArea = async(registerForm) => {
         if(responseJson.data.attributes.statusCode === 201){
             closeModal();
             showNotification('Éxito', 'Operacion realizada con éxito', 'success');
-            console.log(responseJson);
+            getAreas();
         }
 
     });
+}
+
+const editArea = (element) => {
+
+    $('#editArea').validate({
+        rules: {
+            name: { required: true, minlength: 4 }
+        },
+        messages: {
+            name: {
+                required: 'El nombre es requerido',
+                minlength: 'Debe tener al menos 4 caracteres'
+            }
+        }
+    });
+
+    element.onsubmit = async(event) => {
+
+        event.preventDefault();
+
+        const area = document.getElementById('area_id').value;
+        const formData = new FormData(event.target);
+
+        const formObject = {};
+        formData.forEach((value, key) => {
+            formObject[key] = value;
+        });
+
+        console.log(formObject);
+
+        const response = await fetch(`/api/areas/${area}`, {
+            method: "POST",
+            headers: {
+                'Authorization': "Bearer "+localStorage.getItem('token'),
+                'X-HTTP-Method-Override': 'PUT',
+                'Accept': 'application/json'
+            },
+            body: formData
+        });
+
+        const responseJson = await response.json();
+
+        closeModal();
+        showNotification('Éxito', 'Operacion realizada con éxito', 'success');
+        getAreas();
+
+        console.log(responseJson);
+    }
+}
+
+const showFormEdit = async(area) => {
+
+    const response = await fetch(`/areas/${area}/edit`, {
+        method: "GET",
+        headers: {
+            'Authorization' : 'Bearer '+localStorage.getItem('token'),
+            'Accept': 'application/json'
+        }
+    });
+
+    const responseText = await response.text();
+    openModal(responseText, 'Editar Area');
+
+    const element = document.getElementById('editArea');
+    editArea(element);
 }
 
 // Modal para agregar un rol
@@ -113,4 +181,58 @@ const showFormArea = async () => {
 
     addArea(registerArea);
     
+}
+
+// Eliminar usuario
+const deleteArea = async (area) => {
+    
+    try {
+        
+        const response =  await fetch(`api/areas/${area}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization': 'Bearer '+localStorage.getItem('token')
+            }
+        });
+
+        if(response.status === 204){
+            getAreas();
+            return true;
+        }
+    } catch (error) {
+        
+    }
+
+
+}
+
+// Confirm Elimina Usuario
+const confirmDelete = (area) => {
+    console.log('Delete Rol', area);
+    Swal.fire({
+        title: "¿Desea continuar?",
+        text: "Está a punto de eliminar el área",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: "Eliminar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+            if(deleteArea(area)){
+
+                setTimeout(() => {
+                    Swal.fire({
+                        title: "Elemento Eliminado",
+                        text: "La acción se completó con éxito",
+                        icon: "success"
+                    });
+                }, 800);
+            };
+
+        }
+      });
 }

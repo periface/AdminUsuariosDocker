@@ -56,11 +56,11 @@ Route::middleware('auth:sanctum')->group(function(){
 
     // Áreas
     Route::group(['middleware' => ['role:ADM|ADC']], function(){
-        Route::get('areas',                                     [AreaController::class, 'index'])->name('lista-areas');
+        Route::get('areas',                                     [AreaController::class, 'index']);
         Route::post('areas',                                    [AreaController::class, 'store']);
         Route::get('areas/{area}',                              [AreaController::class, 'show'])->name('mostrar-area');
-        Route::put('areas/{area}',                              [AreaController::class, 'update'])->name('editar-area');
-        Route::delete('areas/{area}',                           [AreaController::class, 'delete'])->name('eliminar-area');
+        Route::put('areas/{area}',                              [AreaController::class, 'update']);
+        Route::delete('areas/{area}',                           [AreaController::class, 'destroy']);
     });
    
 });

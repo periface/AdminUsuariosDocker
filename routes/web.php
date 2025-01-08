@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function(){
     // Areas 
     Route::group(['middleware' => ['role:ADM|ADC']], function(){
         Route::get('/areas',                                          [AreaController::class, 'index']);
+        Route::get('/areas/{area}/edit',                              [AreaController::class, 'createOrEdit']);
         Route::get('/areas/create',                                   [AreaController::class, 'create']);
     });
 
