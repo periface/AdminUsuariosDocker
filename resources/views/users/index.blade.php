@@ -34,7 +34,9 @@
                     @if (count($users)>0)
                         @foreach ($users as $user)
                             <tr>
-                                <td></td>
+                                <td>
+                                    {{ $loop->iteration }}
+                                </td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->fechaCreacion }}</td>

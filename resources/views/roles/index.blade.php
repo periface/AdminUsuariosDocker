@@ -23,9 +23,9 @@
             <table class="table table-striped table-sm mt-2"> 
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th class="text-center w-1/3">Rol</th>
-                        <th class="text-left">Siglas</th>
+                        <th class="w-1/12">#</th>
+                        <th class="text-center w-1/5">Rol</th>
+                        <th class="text-center w-1/6">Siglas</th>
                         <th class="text-left w-1/3">Descripcion</th>
                         <th class="text-center">Opciones</th>
                     </tr>
@@ -34,13 +34,13 @@
                     @if (count($roles)>0)
                         @foreach ($roles as $role)
                             <tr>
-                                <td>
-                                -
+                                <td class=" w-1/12">
+                                {{ $loop->iteration }}
                                 </td>
-                                <td class="text-center w-1/3">
+                                <td class="text-center w-1/5">
                                     {{ $role->alias }}
                                 </td>
-                                <td class="text-left">
+                                <td class="text-center w-1/6">
                                     {{ $role->name }}
                                 </td>
                                 <td class="text-left w-1/3">
