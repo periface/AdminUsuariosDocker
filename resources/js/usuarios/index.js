@@ -83,6 +83,7 @@ const registerUser = (registerForm) => {
     $('#addUser').validate({
         rules: {
             name: { required: true, minlength: 4 },
+            paterno: {required: true},
             email: { required: true },
             password: { required: true }
         },
@@ -91,11 +92,14 @@ const registerUser = (registerForm) => {
                 required: 'El nombre es requerido',
                 minlength: 'Debe tener al menos 4 caracteres'
             },
+            paterno: {
+                required: 'El apellido es requerido',
+            },
             email: {
                 required: 'El email es requerido',
             },
             password: {
-                required: 'La contraseña es requerido',
+                required: 'La contraseña es requerida',
             }
         }
     });

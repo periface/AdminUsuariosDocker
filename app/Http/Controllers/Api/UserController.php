@@ -65,11 +65,12 @@ class UserController extends Controller
      * los valores esperados: email, password, name
      */
     public function store(Request $request){
-
+        
         $request->validate([
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'apPaterno' => 'required'
         ],[
             'email.unique' => 'La dirección de correo electrónico utilizada, ya se encuentra registrada'
         ]);
@@ -86,7 +87,7 @@ class UserController extends Controller
         ];
 
 
-        $webhook_response = Http::post('http://localhost:5678/webhook-test/f45dc5db-14d6-4e1c-85d2-44fecabc8e69', $wb_data);
+        // $webhook_response = Http::post('http://localhost:5678/webhook-test/f45dc5db-14d6-4e1c-85d2-44fecabc8e69', $wb_data);
 
         return response()->json([
             'data' => [

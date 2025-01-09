@@ -16,17 +16,18 @@ class UserService{
         $userDtoList = array();
 
         if(count($usersDb) > 0){
+            
             foreach ($usersDb as $user) {
-
-                $userDto = new UserDTO();
-
-                $userDto->id                = $user->id;
-                $userDto->name              = $user->name;
-                $userDto->email             = $user->email;
-                $userDto->fechaCreacion     = $user->created_at;
-                $userDto->fechaModificacion = $user->updated_at;
-                
-                $userDtoList[] = $userDto;
+                $userDtoList[] = new UserDTO(
+                    $user->id,
+                    $user->name,
+                    $user->apPaterno,
+                    $user->apMaterno,
+                    $user->email,
+                    $user->created_at,
+                    $user->updated_at,
+                    $user->direccion
+                );
             }
         }
 
@@ -35,13 +36,16 @@ class UserService{
 
     public function getUserById(User $user){
 
-        $userDto = new UserDTO();
-
-        $userDto->id                = $user->id;
-        $userDto->name              = $user->name;
-        $userDto->email             = $user->email;
-        $userDto->fechaCreacion     = $user->created_at;
-        $userDto->fechaModificacion = $user->updated_at;
+        $userDto = new UserDTO(
+            $user->id,
+            $user->name,
+            $user->apPaterno,
+            $user->apMaterno,
+            $user->email,
+            $user->fechaCreacion,
+            $user->fechaModificacion,
+            $user->direccion
+        );
 
         return $userDto;
     }

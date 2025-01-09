@@ -1,16 +1,46 @@
 <form id="addUser">
     @csrf
     <div class="row mt-2">
-        <label for="name">Nombre:</label>
-        <input type="text" name="name" class="form-control" placeholder="Nombre de usuario">
+        <div class="col">
+            <label for="name">Nombre:</label>
+            <input type="text" name="name" class="form-control" placeholder="Nombre de usuario">
+        </div>
     </div>
     <div class="row mt-2">
-        <label for="email">Email:</label>
-        <input type="email" name="email" class="form-control" placeholder="Correo electrónico">
+        <div class="col-6">
+            <label for="apPaterno">Apellido Paterno:</label>
+            <input type="text" name="apPaterno" class="form-control" placeholder="Apellido paterno">
+        </div>
+        <div class="col-6">
+            <label for="materno">Apellido Materno:</label>
+            <input type="text" name="materno" class="form-control" placeholder="Apellido materno">
+        </div>
     </div>
     <div class="row mt-2">
-        <label for="password">Contraseña:</label>
-        <input type="password" name="password" class="form-control" placeholder="Contraseña">
+        <div class="col">
+            <label for="direccion">Dirección:</label>
+            <select class="form-select" id="direccion" name="direccion">
+
+                @foreach ($direcciones as $direccion)
+                    <option value="{{ $direccion->value }}">
+                            {{ $direccion->direccion() }}
+                    </option>
+                @endforeach
+
+            </select>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <label for="email">Email:</label>
+            <input type="email" name="email" class="form-control" placeholder="Correo electrónico">
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" class="form-control" placeholder="Contraseña">
+        </div>
     </div>
     <div class=" modal-footer">
         <button type="button" class="btn btn-inst3 btn-sm" data-bs-dismiss="modal">

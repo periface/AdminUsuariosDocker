@@ -25,7 +25,9 @@
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
+                        <th>Área a la que pertenece</th>
                         <th>Correo Electrónico</th>
+                        <th class="text-center">Rol</th>
                         <th>Fecha registro</th>
                         <th>Opciones</th>
                     </tr>
@@ -37,8 +39,26 @@
                                 <td>
                                     {{ $loop->iteration }}
                                 </td>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->nombre }} {{ $user->apPaterno }} {{ $user->apMaterno }}</td>
+                                <td>
+                                    @if ($user->direccion == "Seleccione")
+
+                                    @else
+                                        {{ $user->direccion }}
+                                    @endif
+                                </td>
                                 <td>{{ $user->email }}</td>
+                                <td class="text-center">
+                                    @if ($user->rol === null)
+                                        <span class="badge bg-secondary">
+                                            Sin Asignar
+                                        </span>
+                                    @else
+                                        <span class="badge bg-success">
+                                            {{ $user->rol }}
+                                        </span>
+                                    @endif
+                                </td>
                                 <td>{{ $user->fechaCreacion }}</td>
                                 <td>
                                     <div class="btn-group" role="group">

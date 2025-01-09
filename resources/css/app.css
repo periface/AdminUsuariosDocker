@@ -108,3 +108,11 @@ body{
   .form-check-input {
     transition: background-color 2s, border-color 2s;
   }
+
+  /*
+  jQuery Validate error
+  */
+
+  label.error {
+    color: #c0392b;
+  }

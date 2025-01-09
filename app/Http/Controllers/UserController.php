@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Enum\DireccionesEnum;
 use App\Services\RoleService;
 use App\Services\UserService;
 use App\Services\PermissionService;
@@ -24,14 +25,24 @@ class UserController extends Controller
     }
 
     public function index(){
+        
         $users = $this->userService->getAllUsers();
-
+        foreach ($users as $user) {
+            $user->direccion = DireccionesEnum::from($user->direccionId)->direccion();
+            $role = $this->roleService->getUserRoles($user);
+            if (!empty($role)) {
+                $user->rol = $role[0]->alias;
+            }
+        }
         return view('users.index', compact('users'));
-        // return view('users.table', compact('users'));
+
     }
 
     public function add(){
-        return view('users.add');
+
+        $direcciones = DireccionesEnum::cases();
+        return view('users.add', compact('direcciones'));
+    
     }
 
     public function edit(User $user){
