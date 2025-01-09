@@ -9,7 +9,7 @@ class AreaDTO {
     public $responsable;
     public $fecha_creacion;
 
-    public function __construct(int $id, string $nombre, string $siglas, string $responsable, string $fecha_creacion){
+    public function __construct(int $id, string $nombre, string $siglas, ?string $responsable, string $fecha_creacion){
         
         $this->id = $id;
         $this->nombre = $nombre;

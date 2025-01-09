@@ -23,30 +23,38 @@
             <table class="table table-striped table-sm mt-2"> 
                 <thead>
                     <tr>
-                        <th class=" w-1/12">#</th>
+                        <th class=" w-1/12 text-center">#</th>
                         <th class=" w-1/5">Nombre</th>
-                        <th class=" w-1/5">Siglas</th>
-                        <th class=" w-1/5">Responsable</th>
-                        <th class=" w-1/5">Fecha registro</th>
+                        <th class=" w-1/5 text-center">Siglas</th>
+                        <th class=" w-1/5 text-center">Responsable</th>
+                        <th class=" w-1/5 text-center">Fecha registro</th>
                         <th class=" w-2/4">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($areas as $area)
                     <tr>
-                        <td class=" w-1/12">
-                            -
+                        <td class=" w-1/12 text-center">
+                            {{ $loop->iteration }}
                         </td>
                         <td class=" w-1/5">
                             {{ $area->nombre }}
                         </td>
-                        <td class=" w-1/5">
+                        <td class=" w-1/5 text-center">
                             {{ $area->siglas }}
                         </td>
-                        <td class=" w-1/5">
-                            {{ $area->responsable }}
+                        <td class=" w-1/5 text-center">
+                            @if ($area->responsable == null)
+                                <span class=" badge bg-secondary">
+                                    Sin Asignar
+                                </span>
+                            @else
+                                <span class=" badge bg-success">
+                                    {{ $area->responsable }}
+                                </span>
+                            @endif
                         </td>
-                        <td class=" w-1/5">
+                        <td class=" w-1/5 text-center">
                             {{ $area->fecha_creacion }}
                         </td>
                         <td>

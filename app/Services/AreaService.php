@@ -25,7 +25,7 @@ class AreaService {
                     $area->id,
                     $area->nombre,
                     $area->siglas,
-                    $user->name,
+                    $user != null ? $user->name .' '. $user->apPaterno .' '. $user->apMaterno : null,
                     $area->created_at
                 );
 
