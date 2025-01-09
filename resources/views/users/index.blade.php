@@ -26,10 +26,10 @@
                         <th>#</th>
                         <th>Nombre</th>
                         <th>Área a la que pertenece</th>
-                        <th>Correo Electrónico</th>
                         <th class="text-center">Rol</th>
-                        <th>Fecha registro</th>
-                        <th>Opciones</th>
+                        <th class="text-center">Correo Electrónico</th>
+                        <th class="text-center">Fecha registro</th>
+                        <th class="text-center">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,7 +47,6 @@
                                         {{ $user->direccion }}
                                     @endif
                                 </td>
-                                <td>{{ $user->email }}</td>
                                 <td class="text-center">
                                     @if ($user->rol === null)
                                         <span class="badge bg-secondary">
@@ -59,8 +58,9 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td>{{ $user->fechaCreacion }}</td>
-                                <td>
+                                <td class="text-center">{{ $user->email }}</td>
+                                <td class="text-center">{{ $user->fechaCreacion }}</td>
+                                <td class="text-center">
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">
                                         Administrar
