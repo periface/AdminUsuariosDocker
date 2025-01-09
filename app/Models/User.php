@@ -30,7 +30,10 @@ class User extends Authenticatable
         'email_verified_at',
         'password',
         'activation_token',
-        'is_active'
+        'is_active',
+        'apPaterno',
+        'apMaterno',
+        'direccion'
     ];
 
     /**
