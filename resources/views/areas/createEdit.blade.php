@@ -12,7 +12,7 @@
            @foreach ($users as $user)
             <option value="{{ $user->id ?? '' }}"
                 @selected((old('responsable', $area['responsable'] ?? '') == $user->id))>
-                    {{ $user->name }}
+                    {{ $user->nombre }} {{ $user->apPaterno }} {{ $user->apMaterno }}
             </option>
            @endforeach
         </select>
