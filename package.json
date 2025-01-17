@@ -17,6 +17,7 @@
     "dependencies": {
         "bs-stepper": "^1.7.0",
         "pochijs": "^1.0.10",
+        "chart.js": "^4.4.7",
         "sweetalert2": "^11.14.5"
     }
 }
