@@ -13,22 +13,22 @@ const attachEventListeners = () => {
 };
 
 // Función para mostrar la lista de los usuarios
-const loadData =  (data) => {
+const loadData = (data) => {
 
     let divContent = document.getElementById('content');
     divContent.innerHTML = "";
 
     divContent.innerHTML = data;
     attachEventListeners();
-    
+
 }
 
 const atachRole = async (role) => {
-    
+
     let element = document.getElementById('usuario');
     let user = element.dataset.user;
-    
-    if(role === null){
+
+    if (role === null) {
         console.log('si esta nulo');
         let roleElement = document.getElementsByClassName('.atach-role');
         role = roleElement.dataset.role;
@@ -38,7 +38,7 @@ const atachRole = async (role) => {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ localStorage.getItem('token')
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
     });
 
@@ -50,7 +50,7 @@ const atachRole = async (role) => {
     console.log(responseJson);
 }
 
-const detachRole = async(role) => {
+const detachRole = async (role) => {
 
     let element = document.getElementById('usuario');
     let user = element.dataset.user;
@@ -61,7 +61,7 @@ const detachRole = async(role) => {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '+ localStorage.getItem('token')
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
     });
 
@@ -79,8 +79,8 @@ const showRoles = async () => {
     const response = await fetch(`/roles/${user}`, {
         method: "GET",
         headers: {
-            'Content-Type':'application/json',
-            'Auhtorization':'Bearer '+ localStorage.getItem('token')
+            'Content-Type': 'application/json',
+            'Auhtorization': 'Bearer ' + localStorage.getItem('token')
         }
     })
 
@@ -94,11 +94,11 @@ const getRoles = async () => {
         const response = await fetch('/roles', {
             method: "GET",
             headers: {
-                'Authorization' : 'Bearer '+localStorage.getItem('token')
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
-    
-        if(!response.ok){
+
+        if (!response.ok) {
             const responseJson = await response.json();
             switch (response.status) {
                 case 403:
@@ -115,8 +115,8 @@ const getRoles = async () => {
     } catch (error) {
         console.log('Es el response', error);
     }
-    
-    
+
+
 }
 
 let element = document.getElementById('roles');
@@ -125,12 +125,12 @@ element.onclick = (event) => {
     getRoles();
 }
 
-const showFormEdit = async(role) => {
+const showFormEdit = async (role) => {
 
     const response = await fetch(`/roles/${role}/edit`, {
         method: "GET",
         headers: {
-            'Authorization' : 'Bearer '+localStorage.getItem('token'),
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Accept': 'application/json'
         }
     });
@@ -156,11 +156,11 @@ const editRole = (element) => {
         }
     });
 
-    element.onsubmit = async(event) => {
+    element.onsubmit = async (event) => {
 
         event.preventDefault();
 
-        const role = document.getElementById('role_id').value;
+        const role = document.getElementById('roleId').value;
         const formData = new FormData(event.target);
 
         const formObject = {};
@@ -170,10 +170,10 @@ const editRole = (element) => {
 
         console.log(formObject);
 
-        const response = await fetch('/api/roles/'+ role, {
+        const response = await fetch('/api/roles/' + role, {
             method: "POST",
             headers: {
-                'Authorization': "Bearer "+localStorage.getItem('token'),
+                'Authorization': "Bearer " + localStorage.getItem('token'),
                 'X-HTTP-Method-Override': 'PUT',
                 'Accept': 'application/json'
             },
@@ -187,23 +187,23 @@ const editRole = (element) => {
 
 // Eliminar usuario
 const deleteRol = async (rol) => {
-    
+
     try {
-        
-        const response =  await fetch(`api/roles/${rol}`, {
+
+        const response = await fetch(`api/roles/${rol}`, {
             method: "DELETE",
             headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': 'Bearer '+localStorage.getItem('token')
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         });
 
-        if(response.status === 204){
+        if (response.status === 204) {
             getRoles();
             return true;
         }
     } catch (error) {
-        
+
     }
 
 
@@ -221,10 +221,10 @@ const confirmDelete = (rol) => {
         cancelButtonColor: "#d33",
         cancelButtonText: 'Cancelar',
         confirmButtonText: "Eliminar"
-      }).then((result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
 
-            if(deleteRol(rol)){
+            if (deleteRol(rol)) {
 
                 setTimeout(() => {
                     Swal.fire({
@@ -236,16 +236,16 @@ const confirmDelete = (rol) => {
             };
 
         }
-      });
+    });
 }
 
 // Modal para agregar un rol
 const showFormRole = async () => {
-    
+
     const response = await fetch('/roles/create', {
         method: "GET",
-        headers:{
-            Authorization: "Bearer "+localStorage.getItem('token')
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem('token')
         }
     });
 
@@ -257,7 +257,7 @@ const showFormRole = async () => {
     addRole(registerForm);
 }
 
-const addRole = async(registerForm) => {
+const addRole = async (registerForm) => {
     console.log('En addRole ', registerForm);
     $('#addRole').validate({
         rules: {
@@ -274,7 +274,7 @@ const addRole = async(registerForm) => {
     registerForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        if(!$("#addRole").valid()){
+        if (!$("#addRole").valid()) {
             return;
         }
 
@@ -283,14 +283,14 @@ const addRole = async(registerForm) => {
         const response = await fetch('api/roles', {
             method: "POST",
             headers: {
-                Authorization: 'Bearer '+localStorage.getItem('token'),
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
                 Accept: 'application/json'
             },
             body: form
         });
 
         const responseJson = await response.json();
-        if(responseJson.data.attributes.statusCode === 201){
+        if (responseJson.data.attributes.statusCode === 201) {
             closeModal();
             showNotification('Éxito', 'Operacion realizada con éxito', 'success');
             getRoles();
@@ -300,12 +300,12 @@ const addRole = async(registerForm) => {
 }
 
 // Función para obtener los permisos de un rol
-const rolePermissions = async(role) => {
-    
+const rolePermissions = async (role) => {
+
     const response = await fetch(`/roles/${role}/permissions`, {
         method: "GET",
         headers: {
-            Authorization: 'Bearer '+localStorage.getItem('token'),
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
             Accept: 'application/json'
         }
     });
@@ -316,22 +316,22 @@ const rolePermissions = async(role) => {
 }
 
 const attachPermissionRole = async (permission) => {
-    
+
     const document = document.getElementById('role');
     const role = role.dataset.role;
 
     const response = await fetch(`api/roles/${role}/permissions/${permission}`, {
         method: "POST",
         headers: {
-            Auhtorization: 'Bearer '+localStorage.getItem('token'),
+            Auhtorization: 'Bearer ' + localStorage.getItem('token'),
             Accept: 'application/json'
         }
     });
 
     const responseJson = await response.json();
-    if(responseJson.data.attributes.statusCode === 200){
+    if (responseJson.data.attributes.statusCode === 200) {
         showNotification('Éxito', 'Operación realizada con éxito', 'success');
     }
 }
 
-export {showRoles, detachRole};
+export { showRoles, detachRole };

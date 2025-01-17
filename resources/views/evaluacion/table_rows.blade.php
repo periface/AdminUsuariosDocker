@@ -1,0 +1,143 @@
+<div class="flex w-1/3 mb-2 border-black items">
+    <input type="text" class="form-control form-control-sm js-search" placeholder="Buscar"
+        {{ $search ? 'value=' . $search : '' }}>
+</div>
+<table class="table table-striped projects" id="evaluacionesTable">
+    <thead class="small">
+        <tr class="w-full">
+            <th style="width: 5%" data-sort="id" data-order="desc" class="cursor-pointer sort ">
+                # <i class="pl-2 fas fa-sort"></i>
+            </th>
+            <th style="width: 20%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
+                Nombre <i class="pl-2 fas fa-sort"></i>
+            </th>
+
+            <th style="width: 25%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
+                Área <i class="pl-2 fas fa-sort"></i>
+            </th>
+            <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
+                Meta <i class="pl-2 fas fa-sort"></i>
+            </th>
+
+            <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
+                Total <i class="pl-2 fas fa-sort"></i>
+            </th>
+            <th style="width: 20%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
+                Semaforo <i class="pl-2 fas fa-sort"></i>
+            </th>
+            <th style="width: 50%" class="flex items-center align-middle">
+                Acciones
+            </th>
+        </tr>
+    </thead>
+    <tbody id="evaluacionesTableBody">
+        @if (count($evaluaciones) === 0)
+            <tr>
+                <td colspan="6" class="text-center">No hay evaluaciones registrados</td>
+            </tr>
+        @else
+            @foreach ($evaluaciones as $evaluacion)
+                <tr>
+                    <td>{{ $evaluacion['id'] }}</td>
+                    <td>{{ $evaluacion['descripcion'] }}</td>
+                    <td>{{ $evaluacion->area['nombre'] }}</td>
+                    <td class="font-bold text-green-900">{{ $evaluacion['meta'] }}</td>
+                    <td class="font-bold">{{ $evaluacion['total'] }}</td>
+                    <td>
+                        <span class="">
+                            {{ $evaluacion['results'] }}
+                        </span>
+                        @include('partials.periodos_names', [
+                            'frecuencia_medicion' => $evaluacion['frecuencia_medicion'],
+                        ])
+
+                        <div class="progress-stacked">
+
+                            <div class="progress" role="progressbar" aria-label="Segment three"
+                                title="{{ $evaluacion['results_aprobado'] }} Validados"
+                                aria-valuenow="{{ $evaluacion['aprobado'] }}" aria-valuemin="0"
+                                aria-valuemax="{{ $evaluacion['results'] }}"
+                                style="width: {{ $evaluacion['porcentaje_aprobados'] }}%">
+                                <div class="progress-bar bg-success"></div>
+                            </div>
+                            <div class="progress" role="progressbar" aria-label="Segment two"
+                                title="{{ $evaluacion['results_pendiente'] }} Pendientes"
+                                aria-valuenow="{{ $evaluacion['pendiente'] }}" aria-valuemin="0"
+                                aria-valuemax="{{ $evaluacion['results'] }}"
+                                style="width: {{ $evaluacion['porcentaje_pendientes'] }}%">
+                                <div class="progress-bar bg-warning"></div>
+                            </div>
+                            <div class="progress" role="progressbar"
+                                title="{{ $evaluacion['results_capturado'] }} Capturados" aria-label="Segment one"
+                                aria-valuenow="{{ $evaluacion['results_capturado'] }}" aria-valuemin="0"
+                                aria-valuemax="{{ $evaluacion['results'] }}"
+                                style="width: {{ $evaluacion['porcentaje_capturados'] }}%">
+                                <div class="progress-bar bg-info"></div>
+                            </div>
+                            <div class="progress" role="progressbar" aria-label="Segment four"
+                                title="{{ $evaluacion['results_rechazado'] }} Rechazados"
+                                aria-valuenow="{{ $evaluacion['rechazado'] }}" aria-valuemin="0"
+                                aria-valuemax="{{ $evaluacion['results'] }}"
+                                style="width: {{ $evaluacion['porcentaje_rechazados'] }}%">
+                                <div class="progress-bar bg-danger"></div>
+                            </div>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group"
+                            aria-label="Button group with nested dropdown">
+                            <button type="button" class="btn btnSecondaryOficial js-view-registros"
+                                data-id="{{ $evaluacion->id }}">Registros</button>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btnSecondaryOficial dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/evaluacion/{{ $evaluacion->id }}/variables"
+                                            data-id="{{ $evaluacion->id }}">Variables</a></li>
+                                    <li><a class="dropdown-item js-delete-evaluacion" href="#"
+                                            data-id="{{ $evaluacion->id }}">Eliminar</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+            <tr>
+
+                <td colspan="2">
+                    <div class="flex items-center justify-start">
+                        <div class="w-1/2">
+                            {{ $totalRows }} de {{ $grandTotalRows }} registros
+                        </div>
+                        <div class="w-1/2 ml-3 justify-self-end">
+                            <select class="form-control form-control-sm js-change-rows select">
+                                <option value="5" {{ $limit == 5 ? 'selected' : '' }}>5</option>
+                                <option value="10" {{ $limit == 10 ? 'selected' : '' }}>10</option>
+                                <option value="20" {{ $limit == 20 ? 'selected' : '' }}>20</option>
+                                <option value="50" {{ $limit == 50 ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ $limit == 100 ? 'selected' : '' }}>100</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </td>
+                <td colspan="4">
+
+                    <div class="flex items-center flex-nowrap">
+                        @for ($i = 1; $i <= $totalPages; $i++)
+                            @if ($i == 6 && $totalPages > 5)
+                                <button class="btn btn-sm js-change-page" type="button"
+                                    data-page="{{ $i - 1 }}">...</button>
+                                @continue
+                            @endif
+                            <button {{ $i == $page ? 'disabled' : '' }} class="btn btn-sm js-change-page"
+                                type="button" data-page="{{ $i }}">{{ $i }}</button>
+                        @endfor
+                    </div>
+                </td>
+            <tr>
+        @endif
+
+    </tbody>
+</table>

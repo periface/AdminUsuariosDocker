@@ -8,10 +8,11 @@ class PrincipalController extends Controller
 {
     //
 
-    public function index(){
+    public function index(Request $request)
+    {
 
-        $token = session('token');
-
+        $user = $request->user();
+        $token = $user->createToken($user->name)->plainTextToken;
         return view('principal.principal', compact('token'));
     }
 }

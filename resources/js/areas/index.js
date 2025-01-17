@@ -10,27 +10,27 @@ const attachEventListeners = () => {
     eventListener('delete-area', confirmDelete);
 };
 
-const loadData =  (data) => {
+const loadData = (data) => {
 
     let divContent = document.getElementById('content');
     divContent.innerHTML = "";
 
     divContent.innerHTML = data;
     attachEventListeners();
-    
+
 }
 
 const getAreas = async () => {
-    
+
     const response = await fetch('/areas', {
         method: "GET",
         headers: {
-            Authorization: 'Bearer '+localStorage.getItem('token'),
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
             Accept: 'application/json'
         }
     });
 
-    if(!response.ok){
+    if (!response.ok) {
         const responseJson = await response.json();
         switch (response.status) {
             case 403:
@@ -43,7 +43,7 @@ const getAreas = async () => {
 
     const responseText = await response.text();
     loadData(responseText);
-    
+
 }
 
 areas.addEventListener('click', (event) => {
@@ -51,7 +51,7 @@ areas.addEventListener('click', (event) => {
     getAreas();
 });
 
-const addArea = async(registerForm) => {
+const addArea = async (registerForm) => {
     console.log('En addRole ', registerForm);
     $('#addArea').validate({
         rules: {
@@ -73,7 +73,7 @@ const addArea = async(registerForm) => {
     registerForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        if(!$("#addArea").valid()){
+        if (!$("#addArea").valid()) {
             return;
         }
 
@@ -82,14 +82,14 @@ const addArea = async(registerForm) => {
         const response = await fetch('api/areas', {
             method: "POST",
             headers: {
-                Authorization: 'Bearer '+localStorage.getItem('token'),
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
                 Accept: 'application/json'
             },
             body: form
         });
 
         const responseJson = await response.json();
-        if(responseJson.data.attributes.statusCode === 201){
+        if (responseJson.data.attributes.statusCode === 201) {
             closeModal();
             showNotification('Éxito', 'Operacion realizada con éxito', 'success');
             getAreas();
@@ -112,11 +112,11 @@ const editArea = (element) => {
         }
     });
 
-    element.onsubmit = async(event) => {
+    element.onsubmit = async (event) => {
 
         event.preventDefault();
 
-        const area = document.getElementById('area_id').value;
+        const area = document.getElementById('areaId').value;
         const formData = new FormData(event.target);
 
         const formObject = {};
@@ -129,7 +129,7 @@ const editArea = (element) => {
         const response = await fetch(`/api/areas/${area}`, {
             method: "POST",
             headers: {
-                'Authorization': "Bearer "+localStorage.getItem('token'),
+                'Authorization': "Bearer " + localStorage.getItem('token'),
                 'X-HTTP-Method-Override': 'PUT',
                 'Accept': 'application/json'
             },
@@ -146,12 +146,12 @@ const editArea = (element) => {
     }
 }
 
-const showFormEdit = async(area) => {
+const showFormEdit = async (area) => {
 
     const response = await fetch(`/areas/${area}/edit`, {
         method: "GET",
         headers: {
-            'Authorization' : 'Bearer '+localStorage.getItem('token'),
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Accept': 'application/json'
         }
     });
@@ -169,7 +169,7 @@ const showFormArea = async () => {
     const response = await fetch('/areas/create', {
         method: "GET",
         headers: {
-            Authorization: 'Bearer '+localStorage.getItem('token')
+            Authorization: 'Bearer ' + localStorage.getItem('token')
         }
     });
 
@@ -180,28 +180,28 @@ const showFormArea = async () => {
     let registerArea = document.getElementById('addArea');
 
     addArea(registerArea);
-    
+
 }
 
 // Eliminar usuario
 const deleteArea = async (area) => {
-    
+
     try {
-        
-        const response =  await fetch(`api/areas/${area}`, {
+
+        const response = await fetch(`api/areas/${area}`, {
             method: "DELETE",
             headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': 'Bearer '+localStorage.getItem('token')
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         });
 
-        if(response.status === 204){
+        if (response.status === 204) {
             getAreas();
             return true;
         }
     } catch (error) {
-        
+
     }
 
 
@@ -219,10 +219,10 @@ const confirmDelete = (area) => {
         cancelButtonColor: "#d33",
         cancelButtonText: 'Cancelar',
         confirmButtonText: "Eliminar"
-      }).then((result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
 
-            if(deleteArea(area)){
+            if (deleteArea(area)) {
 
                 setTimeout(() => {
                     Swal.fire({
@@ -234,5 +234,5 @@ const confirmDelete = (area) => {
             };
 
         }
-      });
+    });
 }

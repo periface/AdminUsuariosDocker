@@ -5,12 +5,12 @@
                 <div class="col-6">
                     <div class="container-fluid">
                         <span class="navbar-text text-bold text-white uppercase">
-                            <i class="fa-solid fa-user"></i> CONFIGURANDO <span id="usuario" data-user={{ $userDto->id }}>{{ $userDto->name }}</span><br>
+                            <i class="fa-solid fa-user"></i> CONFIGURANDO <span id="usuario" data-user={{ $userDto->id }}>{{ $userDto->nombre }}</span><br>
                         </span>
                       </div>
                 </div>
                 <div class="col-6 d-flex justify-content-end pe-3 pt-2">
-                    
+
                 </div>
             </nav>
             <div style="background: #54565a80;" class="pt-1 pb-1">
@@ -22,7 +22,7 @@
     </div>
     <div class="row mt-3">
         <div class="col-12">
-            <hr> 
+            <hr>
         </div>
         <div class="col-6">
             <div class="row">
@@ -70,7 +70,7 @@
                     @else
                         <tr>
                             <td colspan="3" class="text-center">
-                                
+
                                 <small>NO CUENTA CON ROLES ASIGNADOS</small>
                             </td>
                         </tr>
@@ -120,12 +120,12 @@
                     @else
                         <tr>
                             <td colspan="2" class="text-center">
-                                
+
                                 <small>NO CUENTA CON PERMISOS ASIGNADOS</small>
                             </td>
                         </tr>
                     @endif
-                    
+
                 </tbody>
             </table>
         </div>

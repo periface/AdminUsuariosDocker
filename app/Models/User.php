@@ -25,6 +25,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'secretariaId',
         'name',
         'email',
         'email_verified_at',
@@ -33,7 +34,7 @@ class User extends Authenticatable
         'is_active',
         'apPaterno',
         'apMaterno',
-        'direccion'
+        'areaId',
     ];
 
     /**
@@ -57,5 +58,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function variableValues()
+    {
+        return $this->hasMany(VariableValue::class);
+    }
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'areaId', 'id');
+    }
+    public function secretaria()
+    {
+        return $this->belongsTo(Secretaria::class, 'secretariaId', 'id');
     }
 }

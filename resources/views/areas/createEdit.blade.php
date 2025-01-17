@@ -1,18 +1,18 @@
 <form id="editArea">
     @csrf
-    <input type="hidden" value="{{ $area->id }}" name="id" id="area_id">
+    <input type="hidden" value="{{ $area->id }}" name="id" id="areaId">
     <div class="mt-2">
         <label for="nombre" class="form-label text-sm">Nombre: </label>
         <input class="form-control" id="nombre" name="nombre" placeholder="Nombre del área" value="{{ $area['nombre'] ?? "" }}">
     </div>
     <div class="mt-2">
         <label for="status" class="form-label text-sm">Responsable: </label>
-        <select class="form-select" id="responsable" name="responsable">
+        <select class="form-select" id="responsableId" name="responsableId">
            <option value="0">Seleccione</option>
            @foreach ($users as $user)
             <option value="{{ $user->id ?? '' }}"
-                @selected((old('responsable', $area['responsable'] ?? '') == $user->id))>
-                    {{ $user->name }}
+                @selected((old('responsableId', $area['responsableId'] ?? '') == $user->id))>
+                    {{ $user->nombre }} {{ $user->apPaterno }} {{ $user->apMaterno }}
             </option>
            @endforeach
         </select>

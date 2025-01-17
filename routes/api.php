@@ -1,22 +1,25 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\LoginController;
 
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\AreaController;
+use App\Http\Controllers\DimensionController;
+use App\Http\Controllers\EvaluacionController;
+use App\Http\Controllers\IndicadorController;
+use App\Http\Controllers\RegistrosController;
+use App\Http\Controllers\SecretariaController;
 
 Route::post('/login', [AuthController::class, 'store']);
 
 // Route::post('/logout', [AuthController::class, 'logout']);
 
 // Creamos un grupo de rutas protegidas
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:sanctum')->group(function () {
 
     // Users
     Route::get('users',                                     [UserController::class, 'index']);
@@ -45,7 +48,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('users/{user}/permissions/{permission}',    [PermissionController::class, 'atachPermissionUser']);
     Route::delete('users/{user}/permissions/{permission}',  [PermissionController::class, 'detachPermissionUser']);
 
-    Route::group(['middleware'], function(){
+    Route::group(['middleware'], function () {
         // Roles
         Route::get('roles',                                     [RoleController::class, 'index']);
         Route::post('roles',                                    [RoleController::class, 'store']);
@@ -53,14 +56,36 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::put('roles/{role}',                              [RoleController::class, 'update']);
         Route::delete('roles/{role}',                           [RoleController::class, 'destroy']);
     });
-
     // Áreas
-    Route::group(['middleware' => ['role:ADM|ADC']], function(){
+    Route::group(['middleware' => ['role:ADM|ADC']], function () {
         Route::get('areas',                                     [AreaController::class, 'index']);
         Route::post('areas',                                    [AreaController::class, 'store']);
         Route::get('areas/{area}',                              [AreaController::class, 'show'])->name('mostrar-area');
         Route::put('areas/{area}',                              [AreaController::class, 'update']);
         Route::delete('areas/{area}',                           [AreaController::class, 'destroy']);
     });
-   
+
+    // RUTAS DE ÁREAS PERI
+    Route::prefix('v1')->group(function () {
+        Route::get('/secretarias', [SecretariaController::class, 'get']); //Obtiene todas las áreas
+        Route::get('/dimension', [DimensionController::class, 'get']);
+        Route::post('/dimension', [DimensionController::class, 'post']);
+        Route::get('/dimension/{id}', [DimensionController::class, 'get']);
+        Route::put('/dimension/{id}', [DimensionController::class, 'put']);
+        Route::delete('/dimension/{id}', [DimensionController::class, 'delete']);
+        Route::get('/dimension/{id}/area', [DimensionController::class, 'getAreas']);
+
+        Route::get('/indicador', [IndicadorController::class, 'get']);
+        Route::post('/indicador', [IndicadorController::class, 'post']);
+        Route::get('/indicador/{id}', [IndicadorController::class, 'get']);
+        Route::put('/indicador/{id}', [IndicadorController::class, 'put']);
+        Route::delete('/indicador/{id}', [IndicadorController::class, 'delete']);
+
+
+        Route::post('/evaluacion', [EvaluacionController::class, 'post']);
+        Route::delete('/evaluacion/{id}', [EvaluacionController::class, 'delete']);
+        // Registros
+        Route::post('/registro', [RegistrosController::class, 'post']);
+        Route::get('/registro/{id}/{status}', [RegistrosController::class, 'set_status']);
+    });
 });

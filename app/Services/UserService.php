@@ -3,21 +3,25 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Http\Resources\UserResource;
 
 use App\DTO\Users\UserDTO;
+use App\Models\Area;
+use App\Models\Secretaria;
 
-class UserService{
+class UserService
+{
 
-    public function getAllUsers(){
+    public function getAllUsers()
+    {
 
         $usersDb = User::all();
-        
+
         $userDtoList = array();
 
-        if(count($usersDb) > 0){
-            
+        if (count($usersDb) > 0) {
+
             foreach ($usersDb as $user) {
+                $area = Area::find($user->areaId);
                 $userDtoList[] = new UserDTO(
                     $user->id,
                     $user->name,
@@ -26,7 +30,9 @@ class UserService{
                     $user->email,
                     $user->created_at,
                     $user->updated_at,
-                    $user->direccion
+                    $user->areaId,
+                    $user->secretariaId,
+                    $area != null ? $area->nombre : null,
                 );
             }
         }
@@ -34,20 +40,24 @@ class UserService{
         return $userDtoList;
     }
 
-    public function getUserById(User $user){
+    public function getUserById(User $user)
+    {
 
+        $area = Area::find($user->areaId);
         $userDto = new UserDTO(
             $user->id,
             $user->name,
             $user->apPaterno,
             $user->apMaterno,
             $user->email,
-            $user->fechaCreacion,
-            $user->fechaModificacion,
-            $user->direccion
+            $user->created_at,
+            $user->updated_at,
+            $user->areaId,
+            $user->secretariaId,
+            $area != null ? $area->nombre : null,
         );
+
 
         return $userDto;
     }
-
 }

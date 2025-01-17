@@ -20,7 +20,7 @@
     <div class="row mt-4">
         <div class=" col-12">
             <hr>
-            <table class="table table-striped table-sm mt-2"> 
+            <table class="table table-striped table-sm mt-2">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -41,11 +41,7 @@
                                 </td>
                                 <td>{{ $user->nombre }} {{ $user->apPaterno }} {{ $user->apMaterno }}</td>
                                 <td>
-                                    @if ($user->direccion == "Seleccione")
-
-                                    @else
-                                        {{ $user->direccion }}
-                                    @endif
+                                        {{ $user->areaName }}
                                 </td>
                                 <td class="text-center">
                                     @if ($user->rol === null)
@@ -81,7 +77,7 @@
                             </tr>
                         @endforeach
                     @else
-                        
+
                     @endif
                 </tbody>
             </table>

@@ -9,12 +9,14 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 d-none d-sm-inline">Administración de Usuarios</span>
-                    
+
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-4" >
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="evals">
-                                <i class="fa-solid fa-list-check"></i> <span class="ms-1 d-none d-sm-inline">Evaluaciones</span>
+                                                        <a href="{{ route('evaluacion.index') }}" class="">
+                                <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Evaluaciones</span>
+                                </a>
                             </span>
                         </li>
                         <li>
@@ -24,7 +26,9 @@
                         </li>
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="dimensiones">
+                                                        <a href="{{ route('dimension.index') }}" class="">
                                 <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Dimensiones</span>
+                                </a>
                             </span>
                         </li>
                         <li>
@@ -54,7 +58,7 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="btn btn-sm text-white">
-                                       <small>Cerrar Sessión</small> 
+                                       <small>Cerrar Sessión</small>
                                     </button>
                                 </form>
                             </li>
@@ -81,7 +85,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                
+
             </div>
         </div>
     </div>
@@ -96,10 +100,9 @@
         storeToken();
     </script>
     @vite([
+        'resources/js/utils/pageLoader.js',
         'resources/js/usuarios/index.js',
         'resources/js/auth/permissions/permisos.js',
-        'resources/js/evaluaciones/evaluaciones.js',
         'resources/js/areas/index.js',
-        'resources/js/dimensiones/index.js'
     ]);
 @endsection

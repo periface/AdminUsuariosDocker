@@ -11,14 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('area', function(BluePrint $table){
+        Schema::create('secretaria', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->unsignedBigInteger('responsable');
             $table->string('siglas');
-            $table->boolean('status');
+            $table->string('type');
             $table->timestamps();
+        });
+        Schema::create('area', function (BluePrint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->unsignedBigInteger('responsableId')->nullable();
+            $table->string('siglas');
+            $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('secretariaId');
+            $table->timestamps();
+            $table->foreign('responsableId')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('secretariaId')->references('id')->on('secretaria')->onDelete('cascade');
         });
     }
 
@@ -27,6 +36,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('area');
+        Schema::dropIfExists('secretaria');
     }
 };

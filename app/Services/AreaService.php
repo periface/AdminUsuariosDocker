@@ -1,36 +1,41 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Area;
 use App\Models\User;
 use App\DTO\Area\AreaDTO;
+use Illuminate\Support\Facades\Log;
 
-class AreaService {
+class AreaService
+{
 
     protected $userService;
 
-    public function getAllAreas(){
-        
+    public function getAllAreas()
+    {
+
         $areaDtoList = array();
 
         $areasDb = Area::all();
-        
-        if(count($areasDb) > 0){
-            
+
+        if (count($areasDb) > 0) {
+
             foreach ($areasDb as $area) {
-
-                $user = User::find($area->responsable);
-
+                Log::info($area);
+                $user = User::find($area["responsableId"]);
+                $name = "Sin responsable asignado";
+                if ($user != null) {
+                    $name = $user->name . ' ' . $user->apPaterno . ' ' . $user->apMaterno;
+                }
                 $areaDtoList[] = new AreaDTO(
                     $area->id,
-                    $area->nombre,
-                    $area->siglas,
-                    $user != null ? $user->name .' '. $user->apPaterno .' '. $user->apMaterno : null,
-                    $area->created_at
+                    $area['nombre'],
+                    $area["siglas"],
+                    $name,
+                    $area["created_at"]
                 );
-
             }
-
         }
         return $areaDtoList;
     }

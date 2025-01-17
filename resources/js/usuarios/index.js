@@ -2,7 +2,7 @@ import { configUser } from './config';
 import { eventListener } from '../utils/event';
 import { closeModal, openModal } from '../utils/modal';
 import { showNotification } from '../utils/notification';
-
+import { loadPage } from '../utils/pageLoader';
 let addUser = document.getElementById('users');
 let registerForm;
 
@@ -12,60 +12,20 @@ const attachEventListeners = () => {
     eventListener('delete-user', confirmDelete);
 };
 
-// Función para mostrar la lista de los usuarios
-const loadData =  (data) => {
-    let divContent = document.getElementById('content');
-    divContent.innerHTML = "";
-
-    divContent.innerHTML = data;
-    attachEventListeners();
-    
-}
-
-// Función para obtener los usuarios
-const getUsers = async () => {
-    try {
-        const response = await fetch('/users', {
-            method: 'GET',
-            headers: {
-                'Authorization' : 'Bearer '+localStorage.getItem('token')
-            }
-        });
-    
-        if(!response.ok){
-            const responseJson = await response.json();
-            switch (response.status) {
-                case 403:
-                    toastr.error(responseJson.data, 'Acceso Denegado');
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        const responseText = await response.text();
-        console.log(response);
-        loadData(responseText);
-
-    } catch (error) {
-        console.log('Es el response', error);
-    }
-}
-
 // Mandamos llamar los usuarios al hacer click
 addUser.onclick = (event) => {
     event.preventDefault();
-    getUsers();
+    loadPage('/users', 'content', attachEventListeners);
 }
 
 // Agregar usuarios
 // Mostramos el form en el modal
 const showFormUser = async () => {
-    
+
     const formResponse = await fetch('/users/create', {
         method: "GET",
         headers: {
-            'Authorization' : 'Bearer '+localStorage.getItem('token')
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
     });
 
@@ -83,7 +43,7 @@ const registerUser = (registerForm) => {
     $('#addUser').validate({
         rules: {
             name: { required: true, minlength: 4 },
-            paterno: {required: true},
+            paterno: { required: true },
             email: { required: true },
             password: { required: true }
         },
@@ -105,28 +65,28 @@ const registerUser = (registerForm) => {
     });
 
     registerForm.onsubmit = async (event) => {
-        
+
         event.preventDefault();
-        
-        if(!$("#addUser").valid()){
+
+        if (!$("#addUser").valid()) {
             return;
         }
         const formData = new FormData(event.target);
-        
+
         const response = await fetch('api/users/register', {
             method: "POST",
             headers: {
-                Authorization: 'Bearer '+localStorage.getItem('token'),
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
                 Accept: 'application/json'
             },
             body: formData
         });
 
         const responseJson = await response.json();
-        if(responseJson.data.attributes.statusCode === 201){
+        if (responseJson.data.attributes.statusCode === 201) {
             closeModal();
             showNotification('Éxito', responseJson.data.attributes.data, 'success');
-            getUsers();
+            loadPage('/users', 'content', attachEventListeners);
         }
 
     }
@@ -134,23 +94,23 @@ const registerUser = (registerForm) => {
 
 // Eliminar usuario
 const deleteUser = async (user) => {
-    
+
     try {
-        
-        const response =  await fetch(`api/users/${user}`, {
+
+        const response = await fetch(`api/users/${user}`, {
             method: "DELETE",
             headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': 'Bearer '+localStorage.getItem('token')
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         });
 
-        if(response.status === 204){
-            getUsers();
+        if (response.status === 204) {
+            loadPage('/users', 'content', attachEventListeners);
             return true;
         }
     } catch (error) {
-        
+
     }
 
 
@@ -167,10 +127,10 @@ const confirmDelete = (user) => {
         cancelButtonColor: "#d33",
         cancelButtonText: 'Cancelar',
         confirmButtonText: "Eliminar"
-      }).then((result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
 
-            if(deleteUser(user)){
+            if (deleteUser(user)) {
 
                 setTimeout(() => {
                     Swal.fire({
@@ -182,5 +142,5 @@ const confirmDelete = (user) => {
             };
 
         }
-      });
+    });
 }

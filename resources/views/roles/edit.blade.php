@@ -1,10 +1,10 @@
 <form id="editRol">
     @csrf
     <div class="row mt-2">
-        <input type="hidden" value="{{ $role->id }}" name="id" id="role_id">
+        <input type="hidden" value="{{ $role->id }}" name="id" id="roleId">
 
         <label for="name">Nombre:</label>
-        <input type="text" name="name" id="name" class="form-control" 
+        <input type="text" name="name" id="name" class="form-control"
         placeholder="Rol" value="{{  $role->name ?? ""  }}">
 
     </div>

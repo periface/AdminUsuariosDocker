@@ -18,12 +18,12 @@
     </div>
     <div class="row mt-2">
         <div class="col">
-            <label for="direccion">Dirección:</label>
-            <select class="form-select" id="direccion" name="direccion">
+            <label for="area">Area:</label>
+            <select class="form-select" id="areaId" name="areaId">
 
-                @foreach ($direcciones as $direccion)
-                    <option value="{{ $direccion->value }}">
-                            {{ $direccion->direccion() }}
+                @foreach ($areas as $area)
+                    <option value="{{ $area->id }}">
+                            {{ $area->nombre }}
                     </option>
                 @endforeach
 

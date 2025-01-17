@@ -21,7 +21,8 @@ class UserController extends Controller
     protected $roleService;
     protected $permissionService;
 
-    public function __construct(UserService $userService, RoleService $roleService, PermissionService $permissionService){
+    public function __construct(UserService $userService, RoleService $roleService, PermissionService $permissionService)
+    {
         $this->userService          = $userService;
         $this->roleService          = $roleService;
         $this->permissionService    = $permissionService;
@@ -30,8 +31,9 @@ class UserController extends Controller
     /**
      * Obtiene una lista de los usuarios registrados en sistema
      */
-    public function index(){
-        
+    public function index()
+    {
+
         try {
 
             $users = $this->userService->getAllUsers();
@@ -43,7 +45,6 @@ class UserController extends Controller
                     'statusCode' => Response::HTTP_OK
                 ]
             ], Response::HTTP_OK);
-
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -61,29 +62,30 @@ class UserController extends Controller
     /**
      * Función para registrar usuarios en el sistema, la función aplica reglas de negocio para validar la entrada
      * de datos, si las reglas se cumplen continua con el flujo, caso contraro mostrará los mensajes de error
-     * @param Illuminate\Http\Request $request contiene la solicitud HTTP que trae consigo 
+     * @param Illuminate\Http\Request $request contiene la solicitud HTTP que trae consigo
      * los valores esperados: email, password, name
      */
-    public function store(Request $request){
-        
+    public function store(Request $request)
+    {
+
         $request->validate([
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'name' => 'required',
             'apPaterno' => 'required'
-        ],[
+        ], [
             'email.unique' => 'La dirección de correo electrónico utilizada, ya se encuentra registrada'
         ]);
 
         $data = $request->all();
         $data['activation_token'] = Str::random(60);
         $data['is_active'] = false;
-
+        $data['secretariaId'] = $request->user()->secretariaId;
         $user = User::create($data);
 
         $wb_data = [
             "email" => $user->email,
-            "activation_link" => 'http://localhost:8000/activate/'.$user->activation_token
+            "activation_link" => 'http://localhost:8000/activate/' . $user->activation_token
         ];
 
 
@@ -105,7 +107,8 @@ class UserController extends Controller
      * Regresa el usuario que coincida con el parámetro de búsqueda
      * @param User $user contiene el usuario que desea buscar en la base
      */
-    public function show(User $user){
+    public function show(User $user)
+    {
 
         $response = $this->userService->getUserById($user);
 
@@ -124,10 +127,11 @@ class UserController extends Controller
      * Función para actualizar información de un usuario en específico
      * * @param User $user contiene el usuario que desea actualizar en la base
      */
-    public function update(Request $request, User $user){
+    public function update(Request $request, User $user)
+    {
 
         $request->validate([
-            'email' => 'required|email|unique:users,email,'.$user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'required',
             'name' => 'required'
         ]);
@@ -145,7 +149,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(User $user){
+    public function destroy(User $user)
+    {
         try {
 
             // Has Roles
@@ -156,26 +161,26 @@ class UserController extends Controller
             switch ($rolesCount) {
                 case ($rolesCount > 1):
                     foreach ($roles as $rol) {
-                        $user->removeRole($rol[0]);    
+                        $user->removeRole($rol[0]);
                     }
                     break;
                 case ($rolesCount == 1):
-                    $user->removeRole($roles[0]);  
+                    $user->removeRole($roles[0]);
                     break;
             }
 
             // Has Permissions
             $permissions = $user->permissions()->pluck('name');
             $permissionsCount = $user->permissions()->count();
-            
+
             switch ($permissionsCount) {
                 case ($permissionsCount > 1):
                     foreach ($permissions as $permission) {
-                        $user->removePermission($permission[0]);    
+                        $user->removePermission($permission[0]);
                     }
                     break;
                 case ($permissionsCount == 1):
-                    $user->removeRole($permissions[0]);   
+                    $user->removeRole($permissions[0]);
                     break;
             }
 
@@ -190,7 +195,6 @@ class UserController extends Controller
                     ]
                 ]
             ], Response::HTTP_NO_CONTENT);
-
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -202,11 +206,11 @@ class UserController extends Controller
                     ]
                 ]
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-
         }
     }
 
-    public function userRolesAndPermissions(User $user){
+    public function userRolesAndPermissions(User $user)
+    {
 
         $userDto = $this->userService->getUserById($user);
 
@@ -228,7 +232,5 @@ class UserController extends Controller
                 ]
             ]
         ], Response::HTTP_OK);
-
     }
-
 }

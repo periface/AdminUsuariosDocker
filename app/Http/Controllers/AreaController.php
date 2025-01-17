@@ -14,28 +14,32 @@ class AreaController extends Controller
     protected $areaService;
     protected $userService;
 
-    public function __construct(AreaService $areaService, UserService $userService){
+    public function __construct(AreaService $areaService, UserService $userService)
+    {
         $this->areaService = $areaService;
         $this->userService = $userService;
     }
     //
-    
-    public function index(){
+
+    public function index()
+    {
         $areas = $this->areaService->getAllAreas();
 
         return view('areas.index', compact('areas'));
     }
 
-    public function create(){
+    public function create()
+    {
         $users = $this->userService->getAllUsers();
         return view('areas.add', compact('users'));
     }
 
-    public function createOrEdit(Area $area){
-        
+    public function createOrEdit(Area $area)
+    {
+
         $users = $this->userService->getAllUsers();
 
         return view('areas.createEdit', compact('area', 'users'));
-
     }
 }
+

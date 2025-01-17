@@ -6,11 +6,11 @@
     </div>
     <div class="mt-2">
         <label for="status" class="form-label text-sm">Responsable: </label>
-        <select class="form-select" id="responsable" name="responsable">
+        <select class="form-select" id="responsableId" name="responsableId">
            <option value="0">Seleccione</option>
            @foreach ($users as $user)
             <option value="{{ $user->id ?? '' }}"
-                @selected((old('responsable', $area['responsable'] ?? '') == $user->id))>
+                @selected((old('responsableId', $area['responsableId'] ?? '') == $user->id))>
                     {{ $user->nombre }} {{ $user->apPaterno }} {{ $user->apMaterno }}
             </option>
            @endforeach

@@ -15,7 +15,10 @@ return new class extends Migration
             //
             $table->string('apPaterno');
             $table->string('apMaterno')->nullable();
-            $table->integer('direccion')->default(0);
+            $table->bigInteger('areaId')->unsigned();
+            $table->foreign('areaId')->references('id')->on('area');
+            $table->unsignedBigInteger('secretariaId')->nullable();
+            $table->foreign('secretariaId')->references('id')->on('secretaria')->onDelete('cascade');
         });
     }
 

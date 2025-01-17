@@ -13,11 +13,13 @@ class AreaController extends Controller
 
     protected $areaService;
 
-    public function __construct(AreaService $areaService){
+    public function __construct(AreaService $areaService)
+    {
         $this->areaService = $areaService;
     }
 
-    public function index(){
+    public function index()
+    {
         try {
 
             $areas = $this->areaService->getAllAreas();
@@ -31,7 +33,6 @@ class AreaController extends Controller
                     ]
                 ]
             ], Response::HTTP_OK);
-            
         } catch (\Throwable $th) {
             return response()->json([
                 'data' => [
@@ -46,16 +47,17 @@ class AreaController extends Controller
     }
 
     //
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         try {
 
             $request->validate([
                 'nombre' => 'required',
                 'siglas' => 'required'
             ]);
-            
+
             $area = Area::create($request->all());
-    
+
             return response()->json([
                 'data' => [
                     'attributes' => [
@@ -78,7 +80,8 @@ class AreaController extends Controller
         }
     }
 
-    public function update(Request $request, Area $area){
+    public function update(Request $request, Area $area)
+    {
         try {
             $request->validate([
                 'nombre' => 'required|min:4',
@@ -95,8 +98,6 @@ class AreaController extends Controller
                     ]
                 ]
             ], Response::HTTP_OK);
-
-
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -108,11 +109,11 @@ class AreaController extends Controller
                     ]
                 ]
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            
         }
     }
 
-    public function destroy(Area $area){
+    public function destroy(Area $area)
+    {
         try {
             $area->delete();
 
@@ -125,9 +126,8 @@ class AreaController extends Controller
                     ]
                 ]
             ], Response::HTTP_NO_CONTENT);
-
         } catch (\Throwable $th) {
-        
+
             return response()->json([
                 'data' => [
                     'attributes' => [
@@ -137,8 +137,6 @@ class AreaController extends Controller
                     ]
                 ]
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-
         }
     }
-
 }
