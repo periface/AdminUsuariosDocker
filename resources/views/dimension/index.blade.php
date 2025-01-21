@@ -10,22 +10,28 @@
 @endsection
 @section('content')
     <meta name="token" id="token" content="{{ csrf_token() }}">
-    <div class="card card-outline card-danger">
-        <div class="card-header">
-            <h3 class="card-title m-0">Administración de Dimensiones</h3>
+
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar bg-body-tertiary bg-inst">
+                <div class="col-6">
+                    <div class="container-fluid">
+                        <span class="navbar-text text-bold text-white">
+                            <i class="fa-solid fa-users-gear"></i> | DIMENSIONES REGISTRADAS EN EL SISTEMA
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 d-flex justify-content-end pe-3 pt-2">
+                    <span class="mb-2 btn btn-sm dimensionModalBtn btn-inst2">
+                        <i class="fa-regular fa-plus"></i> | Agregar Dimensión
+                    </span>
+                </div>
+            </nav>
         </div>
-        <div class="card-body">
-            <div class="text-right">
-                <button type="button" class="btn btn-success btn-flat btn-sm dimensionModalBtn">
-                    <i class="fa fa-plus"></i>
-                    Agregar Dimensión
-                </button>
-            </div>
-            <hr>
-            <div id="table-container">
-                @include('partials.table_loader')
-            </div>
-        </div>
+    </div>
+
+    <div id="table-container">
+        @include('partials.table_loader')
     </div>
     <!-- Modal -->
     <div class="modal fade" id="dimensionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -61,9 +67,5 @@
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/js/dimensiones/index.js'])
-    @vite([
-        'resources/js/usuarios/index.js',
-        'resources/js/auth/permissions/permisos.js',
-        'resources/js/areas/index.js',
-    ]);
+    @vite(['resources/js/usuarios/index.js', 'resources/js/auth/permissions/permisos.js', 'resources/js/areas/index.js']);
 @endsection

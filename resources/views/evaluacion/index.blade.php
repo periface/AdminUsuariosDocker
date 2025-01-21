@@ -12,23 +12,28 @@
 @endsection
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <div class="card card-outline card-danger">
-        <div class="card-header">
-            <h3 class="m-0 card-title">Evaluaciones</h3>
-        </div>
-        <div class="card-body">
-            <div class="text-right">
-                <button type="button" class="btn btn-success btn-flat btn-sm evaluacionModalBtn">
-                    <i class="fa fa-plus"></i> Agregar Evaluación
-                </button>
-            </div>
-            <hr>
-            <div id="table-container">
-
-            </div>
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar bg-body-tertiary bg-inst">
+                <div class="col-6">
+                    <div class="container-fluid">
+                        <span class="navbar-text text-bold text-white">
+                            <i class="fa-solid fa-users-gear"></i> | DIMENSIONES REGISTRADAS EN EL SISTEMA
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 d-flex justify-content-end pe-3 pt-2">
+                    <span class="mb-2 btn btn-sm evaluacionModalBtn btn-inst2">
+                        <i class="fa-regular fa-plus"></i> | Agregar Evaluación
+                    </span>
+                </div>
+            </nav>
         </div>
     </div>
 
+    <div id="table-container">
+
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="evaluacionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="evaluacionModalLabel" aria-hidden="true">

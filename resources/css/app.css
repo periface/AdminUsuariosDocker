@@ -103,7 +103,7 @@ body{
     background-color: #28a745; /* Verde */
     border-color: #28a745;    /* Bordes verdes */
   }
-  
+
   /* Opcional: Añadir transición para un efecto más fluido */
   .form-check-input {
     transition: background-color 2s, border-color 2s;
@@ -116,3 +116,37 @@ body{
   label.error {
     color: #c0392b;
   }
+
+      .badge {
+            font-size: 0.8rem;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+        }
+
+        .badge-error{
+
+            background-color: #dc3545;
+        }
+
+        .badge-warning{
+
+            background-color: #ffc107;
+        }
+.badge-danger {
+    background-color: #dc3545;
+}
+.js-set-formula{
+    color: #54565a;
+}
+.js-search{
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+}
+.btnSecondaryOficial{
+    background-color: #54565a;
+    border-color: #54565a;
+    color: #fff;
+}

@@ -12,21 +12,27 @@
     <meta name="token" id="token" content="{{ csrf_token() }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="dimensionId" content="{{ $dimension['id'] }}">
-    <div class="card card-outline card-danger">
-        <div class="card-header">
-            <h3 class="card-title m-0">Indicadores de {{ $dimension['nombre'] }}</h3>
+
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar bg-body-tertiary bg-inst">
+                <div class="col-6">
+                    <div class="container-fluid">
+                        <span class="navbar-text text-bold text-white">
+                            <i class="fa-solid fa-users-gear"></i> | INDICADORES DE LA DIMENSIÓN {{ $dimension['nombre'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6 d-flex justify-content-end pe-3 pt-2">
+                    <span class="mb-2 btn btn-sm indicadorModalBtn btn-inst2">
+                        <i class="fa-regular fa-plus"></i> | Agregar Dimensión
+                    </span>
+                </div>
+            </nav>
         </div>
-        <div class="card-body">
-            <div class="text-right">
-                <button type="button" class="btn btn-success btn-flat btn-sm indicadorModalBtn">
-                    <i class="fa fa-plus"></i> Agregar Indicador
-                </button>
-            </div>
-            <hr>
-            <div id="table-container">
-                @include('partials.table_loader')
-            </div>
-        </div>
+    </div>
+    <div id="table-container">
+        @include('partials.table_loader')
     </div>
     <!-- Modal -->
     <div class="modal fade" id="indicadorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

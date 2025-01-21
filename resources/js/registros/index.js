@@ -141,7 +141,7 @@ async function set_after_modal_load_evts() {
             console.error(result.error);
             return;
         }
-        real_form_data.append('result', result.data === NaN ? 0 : result.data);
+        real_form_data.append('result', result.data ? result.data : 0);
         real_form_data.append('used_formula', result.replaced_formula);
         await store_values(real_form_data);
     }
