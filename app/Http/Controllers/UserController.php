@@ -40,8 +40,7 @@ class UserController extends Controller
 
     public function add(Request $request)
     {
-        $secretatiaId = $request->user()->secretariaId;
-        $areas = Area::where('secretariaId', $secretatiaId)->get();
+        $areas = Area::all();
         return view('users.add', compact('areas'));
     }
 

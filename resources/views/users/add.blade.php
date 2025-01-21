@@ -23,10 +23,9 @@
 
                 @foreach ($areas as $area)
                     <option value="{{ $area->id }}">
-                            {{ $area->nombre }}
+                            {{ $area["nombre"]}}
                     </option>
                 @endforeach
-
             </select>
         </div>
     </div>
