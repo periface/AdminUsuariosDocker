@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('areaId')->unsigned();
             $table->foreign('areaId')->references('id')->on('area');
             $table->unsignedBigInteger('secretariaId')->nullable();
-            $table->foreign('secretariaId')->references('id')->on('secretaria')->onDelete('cascade');
         });
     }
 
