@@ -51,7 +51,8 @@ const state = {
         $("#indicadorForm").validate({
             rules: {
                 nombre: { required: true, minlength: 4 },
-                descripcion: { required: true, minlength: 4 }
+                descripcion: { required: true, minlength: 4 },
+                medio_verificacion: { required: true, minlength: 4 },
             },
             messages: {
                 nombre: {
@@ -60,6 +61,10 @@ const state = {
                 },
                 descripcion: {
                     required: 'La descripción es requerida',
+                    minlength: 'Debe tener al menos 4 caracteres'
+                },
+                medio_verificacion: {
+                    required: 'El medio de verificación es requerido',
                     minlength: 'Debe tener al menos 4 caracteres'
                 },
             }
@@ -271,27 +276,21 @@ async function open_indicador_form_evt(modal_open_btn, load_set_formula_window =
         const id = this.dataset.id;
         await render_indicador_form(id, load_set_formula_window);
         state.indicador_view.modal('show');
-        state.validate_form();
         await bind_confirm_indicador_evt();
+        state.validate_form();
         state.indicadores_form.onsubmit = async (e) => {
             e.preventDefault();
             const form_data = new FormData(state.indicadores_form);
             const status = form_data.get('status');
-            console.log('Status', status);
             if (!is_number(status)) {
-                console.log('Status is not a number');
                 status === 'on' ? form_data.set('status', 1) : form_data.set('status', 0);
             }
             const requiere_anexo = form_data.get('requiere_anexo');
-            console.log('Requiere anexo', requiere_anexo);
             requiere_anexo === 'on' ? form_data.set('requiere_anexo', 1) : form_data.set('requiere_anexo', 0);
-
-
             // agregamos los campos si hay un repl_result, es decir, si se ha evaluado la fórmula
             if (state.repl_result) {
                 form_data.append('evaluable_formula', state.repl_result.evaluable_formula);
                 form_data.append('non_evaluable_formula', state.repl_result.non_evaluable_formula);
-
                 const variables = state.repl_result.variables.map(v => {
                     return {
                         code: v.code,
@@ -301,7 +300,7 @@ async function open_indicador_form_evt(modal_open_btn, load_set_formula_window =
                 form_data.append('variables', JSON.stringify(variables));
             }
             const response_json = await post_indicador(form_data, state);
-            if (!response_json.error) {
+            if (!response_json.error && response_json?.data.statusCode === 200) {
                 state.indicador_view.modal('hide');
                 await start_datatable();
                 createToast('Administración de Dimensiones',
@@ -311,7 +310,7 @@ async function open_indicador_form_evt(modal_open_btn, load_set_formula_window =
                     true);
                 // reinitialize repl_result
             } else {
-                if (response_json.statusCode === 422) {
+                if (response_json.data.statusCode === 422) {
                     return;
                 }
                 createToast('Administración de Dimensiones',

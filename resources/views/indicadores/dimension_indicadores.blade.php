@@ -19,13 +19,13 @@
                 <div class="col-6">
                     <div class="container-fluid">
                         <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | INDICADORES DE LA DIMENSIÓN {{ $dimension['nombre'] }}
+                            <i class="fa-solid fa-users-gear"></i> | INDICADORES DE {{ strtoupper($dimension['nombre']) }}
                         </span>
                     </div>
                 </div>
                 <div class="col-6 d-flex justify-content-end pe-3 pt-2">
                     <span class="mb-2 btn btn-sm indicadorModalBtn btn-inst2">
-                        <i class="fa-regular fa-plus"></i> | Agregar Dimensión
+                        <i class="fa-regular fa-plus"></i> | Agregar Indicador
                     </span>
                 </div>
             </nav>

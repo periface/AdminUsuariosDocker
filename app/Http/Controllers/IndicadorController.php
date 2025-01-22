@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Dimension;
 use App\Models\Indicador;
 use App\Models\Secretaria;
@@ -33,9 +34,10 @@ class IndicadorController extends BaseController
         ]);
     }
 
-    private function resolve_secretaria($secretariaId)
+    private function resolve_secretaria_by_areaId($areaId)
     {
-        $secretaria = Secretaria::find($secretariaId);
+        $area = Area::find($areaId);
+        $secretaria = Secretaria::find($area["secretariaId"]);
         if (!$secretaria) {
             throw new \Exception('No se encontró la secretaria');
         }
@@ -81,21 +83,21 @@ class IndicadorController extends BaseController
             }
 
             $user = (Auth::user()); //Obtenemos el usuario autenticado
-            $secretaria = $this->resolve_secretaria($user['secretariaId']);
+            $secretaria = $this->resolve_secretaria_by_areaId($user['areaId']);
             if ($indicador_found) {
-                $indicador_found['secretariaId'] = $secretaria->id; //Agregamos el id de la secretaria al request
+                $indicador_found['secretariaId'] = $secretaria["id"]; //Agregamos el id de la secretaria al request
                 $indicador_found['secretaria'] = $secretaria["nombre"];
                 $indicador_found->update($data);
                 if ($indicador_found["indicador_confirmado"] == 1) {
-                    $this->create_variables($variables, $indicador_found->id);
+                    $this->create_variables($variables, $indicador_found["id"]);
                 }
                 return response()->json([
                     'status' => 'success',
-                    'data' => $indicador_found->id,
+                    'data' => $indicador_found["id"],
                     'statusCode' => 200
                 ], 200);
             }
-            $data['secretariaId'] = $user["secretariaId"]; //Agregamos el id de la secretaria al request
+            $data['secretariaId'] = $secretaria["id"]; //Agregamos el id de la secretaria al request
             $data['secretaria'] = $secretaria["nombre"];
             // Si el validación se cumple, guardamos en el base de datos
             $id = Indicador::create($data)->id;
@@ -324,8 +326,8 @@ class IndicadorController extends BaseController
             'indicador_confirmado' => 'nullable|boolean',
             'sentido' => 'required',
             'dimensionId' => 'required',
+            'requiere_anexo' => 'required',
             'medio_verificacion' => 'required',
-            'requiere_anexo' => 'required'
         ]);
         $input_id = $request->id ?? null;
         if ($validator->fails()) {
