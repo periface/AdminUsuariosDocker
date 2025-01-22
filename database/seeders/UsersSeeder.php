@@ -21,5 +21,13 @@ class UsersSeeder extends Seeder
             'apMaterno' => 'User',
             'areaId' => $area->id,
         ])->assignRole('ADM');
+
+        User::factory()->create([
+            'name' => 'Jose',
+            'email' => 'user@example.com',
+            'apPaterno' => 'User',
+            'apMaterno' => 'Captura',
+            'areaId' => $area->id,
+        ])->assignRole('ADC');
     }
 }

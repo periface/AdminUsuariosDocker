@@ -82,5 +82,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('registro')->name("registro.")->group(function () {
         Route::get('/get_registros_form/{id_evaluacion}/{fecha}',  [RegistrosController::class, 'get_registros_form'])->name('get_registros_form');
+
+        Route::post('/get_table_rows/{id_evaluacion}',  [RegistrosController::class, 'get_rows'])->name('get_rows');
     });
 });

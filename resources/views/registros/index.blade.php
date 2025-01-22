@@ -10,97 +10,51 @@
 @endsection
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <div class="grid grid-cols-[60%_40%]">
+    <input type="hidden" id="evaluacionId" value="{{ $evaluacionId }}">
+    <div class="grid grid-cols-1">
 
-        <div class="card card-outline card-danger m-2">
-
-            <div class="card-header">
-                <h6 class="card-title m-0 font-bold">Registros</h6>
-            </div>
-            <div class="card-body">
-
-                <div class="grid grid-cols-1">
-                    <table class="table table-bordered table-striped table-hover" id="table-container">
-                        <thead>
-
-                            <tr>
-                                <th>Periodo</th>
-                                <th>Fecha</th>
-                                <th>Resultado</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($espacios as $espacio)
-                                <tr>
-                                    <td>
-                                        @include('partials.periodos_counter', [
-                                            'frecuencia_medicion' => $evaluacion['frecuencia_medicion'],
-                                            'index' => $loop->index + 1,
-                                        ])
-                                    </td>
-                                    <td>
-                                        <span class="text-pink-900">{{ $espacio['fecha'] }}</span>
-                                    </td>
-
-                                    <td>
-                                        @include('partials.registro_capture', [
-                                            'espacio' => $espacio,
-                                        ])
-                                    </td>
-                                    <td>
-                                        @include('partials.registro_status', [
-                                            'espacio' => $espacio,
-                                        ])
-                                    </td>
-                                    <td>
-                                        @include('partials.registro_buttons', [
-                                            'espacio' => $espacio,
-                                        ])
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="card card-outline card-danger m-2">
-            <div class="card-header">
-                <h6 class="card-title m-0 font-bold">
-                    {{ $indicador['nombre'] }} <br>
-                </h6>
-            </div>
-            <div class="card-body">
-                <div class="grid grid-cols-1">
-                    <div>
-
-                        <p class="m-0 text-sm">
-                            <span class="font-bold">
-                                Descripción:
-                            </span> <br>
-                            <span class="text-pink-900">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar bg-body-tertiary bg-inst">
+                    <div class="col-12">
+                        <div class="container-fluid">
+                            <span class="navbar-text text-bold text-white">
+                                <i class="fa-solid fa-users-gear"></i> | REGISTROS DE {{ strtoupper($indicador['nombre']) }}
                             </span>
-                                Indicador:
-                            <span>
-                                {{ $indicador['descripcion'] }}
-                            </span>
-                        </p>
-
-                        <p class="m-0 text-sm">
-                            <span class="font-bold">
-                                Método de cálculo:
-                            </span> <br>
-                            <span>
-                                {{ $indicador['metodo_calculo'] }}
-                            </span>
-                        </p>
+                        </div>
                     </div>
+                </nav>
+            </div>
+
+            <div id="table-container">
+            </div>
+
+            <div class="grid grid-cols-1">
+                <div>
+
+                    <p class="m-0 text-sm">
+                        <span class="font-bold">
+                            Descripción:
+                        </span> <br>
+                        <span class="text-pink-900">
+                        </span>
+                        Indicador:
+                        <span>
+                            {{ $indicador['descripcion'] }}
+                        </span>
+                    </p>
+
+                    <p class="m-0 text-sm">
+                        <span class="font-bold">
+                            Método de cálculo:
+                        </span> <br>
+                        <span>
+                            {{ $indicador['metodo_calculo'] }}
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
-
     </div>
     <!-- Modal -->
     <div class="modal fade" id="registroModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

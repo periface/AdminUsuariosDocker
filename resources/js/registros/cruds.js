@@ -23,6 +23,35 @@ async function load_registro_form(evaluacionId, fecha, state) {
     }
 
 };
+
+async function get_rows(state) {
+    try {
+        toggle_loading(true);
+        const response = await fetch(state.WEB_URL + '/get_table_rows/' + state.evaluacionId, {
+            method: 'POST',
+            body: JSON.stringify(state.table_req),
+            headers: {
+                'X-CSRF-TOKEN': state.xcsrftoken,
+                "Accept": "application/json, text/plain, */*",
+                "X-Requested-With": "XMLHttpRequest",
+                "Content-Type": "application/json"
+            },
+            credentials: 'same-origin'
+        });
+        const html_rows = await response.text();
+        return {
+            error: null,
+            data: html_rows
+        };
+    }
+    catch (error) {
+        console.error(error);
+        return null;
+    }
+    finally {
+        toggle_loading(false);
+    }
+}
 async function post_registros(form_data, state) {
     try {
         toggle_loading(true);
@@ -74,4 +103,4 @@ async function set_status(id, status, state) {
         toggle_loading(false);
     }
 }
-export { load_registro_form, post_registros, set_status };
+export { get_rows, load_registro_form, post_registros, set_status };

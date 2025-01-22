@@ -1,3 +1,7 @@
+<div class="flex items w-1/3 mb-2 border-black hidden">
+    <input type="text" class="form-control form-control-sm js-search" placeholder="Buscar"
+        {{ $search ? 'value=' . $search : '' }}>
+</div>
 <table class="table table-bordered table-striped table-hover" id="table-container">
     <thead>
 
@@ -14,7 +18,7 @@
             <tr>
                 <td>
                     @include('partials.periodos_counter', [
-                        'frecuencia_medicion' => $evaluacion['frecuencia_medicion'],
+                        'frecuencia_medicion' => $frecuencia_medicion,
                         'index' => $loop->index + 1,
                     ])
                 </td>

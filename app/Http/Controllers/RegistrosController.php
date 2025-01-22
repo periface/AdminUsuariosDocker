@@ -30,21 +30,17 @@ class RegistrosController extends BaseController
     //
     public function registros($id)
     {
+        Log::info($id);
         $evaluacion = Evaluacion::all()->find($id);
-        $espacios_captura = EvaluacionResult::all()->where('evaluacionId', $id);
         $indicador = Indicador::all()->find($evaluacion["indicadorId"]);
-        foreach ($espacios_captura as $espacio) {
-            $espacio["days_left"] = $this->get_days_left($espacio["fecha"]);
-        }
         return view('registros.index', [
             'evaluacion' => $evaluacion,
-            'espacios' => $espacios_captura,
-            'indicador' => $indicador
+            'indicador' => $indicador,
+            'evaluacionId' => $id
         ]);
     }
     public function get_rows(request $request, $evaluacionId)
     {
-
         $page = $request->input("page") ?? 1;
         $limit = $request->input("limit") ?? 10;
         $offset = ($page - 1) * $limit;
@@ -55,15 +51,16 @@ class RegistrosController extends BaseController
         $grandTotalRows = 0;
         $totalRows = 0;
         $totalPages = 0;
+        $frecuencia_medicion = Evaluacion::all()->find($evaluacionId)["frecuencia_medicion"];
         try {
             if ($search !== '') {
-                $evaluacion_results = EvaluacionResult::where('descripcion', 'like', "%$search%")
+                $evaluacion_results = EvaluacionResult::where('resultado', 'like', "%$search%")
                     ->where('evaluacionId', $evaluacionId)
                     ->orderBy($sort, $order)
                     ->limit($limit)
                     ->offset($offset)
                     ->get();
-                $totalRows = $evaluacion_results::where('descripcion', 'like', "%$search%")
+                $totalRows = $evaluacion_results::where('fecha', 'like', "%$search%")
                     ->where('evaluacionId', $evaluacionId)
                     ->count();
                 $grandTotalRows = $totalRows;
@@ -78,7 +75,11 @@ class RegistrosController extends BaseController
                 $totalPages = ceil($totalRows / $limit);
             }
 
-            return view('evaluacion_results.table_rows', [
+            foreach ($evaluacion_results as $espacio) {
+                $espacio["days_left"] = $this->get_days_left($espacio["fecha"]);
+            }
+            return view('registros.table_rows', [
+                'frecuencia_medicion' => $frecuencia_medicion,
                 'evaluacion_results' => $evaluacion_results,
                 'totalRows' => $totalRows,
                 'grandTotalRows' => $grandTotalRows,
@@ -93,7 +94,8 @@ class RegistrosController extends BaseController
             // return using compact
         } catch (\Throwable $_) {
             Log::error($_);
-            return view('evaluacion_results.table_rows', [
+            return view('registros.table_rows', [
+                'frecuencia_medicion' => $frecuencia_medicion,
                 'evaluacion_results' => $evaluacion_results,
                 'totalRows' => $totalRows,
                 'grandTotalRows' => $grandTotalRows,
