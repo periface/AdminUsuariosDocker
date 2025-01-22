@@ -37,7 +37,7 @@ class EvaluacionController extends BaseController
             }
             $fechas_captura = json_decode($data['fechas_captura']);
             $user = (Auth::user()); //Obtenemos el usuario autenticado
-            $secretaria = $this->resolve_secretaria($user['secretariaId']);
+            $secretaria = $this->resolve_secretaria_by_areaId($user['areaId']);
             if ($evaluacion_found) {
                 $evaluacion_found->update($data);
                 return response()->json([
@@ -46,7 +46,7 @@ class EvaluacionController extends BaseController
                     'statusCode' => 200
                 ], 200);
             }
-            $data['secretariaId'] = $user["secretariaId"]; //Agregamos el id de la secretaria al request
+            $data['secretariaId'] = $secretaria["id"]; //Agregamos el id de la secretaria al request
             $data['secretaria'] = $secretaria["nombre"];
             $data['usuarioId'] = $user->id; //Agregamos el id del usuario al request
             $id = Evaluacion::create($data)->id;
@@ -401,9 +401,10 @@ class EvaluacionController extends BaseController
         }
     }
 
-    private function resolve_secretaria($secretariaId)
+    private function resolve_secretaria_by_areaId($areaId)
     {
-        $secretaria = Secretaria::find($secretariaId);
+        $area = Area::find($areaId);
+        $secretaria = Secretaria::find($area["secretariaId"]);
         if (!$secretaria) {
             throw new \Exception('No se encontró la secretaria');
         }

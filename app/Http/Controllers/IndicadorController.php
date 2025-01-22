@@ -292,16 +292,16 @@ class IndicadorController extends BaseController
     public function get_indicador_fields(Request $request)
     {
         $id = $request->id;
+        if (!$id) {
+            return view('indicadores.fields', ['indicador' => null, 'dimensionId' => $request->dimensionId]);
+        }
         $set_formula = $request->set_formula;
         $dimensionId = $request->dimensionId;
-        if ($id) {
-            $indicador = Indicador::find($id);
-            if ($set_formula) {
-                return view('indicadores.set_formula', ['indicador' => $indicador, 'dimensionId' => $dimensionId]);
-            }
-            return view('indicadores.fields', ['indicador' => $indicador, 'dimensionId' => $dimensionId]);
+        $indicador = Indicador::find($id);
+        if ($set_formula) {
+            return view('indicadores.set_formula', ['indicador' => $indicador, 'dimensionId' => $dimensionId]);
         }
-        return view('indicadores.fields', ['indicador' => null, 'dimensionId' => $dimensionId]);
+        return view('indicadores.fields', ['indicador' => $indicador, 'dimensionId' => $dimensionId]);
     }
 
     # Helpers
