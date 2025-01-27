@@ -20,9 +20,27 @@ class RoleAndPermissionSeeder extends Seeder
         ]);
 
         $roleCaptura = Role::create([
+            'name' => 'GDI',
+            'description' => 'Responsable de cargar, actualizar y gestionar los indicadores  en el sistema.',
+            'alias' => 'Gestor de Indicadores'
+        ]);
+
+        $roleCaptura = Role::create([
+            'name' => 'REV',
+            'description' => 'La función principal de este rol, es como su nombre lo indica realizar la captura de las evaluaciones para los indicadores asignados al área.',
+            'alias' => 'Responsable de Evaluación'
+        ]);
+
+        $roleCaptura = Role::create([
+            'name' => 'SPA',
+            'description' => 'Este rol supervisa, realiza el seguimiento y evalúa los resultados de los indicadores en su área',
+            'alias' => 'Supervisor de Área'
+        ]);
+
+        $roleCaptura = Role::create([
             'name' => 'ADC',
-            'description' => 'Usuario con acceso a captura de información.',
-            'alias' => 'Capturista'
+            'description' => 'Este rol se encargará de administrar los catálogos del sistema, altas, bajas, actualizaciones y eliminaciones.',
+            'alias' => 'Administrador de Catálogos'
         ]);
     }
 }
