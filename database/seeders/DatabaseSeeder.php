@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             SecretariasSeeder::class,
             AreasSeeder::class,
             UsersSeeder::class,
-            DimensionesSeeder::class
+            DimensionesSeeder::class,
+            IndicadoresSeeder::class
         ]);
     }
 }

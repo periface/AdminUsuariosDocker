@@ -1,0 +1,60 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class IndicadoresSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     */
+    public function run(): void
+    {
+        self::generar_indicadores();
+    }
+    public static function generar_indicadores()
+    {
+        $dimensionCalidad = \App\Models\Dimension::where('nombre', 'Calidad')->first();
+        $dimensionEficiencia = \App\Models\Dimension::where('nombre', 'Eficiencia')->first();
+        $dimensionEficacia = \App\Models\Dimension::where('nombre', 'Eficacia')->first();
+        $dimensionEconomia = \App\Models\Dimension::where('nombre', 'Economía')->first();
+        $secretaria = \App\Models\Secretaria::where('siglas', 'SA')->first();
+        \App\Models\Indicador::factory()->create([
+            'nombre' => 'Expedientes de Compras con Observaciones',
+            'descripcion' => 'Mide el porcentaje de expedientes de compras devueltos por la DGCyOP a la Dirección Administrativa por motivo de observaciones',
+            'status' => true,
+            'sentido' => 'descendente',
+            'unidad_medida' => '%',
+            'metodo_calculo' => '(Expedientes de compra devueltos con observaciones
+por la DGCyOP/ Expedientes de compra entregados a la DGCyOP) *100',
+            'dimensionId' => $dimensionCalidad->id,
+            'evaluable_formula' => '({ECADO}/{EPGCA})*100',
+            'non_evaluable_formula' => '(ECADO/EPGCA)*100',
+            'indicador_confirmado' => true,
+            'secretariaId' => $secretaria->id,
+            'secretaria' => $secretaria['nombre'],
+            'medio_verificacion' => 'No definido',
+            'requiere_anexo' => false
+        ]);
+
+        \App\Models\Indicador::factory()->create([
+            'nombre' => 'Tiempo promedio de atención a observaciones
+de Expedientes de Compras ante la DGCyOP',
+            'descripcion' => 'Mide el tiempo promedio que le toma a la dirección administrativa atender observaciones hechas por la DGCyOP a sus expedientes de compras.',
+            'status' => true,
+            'sentido' => 'descendente',
+            'unidad_medida' => 'días',
+            'metodo_calculo' => 'Suma del tiempo total de atención a observaciones por tipo de procedimiento de compra/
+Total de expedientes devueltos con observaciones por procedimiento de compra',
+            'dimensionId' => $dimensionEficiencia->id,
+            'evaluable_formula' => '{STTAOTPC}/{TEDOPC}',
+            'non_evaluable_formula' => 'STTAOTPC/TEDOPC',
+            'indicador_confirmado' => true,
+            'secretariaId' => $secretaria->id,
+            'secretaria' => $secretaria['nombre'],
+            'medio_verificacion' => 'No definido',
+            'requiere_anexo' => false
+        ]);
+    }
+}

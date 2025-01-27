@@ -42,7 +42,17 @@
                     <td>{{ $evaluacion['descripcion'] }}</td>
                     <td>{{ $evaluacion->area['nombre'] }}</td>
                     <td class="font-bold text-green-900">{{ $evaluacion['meta'] }}</td>
-                    <td class="font-bold">{{ $evaluacion['total'] }}</td>
+                    <td class="font-bold">
+                        @if ($evaluacion['total'] < $evaluacion['meta'])
+                            <span class="badge badge-danger">
+                                {{ $evaluacion['total'] }}
+                            </span>
+                        @else
+                            <span class="badge badge-success text-xs">
+                                {{ $evaluacion['total'] }}
+                            </span>
+                        @endif
+                    </td>
                     <td>
                         <span class="">
                             {{ $evaluacion['results'] }}
