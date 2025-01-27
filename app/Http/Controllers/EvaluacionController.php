@@ -89,9 +89,7 @@ class EvaluacionController extends BaseController
                 $data["indicadorId"],
                 $user->id,
             );
-            $variablesId = VariableValue::insert($variables_valor);
-            $evaluacionesId = EvaluacionResult::insert($evaluation_results);
-            return [$variablesId, $evaluacionesId, null];
+            return [$variables_valor, $evaluation_results, null];
         } catch (\Throwable $e) {
             log::error($e);
             return [null, null, $e->getMessage()];
@@ -411,7 +409,7 @@ class EvaluacionController extends BaseController
         return $secretaria;
     }
 
-    private function create_capture_dates(
+    public static function create_capture_dates(
         $fechas_captura,
         $evaluacion_id,
         $indicador_id,
@@ -422,18 +420,21 @@ class EvaluacionController extends BaseController
         $variables = Indicador::find($indicador_id)->variables;
 
         foreach ($fechas_captura as $fecha) {
-
-            $evaluation_results[] = [
+            $evaluacion_result = [
+                'id' => null,
                 'evaluacionId' => $evaluacion_id,
                 'resultado' => 0,
                 'status' => 'pendiente',
                 'fecha' => $fecha->fecha_captura,
                 'aprobadoPorId' => null
             ];
-        }
-        foreach ($variables as $variable) {
-            foreach ($fechas_captura as $fecha) {
-                $variables_valor[] = [
+
+            \App\Models\EvaluacionResult::insert($evaluacion_result);
+            $lastInsertedId = \App\Models\EvaluacionResult::latest()->first();
+            $evaluation_results[] = $evaluacion_result;
+            foreach ($variables as $variable) {
+                $variable_valor = [
+                    'evaluacionResultId' => $lastInsertedId->id,
                     'fecha' => $fecha->fecha_captura,
                     'valor' => 0,
                     'meta_esperada' => floatval($fecha->meta),
@@ -443,6 +444,8 @@ class EvaluacionController extends BaseController
                     'status' => 'pendiente',
                     'aprobadoPorId' => null
                 ];
+                $db_variable = \App\Models\VariableValue::insert($variable_valor);
+                $variables_valor[] = $db_variable;
             }
         }
         return [$variables_valor, $evaluation_results];

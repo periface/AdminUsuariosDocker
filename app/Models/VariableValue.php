@@ -17,6 +17,7 @@ class VariableValue extends Model
     public $secretariaId;
     public $usuarioId;
     public $status;
+    public $evaluacionResultId;
     protected $fillable = [
         'valor',
         'meta_esperada',
@@ -26,7 +27,7 @@ class VariableValue extends Model
         'usuarioId',
         'secretariaId',
         'status', // pendiente, aprobado
-        'aprobadoPorId',
+        'evaluacionResultId',
     ];
 
     public function evaluacion()

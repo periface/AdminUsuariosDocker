@@ -12,20 +12,6 @@ class IndicadorFactory extends Factory
     /**
      * Define the model's default state.
      *
-    public $nombre;
-    public $descripcion;
-    public $status;
-    public $sentido; // ascendente, descendente, constante
-    public $unidad_medida; // $, %, kg, etc
-    public $metodo_calculo; // formula x * y / z = resultado
-    public $dimensionId;
-    public $evaluable_formula;
-    public $non_evaluable_formula;
-    public $indicador_confirmado;
-    public $secretariaId;
-    public $medio_verificacion;
-    public $requiere_anexo;
-    public $secretaria;
      *
      * @return array<string, mixed>
      */

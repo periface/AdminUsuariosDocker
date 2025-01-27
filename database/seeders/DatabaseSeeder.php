@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             AreasSeeder::class,
             UsersSeeder::class,
             DimensionesSeeder::class,
-            IndicadoresSeeder::class
+            IndicadoresSeeder::class,
+            EvaluacionesSeeder::class
         ]);
     }
 }

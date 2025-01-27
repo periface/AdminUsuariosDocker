@@ -17,10 +17,8 @@ class IndicadoresSeeder extends Seeder
     {
         $dimensionCalidad = \App\Models\Dimension::where('nombre', 'Calidad')->first();
         $dimensionEficiencia = \App\Models\Dimension::where('nombre', 'Eficiencia')->first();
-        $dimensionEficacia = \App\Models\Dimension::where('nombre', 'Eficacia')->first();
-        $dimensionEconomia = \App\Models\Dimension::where('nombre', 'Economía')->first();
         $secretaria = \App\Models\Secretaria::where('siglas', 'SA')->first();
-        \App\Models\Indicador::factory()->create([
+        $indicador = \App\Models\Indicador::factory()->create([
             'nombre' => 'Expedientes de Compras con Observaciones',
             'descripcion' => 'Mide el porcentaje de expedientes de compras devueltos por la DGCyOP a la Dirección Administrativa por motivo de observaciones',
             'status' => true,
@@ -38,7 +36,11 @@ por la DGCyOP/ Expedientes de compra entregados a la DGCyOP) *100',
             'requiere_anexo' => false
         ]);
 
-        \App\Models\Indicador::factory()->create([
+        self::create_variable($indicador["id"], 'Expedientes de compra devueltos con observaciones por la DGCyOP', 'ECADO');
+        self::create_variable($indicador["id"], 'Expedientes de compra entregados a la DGCyOP', 'EPGCA');
+
+
+        $indicador2 = \App\Models\Indicador::factory()->create([
             'nombre' => 'Tiempo promedio de atención a observaciones
 de Expedientes de Compras ante la DGCyOP',
             'descripcion' => 'Mide el tiempo promedio que le toma a la dirección administrativa atender observaciones hechas por la DGCyOP a sus expedientes de compras.',
@@ -55,6 +57,18 @@ Total de expedientes devueltos con observaciones por procedimiento de compra',
             'secretaria' => $secretaria['nombre'],
             'medio_verificacion' => 'No definido',
             'requiere_anexo' => false
+        ]);
+
+        self::create_variable($indicador2["id"], 'Suma del tiempo total de atención a observaciones por tipo de procedimiento de compra', 'STTAOTPC');
+        self::create_variable($indicador2["id"], 'Total de expedientes devueltos con observaciones por procedimiento de compra', 'TEDOPC');
+    }
+    public static function create_variable($indicadorId, $variableName, $variableCode = null)
+    {
+
+        \App\Models\Variable::factory()->create([
+            'code' => $variableCode,
+            'nombre' => $variableName,
+            'indicadorId' => $indicadorId,
         ]);
     }
 }

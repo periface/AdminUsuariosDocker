@@ -10,7 +10,7 @@ use App\Models\EvaluacionResult;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Auth;
 
 class VariableValueModel
 {
@@ -30,7 +30,6 @@ class RegistrosController extends BaseController
     //
     public function registros($id)
     {
-        Log::info($id);
         $evaluacion = Evaluacion::all()->find($id);
         $indicador = Indicador::all()->find($evaluacion["indicadorId"]);
         return view('registros.index', [
@@ -145,7 +144,7 @@ class RegistrosController extends BaseController
         $request_data = $request->all();
         $registros = json_decode($request_data["registros"]);
         log::info($registros);
-        $user = auth()->user();
+        $user = Auth::user();
         $created = [];
         foreach ($registros as $evaluacion_result) {
             $variable = VariableValue::all()->find($evaluacion_result->id);

@@ -25,25 +25,9 @@ return new class extends Migration
             $table->string("non_evaluable_formula");
             $table->string("formula_literal");
             $table->string("descripcion");
-            $table->boolean("tiene_mir")->default(false);
+            $table->boolean("pertenece_mir")->default(false);
             $table->unsignedBigInteger("mirId")->nullable();
             $table->foreign("mirId")->references("id")->on("area")->onDelete("cascade");
-            $table->timestamps();
-        });
-        Schema::create("variable_valor", function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger("valor");
-            $table->unsignedBigInteger("meta_esperada");
-            $table->date("fecha");
-            $table->string("status")->default("capturado"); // capturado, aprobado, rechazado
-            $table->unsignedBigInteger("evaluacionId");
-            $table->unsignedBigInteger("variableId");
-            $table->unsignedBigInteger("usuarioId");
-            $table->unsignedBigInteger("aprobadoPorId")->nullable();
-            $table->foreign("aprobadoPorId")->references("id")->on("users")->onDelete("cascade");
-            $table->foreign("evaluacionId")->references("id")->on("evaluacion")->onDelete("cascade");
-            $table->foreign("variableId")->references("id")->on("variable")->onDelete("cascade");
-            $table->foreign("usuarioId")->references("id")->on("users")->onDelete("cascade");
             $table->timestamps();
         });
         Schema::create("evaluacion_result", function (Blueprint $table) {
@@ -56,6 +40,24 @@ return new class extends Migration
             $table->foreign("evaluacionId")->references("id")->on("evaluacion")->onDelete("cascade");
             $table->foreign("aprobadoPorId")->references("id")->on("users")->onDelete("cascade");
             $table->string("used_formula")->nullable();
+            $table->timestamps();
+        });
+        Schema::create("variable_valor", function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger("valor");
+            $table->unsignedBigInteger("meta_esperada");
+            $table->date("fecha");
+            $table->string("status")->default("capturado"); // capturado, aprobado, rechazado
+            $table->unsignedBigInteger("evaluacionId");
+            $table->unsignedBigInteger("variableId");
+            $table->unsignedBigInteger("usuarioId");
+            $table->unsignedBigInteger("aprobadoPorId")->nullable();
+            $table->unsignedBigInteger("evaluacionResultId")->nullable();
+            $table->foreign("evaluacionResultId")->references("id")->on("users")->onDelete("cascade");
+            $table->foreign("aprobadoPorId")->references("id")->on("users")->onDelete("cascade");
+            $table->foreign("evaluacionId")->references("id")->on("evaluacion")->onDelete("cascade");
+            $table->foreign("variableId")->references("id")->on("variable")->onDelete("cascade");
+            $table->foreign("usuarioId")->references("id")->on("users")->onDelete("cascade");
             $table->timestamps();
         });
     }
