@@ -15,6 +15,7 @@
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="evals">
                                                         <a href="{{ route('evaluacion.index') }}" class="">
+                                                        {{-- <a class=""> --}}
                                 <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Evaluaciones</span>
                                 </a>
                             </span>
@@ -26,7 +27,8 @@
                         </li>
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="dimensiones">
-                                                        <a href="{{ route('dimension.index') }}" class="">
+                                                        {{-- <a href="{{ route('dimension.index') }}" class=""> --}}
+                                                        <a class="">
                                 <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Dimensiones</span>
                                 </a>
                             </span>
@@ -44,6 +46,11 @@
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="permissions">
                                 <i class="fa-solid fa-user-lock"></i> <span class="ms-1 d-none d-sm-inline">Permisos</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="nav-link px-0 align-middle text-white cursor-pointer" id="permissions">
+                                <i class="fas fa-chart-line"></i> <span class="ms-1 d-none d-sm-inline">Monitor de Indicadores</span>
                             </span>
                         </li>
                     </ul>
