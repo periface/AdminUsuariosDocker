@@ -53,7 +53,8 @@ class AreaController extends Controller
 
             $request->validate([
                 'nombre' => 'required',
-                'siglas' => 'required'
+                'siglas' => 'required',
+                'secretariaId' => 'required'
             ]);
 
             $area = Area::create($request->all());
@@ -85,6 +86,7 @@ class AreaController extends Controller
         try {
             $request->validate([
                 'nombre' => 'required|min:4',
+                'secretariaId' => 'required'
             ]);
 
             $area->update($request->all());

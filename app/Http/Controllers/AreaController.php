@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Secretaria;
 use App\Services\AreaService;
 use App\Services\UserService;
 
@@ -31,15 +30,15 @@ class AreaController extends Controller
     public function create()
     {
         $users = $this->userService->getAllUsers();
-        return view('areas.add', compact('users'));
+        $secretarias = Secretaria::all();
+        return view('areas.add', compact('users', 'secretarias'));
     }
 
     public function createOrEdit(Area $area)
     {
 
         $users = $this->userService->getAllUsers();
-
-        return view('areas.createEdit', compact('area', 'users'));
+        $secretarias = Secretaria::all();
+        return view('areas.createEdit', compact('area', 'users', 'secretarias'));
     }
 }
-

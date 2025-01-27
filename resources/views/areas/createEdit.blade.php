@@ -1,6 +1,19 @@
 <form id="editArea">
     @csrf
     <input type="hidden" value="{{ $area->id }}" name="id" id="areaId">
+
+    <div class="mt-2">
+        <label for="secretariaId" class="form-label text-sm">Secretaria: </label>
+        <select class="form-select" id="secretariaId" name="secretariaId">
+           <option value="0">Seleccione</option>
+           @foreach ($secretarias as $secretaria)
+            <option value="{{ $secretaria["id"] ?? '' }}"
+                @selected((old('secretariaId', $area['secretariaId'] ?? '') == $secretaria["id"]))>
+                    {{ $secretaria["nombre"] }}
+            </option>
+           @endforeach
+        </select>
+    </div>
     <div class="mt-2">
         <label for="nombre" class="form-label text-sm">Nombre: </label>
         <input class="form-control" id="nombre" name="nombre" placeholder="Nombre del área" value="{{ $area['nombre'] ?? "" }}">

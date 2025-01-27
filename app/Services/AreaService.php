@@ -33,7 +33,8 @@ class AreaService
                     $area['nombre'],
                     $area["siglas"],
                     $name,
-                    $area["created_at"]
+                    $area["created_at"],
+                    $area["secretariaId"]
                 );
             }
         }
