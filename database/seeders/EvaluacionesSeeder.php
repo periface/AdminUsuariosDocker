@@ -90,6 +90,19 @@ class EvaluacionesSeeder extends Seeder
         foreach ($fechas_captura as $fecha) {
             $random1 = rand(1, 100);
             $random2 = rand(1, 100);
+            if ($random2 == 0) {
+                $random2 = 1;
+            }
+            if ($random1 == 0) {
+                $random1 = 1;
+            }
+
+            if ($random2 < $random1) {
+                $temp = $random1;
+                $random1 = $random2;
+                $random2 = $temp;
+            }
+
             $result = $random1 / $random2 * 100;
             $evaluacion_result = [
                 'id' => null,
@@ -104,14 +117,14 @@ class EvaluacionesSeeder extends Seeder
             $lastInsertedId = \App\Models\EvaluacionResult::latest()->first();
             $evaluation_results[] = $evaluacion_result;
             $counter = 0;
-            $varValue = 0;
-            if ($counter == 0) {
-                $varValue = $random1;
-            } else {
-                $varValue = $random2;
-                $counter = 0;
-            }
             foreach ($variables as $variable) {
+                $varValue = 0;
+                if ($counter == 0) {
+                    $varValue = $random1;
+                } else {
+                    $varValue = $random2;
+                    $counter = 0;
+                }
                 $variable_valor = [
                     'evaluacionResultId' => $lastInsertedId->id,
                     'fecha' => $fecha->fecha_captura,
@@ -125,8 +138,8 @@ class EvaluacionesSeeder extends Seeder
                 ];
                 $db_variable = \App\Models\VariableValue::insert($variable_valor);
                 $variables_valor[] = $db_variable;
+                $counter++;
             }
-            $counter++;
         }
         return [$variables_valor, $evaluation_results];
     }
