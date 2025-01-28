@@ -22,7 +22,8 @@ class AreasSeeder extends Seeder
             'responsableId' => null,
             'siglas' => 'DGCYOP',
             'secretariaId' => $secretaria->id,
-            'status' => 1
+            'status' => 1,
+            'departamento' => ''
         ]);
 
         \App\Models\Area::factory()->create([
@@ -30,7 +31,8 @@ class AreasSeeder extends Seeder
             'responsableId' => null,
             'siglas' => 'DGRH',
             'secretariaId' => $secretaria->id,
-            'status' => 1
+            'status' => 1,
+            'departamento' => ''
         ]);
     }
 }

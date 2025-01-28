@@ -14,10 +14,25 @@
         </select>
     </div>
     <div class="mt-2">
-        <label for="nombre" class="form-label text-sm">Dirección / Departamento: </label>
-        <input class="form-control" id="nombre" name="nombre" placeholder="Dirección / Departamento" value="{{ $area['nombre'] ?? "" }}">
+        <div class="row">
+            <div class="col-5">
+                <label for="tipo" class="form-label text-sm">Tipo de área: </label>
+                <select name="tipo" id="tipo" class="form-select">
+                    <option value="0">Seleccione</option>
+                    <option value="1">Dirección General</option>
+                    <option value="2">Dirección</option>
+                </select>
+            </div>
+            <div class="col-7">
+                <label for="nombre" class="form-label text-sm">Nombre: </label>
+                <input class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{ $area['nombre'] ?? "" }}">
+            </div>
+        </div>
     </div>
-
+    <div class="mt-2">
+        <label for="departamento" class="form-label text-sm">Departamento: </label>
+        <input class="form-control" id="departamento" name="departamento" placeholder="Dirección / Departamento" value="{{ $area['nombre'] ?? "" }}">
+    </div>
     <div class="mt-2">
         <label for="status" class="form-label text-sm">Responsable: </label>
         <select class="form-select" id="responsableId" name="responsableId">
