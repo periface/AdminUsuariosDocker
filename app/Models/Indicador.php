@@ -62,10 +62,14 @@ class Indicador extends Model
     public static function get_prefix($unidad_medida)
     {
         switch ($unidad_medida) {
+            case '%':
+                return '';
             case 'porcentaje':
                 return '';
             case 'moneda':
                 return '$';
+            case 'numero':
+                return '';
             default:
                 return $unidad_medida;
         }
@@ -73,10 +77,14 @@ class Indicador extends Model
     public static function get_suffix($unidad_medida)
     {
         switch ($unidad_medida) {
+            case '%':
+                return '%';
             case 'porcentaje':
                 return '%';
             case 'moneda':
                 return ' pesos';
+            case 'numero':
+                return '';
             default:
                 return $unidad_medida;
         }

@@ -75,6 +75,14 @@
                                     </a>
                                 </span>
                             </li>
+
+                        <li>
+                            <span class="nav-link px-0 align-middle text-white cursor-pointer" id="dimensiones">
+                                                        <a href="{{ route('secretaria.index') }}" class="">
+                                <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Secretarias</span>
+                                </a>
+                            </span>
+                        </li>
                             <li>
                                 <span class="nav-link px-0 align-middle text-white cursor-pointer" id="areas">
                                     <i class="fa-solid fa-sitemap"></i> <span

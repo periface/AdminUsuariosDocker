@@ -21,9 +21,6 @@ class Evaluacion extends Model
     public $non_evaluable_formula;
     public $formula_literal;
     public $descripcion;
-    public $pertenece_mir;
-    public $mirId;
-
     protected $table = 'evaluacion';
     protected $fillable = [
         'formula_literal',
@@ -37,8 +34,6 @@ class Evaluacion extends Model
         'evaluable_formula',
         'non_evaluable_formula',
         'descripcion',
-        'pertenece_mir',
-        'mirId'
     ];
     public function indicador()
     {
@@ -47,10 +42,6 @@ class Evaluacion extends Model
     public function area()
     {
         return $this->belongsTo(Area::class, 'areaId', 'id');
-    }
-    public function mir()
-    {
-        return $this->belongsTo(Area::class, 'mirId', 'id');
     }
     public function variableValues()
     {

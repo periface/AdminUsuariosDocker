@@ -313,7 +313,6 @@ const number_txt = (number) => {
 
 function render_capturas_table() {
     const meta_esperada = state.meta / state.fechas_captura.length;
-    console.log('Meta esperada por captura', meta_esperada);
     return `
     <table class="table table-bordered table-hover">
         <thead>
@@ -622,6 +621,8 @@ function handle_evaluacion_params(fecha_inicio, fecha_fin, periodicidad) {
     }
     else {
         state.is_date_valid = true;
+        $("#evaluacionForm").validate()
+        $("#evaluacionForm").validate()
     }
     state.fechas_captura = calcula_fechas_captura(fecha_inicio, fecha_fin, periodicidad);
     if (state.fechas_captura.length > 0) {

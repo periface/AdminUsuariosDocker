@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('siglas');
             $table->string('type');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
         Schema::create('area', function (BluePrint $table) {

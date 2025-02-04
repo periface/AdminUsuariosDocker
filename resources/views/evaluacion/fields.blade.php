@@ -72,7 +72,6 @@
             </div>
         </div>
         <div id="resultados-part" class="content" role="tabpanel" aria-labelledby="meta-part-trigger">
-            <h2>Fechas de captura</h2>
             <div id="capturas-table">
             </div>
         </div>

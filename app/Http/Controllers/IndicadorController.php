@@ -65,7 +65,6 @@ class IndicadorController extends BaseController
     public function post(Request $request)
     {
         try {
-
             // Agregamos validación al request para mantener integridad en el información
             [$data, $indicador_found, $error] = $this->get_indicador_from_req($request);
             $variables = $request->variables;
