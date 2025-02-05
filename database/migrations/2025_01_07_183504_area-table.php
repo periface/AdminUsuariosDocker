@@ -20,9 +20,9 @@ return new class extends Migration
         });
         Schema::create('area', function (BluePrint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre', 65);
             $table->unsignedBigInteger('responsableId')->nullable();
-            $table->string('siglas');
+            $table->string('siglas', 10);
             $table->boolean('status')->default(true);
             $table->unsignedBigInteger('secretariaId');
             $table->timestamps();

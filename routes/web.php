@@ -3,14 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DimensionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\PrincipalController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\EvaluacionController;
+use App\Http\Controllers\MonitorController;
+use App\Http\Controllers\DimensionController;
 use App\Http\Controllers\IndicadorController;
+use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\RegistrosController;
+use App\Http\Controllers\EvaluacionController;
+use App\Http\Controllers\PermissionController;
 
 Route::get('/', [AuthController::class, 'login']);
 // Route::get('/', function(){
@@ -84,5 +85,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/get_registros_form/{id_evaluacion}/{fecha}',  [RegistrosController::class, 'get_registros_form'])->name('get_registros_form');
 
         Route::post('/get_table_rows/{id_evaluacion}',  [RegistrosController::class, 'get_rows'])->name('get_rows');
+    });
+
+    // Dataviz
+    Route::group(['middleware' => ['role:ADM']], function () {
+        Route::get('/monitor',                                          [MonitorController::class, 'index']);
     });
 });

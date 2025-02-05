@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->string('apPaterno');
-            $table->string('apMaterno')->nullable();
+            $table->string('apPaterno', 55);
+            $table->string('apMaterno', 55)->nullable();
             $table->bigInteger('areaId')->unsigned();
             $table->foreign('areaId')->references('id')->on('area');
             $table->unsignedBigInteger('secretariaId')->nullable();

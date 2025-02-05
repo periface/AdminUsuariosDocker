@@ -15,7 +15,6 @@
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="evals">
                                                         <a href="{{ route('evaluacion.index') }}" class="">
-                                                        {{-- <a class=""> --}}
                                 <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Evaluaciones</span>
                                 </a>
                             </span>
@@ -27,8 +26,7 @@
                         </li>
                         <li>
                             <span class="nav-link px-0 align-middle text-white cursor-pointer" id="dimensiones">
-                                                        {{-- <a href="{{ route('dimension.index') }}" class=""> --}}
-                                                        <a class="">
+                                                        <a href="{{ route('dimension.index') }}" class="">
                                 <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Dimensiones</span>
                                 </a>
                             </span>
@@ -49,7 +47,7 @@
                             </span>
                         </li>
                         <li>
-                            <span class="nav-link px-0 align-middle text-white cursor-pointer" id="permissions">
+                            <span class="nav-link px-0 align-middle text-white cursor-pointer" id="monitor">
                                 <i class="fas fa-chart-line"></i> <span class="ms-1 d-none d-sm-inline">Monitor de Indicadores</span>
                             </span>
                         </li>
@@ -77,6 +75,28 @@
         <div class="col py-3">
             <div class="row">
                 <div id="content">
+                    <div class="container welcome-container">
+                        <div class="card">
+                            <h1 class="lead mb-3 text-gray-500 font-bold">Bienvenido al <br> Sistema de Indicadores</h1>
+                            <p class="lead mb-4 text-gray-500">Una plataforma diseñada para la gestión y análisis de indicadores clave <br> de desempeño en la Dirección de Control Administrativo.</p>
+                
+                            <hr>
+                
+                            <h3 class="mt-3">¿Qué puedes hacer con este sistema?</h3>
+                            <ul class="list-group list-group-flush text-start mx-auto mt-3" style="max-width: 400px;">
+                                <li class="list-group-item">📊 Registrar y gestionar indicadores de desempeño.</li>
+                                <li class="list-group-item">📈 Visualizar reportes y gráficos en tiempo real.</li>
+                                <li class="list-group-item">📌 Evaluar la eficiencia y eficacia de los procesos.</li>
+                                <li class="list-group-item">⚡ Optimizar la toma de decisiones administrativas.</li>
+                            </ul>
+                
+                            <div class="mt-4">
+                                <a href="manual_usuario.pdf" class="btn btn-outline-secondary btn-sm">Ver Manual de Usuario</a>
+                            </div>
+                
+                            <p class="footer mt-4">Para soporte técnico, contacta a: <br> <a href="mailto:soportecontroladministrativo@tamaulipas.gob.mx" class="text-gray-600 lowercase">soportecontroladministrativo@tamaulipas.gob.mx</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,5 +131,6 @@
         'resources/js/usuarios/index.js',
         'resources/js/auth/permissions/permisos.js',
         'resources/js/areas/index.js',
-    ]);
+        'resources/js/dataviz/index.js'
+    ])
 @endsection

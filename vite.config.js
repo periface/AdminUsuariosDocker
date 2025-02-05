@@ -10,7 +10,8 @@ export default defineConfig({
                 'resources/js/auth/permissions/permisos.js',
                 'resources/js/evaluaciones/evaluaciones.js',
                 'resources/js/areas/index.js',
-                'resources/js/dimensiones/index.js'
+                'resources/js/dimensiones/index.js',
+                'resources/js/dataviz/index.js'
             ],
             refresh: true,
         }),
