@@ -77,8 +77,8 @@
                 <div id="content">
                     <div class="container welcome-container">
                         <div class="card">
-                            <h1 class="lead mb-3 text-gray-500 font-bold">Bienvenido al <br> Sistema de Indicadores</h1>
-                            <p class="lead mb-4 text-gray-500">Una plataforma diseñada para la gestión y análisis de indicadores clave <br> de desempeño en la Dirección de Control Administrativo.</p>
+                            <h1 class="lead mb-3 text-gray-500 font-bold text-principal">Bienvenido al <br> Sistema de Indicadores</h1>
+                            <p class="lead mb-4 text-gray-500 text-secundario">Una plataforma diseñada para la gestión y <br> análisis de indicadores clave de desempeño en la <br> Dirección de Control Administrativo.</p>
                 
                             <hr>
                 
@@ -94,7 +94,7 @@
                                 <a href="manual_usuario.pdf" class="btn btn-outline-secondary btn-sm">Ver Manual de Usuario</a>
                             </div>
                 
-                            <p class="footer mt-4">Para soporte técnico, contacta a: <br> <a href="mailto:soportecontroladministrativo@tamaulipas.gob.mx" class="text-gray-600 lowercase">soportecontroladministrativo@tamaulipas.gob.mx</a></p>
+                            <p class="footer mt-4">Para soporte técnico, contacta a: <br> <a href="mailto:soportecontroladministrativo@tamaulipas.gob.mx" class=" text-white lowercase badge bg-danger">soportecontroladministrativo@tamaulipas.gob.mx</a></p>
                         </div>
                     </div>
                 </div>
