@@ -58,7 +58,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Auth
-    Route::post('/logout',                                           [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout',                                            [AuthController::class, 'logout'])->name('logout');
+    
+
+    Route::group(['middleware' => ['role:ADM']], function(){
+        Route::get('/monitor',                                        [MonitorController::class, 'index']);
+    });
+
+    
     // PERI WEB ROUTES
 
     Route::prefix('dimension')->name("dimension.")->group(function () {
