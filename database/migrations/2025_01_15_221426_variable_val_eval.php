@@ -25,9 +25,6 @@ return new class extends Migration
             $table->string("non_evaluable_formula");
             $table->string("formula_literal");
             $table->string("descripcion");
-            $table->boolean("pertenece_mir")->default(false);
-            $table->unsignedBigInteger("mirId")->nullable();
-            $table->foreign("mirId")->references("id")->on("area")->onDelete("cascade");
             $table->timestamps();
         });
         Schema::create("evaluacion_result", function (Blueprint $table) {

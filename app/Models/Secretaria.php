@@ -11,7 +11,6 @@ class Secretaria extends Model
     public $nombre;
     public $siglas;
     public $type;
-
-
     protected $table = 'secretaria';
+    protected $fillable = ['nombre', 'siglas', 'type'];
 }

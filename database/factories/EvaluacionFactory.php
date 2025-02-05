@@ -12,21 +12,6 @@ class EvaluacionFactory extends Factory
     /**
      * Define the model's default state.
      *
-    public $areaId;
-    public $indicadorId;
-    public $frecuencia_medicion;
-    public $meta;
-
-    public $fecha_fin;
-    public $fecha_inicio;
-
-    public $usuarioId;
-    public $evaluable_formula;
-    public $non_evaluable_formula;
-    public $formula_literal;
-    public $descripcion;
-    public $pertenece_mir;
-    public $mirId;
      *
      * @return array<string, mixed>
      */
@@ -45,8 +30,6 @@ class EvaluacionFactory extends Factory
             "non_evaluable_formula" => $this->faker->text(),
             "formula_literal" => $this->faker->text(),
             "descripcion" => $this->faker->text(),
-            "pertenece_mir" => $this->faker->boolean,
-            "mirId" => $this->faker->numberBetween(1, 10),
         ];
     }
 }

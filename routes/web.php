@@ -12,6 +12,7 @@ use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SecretariaController;
 
 Route::get('/', [AuthController::class, 'login']);
 // Route::get('/', function(){
@@ -87,8 +88,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/get_table_rows/{id_evaluacion}',  [RegistrosController::class, 'get_rows'])->name('get_rows');
     });
 
-    // Dataviz
-    Route::group(['middleware' => ['role:ADM']], function () {
-        Route::get('/monitor',                                          [MonitorController::class, 'index']);
+    Route::prefix('secretaria')->name("secretaria.")->group(function () {
+        Route::get('/',  [SecretariaController::class, 'index'])->name('index');
+        Route::post('/get_table_rows',  [SecretariaController::class, 'get_rows'])->name('get_table_rows');
+        Route::get('/get_secretaria_fields',  [SecretariaController::class, 'get_secretaria_fields'])->name('get_secretaria_fields');
     });
 });

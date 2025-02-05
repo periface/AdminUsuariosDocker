@@ -67,7 +67,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // RUTAS DE ÁREAS PERI
     Route::prefix('v1')->group(function () {
-        Route::get('/secretarias', [SecretariaController::class, 'get']); //Obtiene todas las áreas
+        Route::get('/secretaria', [SecretariaController::class, 'get']); //Obtiene todas las áreas
+
+        Route::post('/secretaria', [SecretariaController::class, 'post']); //Crea una nueva área
+        Route::put('/secretaria', [SecretariaController::class, 'put']); //Crea una nueva área
+        Route::delete('/secretaria/{id}', [SecretariaController::class, 'delete']); //Crea una nueva área
         Route::get('/dimension', [DimensionController::class, 'get']);
         Route::post('/dimension', [DimensionController::class, 'post']);
         Route::get('/dimension/{id}', [DimensionController::class, 'get']);

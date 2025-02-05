@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('siglas');
-            $table->string('type');
+            $table->string('type')->default('SECRETARIA');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
         Schema::create('area', function (BluePrint $table) {

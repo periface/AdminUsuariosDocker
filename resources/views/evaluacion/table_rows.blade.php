@@ -5,9 +5,6 @@
 <table class="table table-striped projects" id="evaluacionesTable">
     <thead class="small">
         <tr class="w-full">
-            <th style="width: 5%" data-sort="id" data-order="desc" class="cursor-pointer sort ">
-                # <i class="pl-2 fas fa-sort"></i>
-            </th>
             <th style="width: 20%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
                 Nombre <i class="pl-2 fas fa-sort"></i>
             </th>
@@ -38,7 +35,6 @@
         @else
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
-                    <td>{{ $evaluacion['id'] }}</td>
                     <td>{{ $evaluacion['descripcion'] }}</td>
                     <td>{{ $evaluacion->area['nombre'] }}</td>
                     <td class="font-bold text-green-900">{{ $evaluacion['meta'] }}</td>
@@ -102,11 +98,8 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/evaluacion/{{ $evaluacion->id }}/variables"
-                                            data-id="{{ $evaluacion->id }}">Variables</a></li>
                                     <li><a class="dropdown-item js-delete-evaluacion" href="#"
                                             data-id="{{ $evaluacion->id }}">Eliminar</a></li>
-
                                 </ul>
                             </div>
                         </div>
