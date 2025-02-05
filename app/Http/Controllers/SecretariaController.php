@@ -131,9 +131,6 @@ class SecretariaController extends Controller
             'siglas' => 'required|min:2',
         ]);
         $input_id = $request->id ?? null;
-        Log::info("===================================");
-        Log::info($request->id);
-        Log::info("===================================");
         if ($validator->fails()) {
             return [null, null, $validator->errors()];
         }
@@ -183,7 +180,6 @@ class SecretariaController extends Controller
     public function post(Request $request)
     {
         try {
-            // Agregamos validación al request para mantener integridad en el información
             [$data, $secretaria_found, $error] = $this->get_secretaria_from_req($request);
             if ($error) {
                 return response()->json([
@@ -194,10 +190,7 @@ class SecretariaController extends Controller
                 ], 422);
             }
             if ($secretaria_found) {
-
-                Log::log("==============Secretaria================");
-                Log::log($secretaria_found);
-                Log::log("===================================");
+                Log::info($secretaria_found);
                 $secretaria_found->update($data);
                 return response()->json([
                     'status' => 'success',
@@ -206,6 +199,7 @@ class SecretariaController extends Controller
                 ], 200);
             }
             // Si el validación se cumple, guardamos en el base de datos
+            log::info($data);
             $id = Secretaria::create($data)->id;
             // Una vez guardado en el base de datos enviamos respuesta exitosa a el vista
             return response()->json([
@@ -215,6 +209,7 @@ class SecretariaController extends Controller
                 'statusCode' => 200
             ], 200);
         } catch (\Throwable $e) {
+            Log::error($e);
             return response()->json([
                 'status' => 'error',
                 'data' => null,

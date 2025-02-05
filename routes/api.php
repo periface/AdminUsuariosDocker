@@ -70,7 +70,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/secretaria', [SecretariaController::class, 'get']); //Obtiene todas las áreas
 
         Route::post('/secretaria', [SecretariaController::class, 'post']); //Crea una nueva área
-        Route::post('/secretaria', [SecretariaController::class, 'put']); //Crea una nueva área
+        Route::put('/secretaria', [SecretariaController::class, 'put']); //Crea una nueva área
         Route::delete('/secretaria/{id}', [SecretariaController::class, 'delete']); //Crea una nueva área
         Route::get('/dimension', [DimensionController::class, 'get']);
         Route::post('/dimension', [DimensionController::class, 'post']);

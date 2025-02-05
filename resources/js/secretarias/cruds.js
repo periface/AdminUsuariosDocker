@@ -61,13 +61,18 @@ async function get_rows(state) {
 async function post_secretaria(form_data, state) {
     try {
         toggle_loading(true, 'loaderbd');
+        const id = form_data.get('id');
+        const headers = {
+            'X-CSRF-TOKEN': state.xcsrftoken,
+            'Authorization': 'Bearer ' + state.bearertoken,
+        }
+        if (id) {
+            headers['X-HTTP-Method-Override'] = 'PUT';
+        }
         const response = await fetch(state.API_URL, {
             method: 'POST',
             body: form_data,
-            headers: {
-                'X-CSRF-TOKEN': state.xcsrftoken,
-                'Authorization': 'Bearer ' + state.bearertoken,
-            }
+            headers
         });
         const json_response = await response.json();
         return {
