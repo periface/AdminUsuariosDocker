@@ -11,9 +11,11 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\RoleService;
 use App\Services\UserService;
+use Spatie\Permission\Models\Role;
 use App\Services\PermissionService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\Api\RoleController;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -22,12 +24,17 @@ class UserController extends Controller
     protected $userService;
     protected $roleService;
     protected $permissionService;
+    protected $roleController;
 
-    public function __construct(UserService $userService, RoleService $roleService, PermissionService $permissionService)
+    public function __construct(UserService $userService, 
+                                RoleService $roleService, 
+                                PermissionService $permissionService,
+                                RoleController $roleController)
     {
         $this->userService          = $userService;
         $this->roleService          = $roleService;
         $this->permissionService    = $permissionService;
+        $this->roleController       = $roleController;
     }
 
     /**
@@ -70,6 +77,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
+        // Validacion del request
         $request->validate([
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
@@ -79,37 +87,59 @@ class UserController extends Controller
             'email.unique' => 'La dirección de correo electrónico utilizada, ya se encuentra registrada'
         ]);
 
-        $data = $request->all();
-        $data['activation_token'] = Str::random(60);
-        $data['is_active'] = false;
+        try {
+            // Interceptamos el objeto
+            $data = $request->all();
+            $data['activation_token'] = Str::random(60);
+            $data['is_active'] = false;
 
-        $user = User::create($data);
+            // Creamos el usuario
+            $user = User::create($data);
 
-        UserArea::create([
-            'userId' => $user->id,
-            'areaId' => $data['areaId'],
-            'updated_at' => Carbon::now(),
-            'created_at' => Carbon::now()
-        ]);
+            //Obtenemos el rol
+            $role = Role::find($data['roleId']);
 
-        $wb_data = [
-            "email" => $user->email,
-            "activation_link" => 'http://localhost:8000/activate/' . $user->activation_token
-        ];
+            // Le asignamos el rol
+            $assignRoleResponse = $this->roleController->attachRole($user, $role);
+
+            UserArea::create([
+                'userId' => $user->id,
+                'areaId' => $data['areaId'],
+                'updated_at' => Carbon::now(),
+                'created_at' => Carbon::now()
+            ]);
+
+            $wb_data = [
+                "email" => $user->email,
+                "activation_link" => 'http://localhost:8000/activate/' . $user->activation_token
+            ];
 
 
-        // $webhook_response = Http::post('http://localhost:5678/webhook-test/f45dc5db-14d6-4e1c-85d2-44fecabc8e69', $wb_data);
+            // $webhook_response = Http::post('http://localhost:5678/webhook-test/f45dc5db-14d6-4e1c-85d2-44fecabc8e69', $wb_data);
 
-        return response()->json([
-            'data' => [
-                'attributes' => [
-                    'status' => 'success',
-                    // 'data' => $user,
-                    'data' => 'Para la activación de la cuenta, enviamos un correo a la dirección registrada',
-                    'statusCode' => Response::HTTP_CREATED
+            return response()->json([
+                'data' => [
+                    'attributes' => [
+                        'status' => 'success',
+                        // 'data' => $user,
+                        'data' => 'Para la activación de la cuenta, enviamos un correo a la dirección registrada',
+                        'statusCode' => Response::HTTP_CREATED
+                    ]
                 ]
-            ]
-        ], Response::HTTP_CREATED);
+            ], Response::HTTP_CREATED);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data' => [
+                    'attributes' => [
+                        'status' => 'error',
+                        'data' => $th->getMessage(),
+                        'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR
+                    ]
+                ]
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        
     }
 
     /**
