@@ -40,4 +40,9 @@ class AreaService
         }
         return $areaDtoList;
     }
+
+    public function getAreaById(Area $area){
+        $area = Area::find($area->id);
+        dd($area);
+    }
 }
