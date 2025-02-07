@@ -1,11 +1,13 @@
-import { load_registro_form, post_registros, set_status, get_rows } from './cruds.js';
+import { get_stats, load_registro_form, post_registros, set_status, get_rows } from './cruds.js';
 import { show_confirm_action } from '../utils/helpers.js';
 
+import { Chart } from "chart.js/auto";
 import { debounce, createToast, assert, restart_popovers } from '../utils/helpers.js';
 import { Repl } from 'pochijs';
 const state = {
     API_URL: "/api/v1/registro",
     WEB_URL: "/registro",
+    chart: null,
     registrar_btn: document.getElementsByClassName('js-registrar'),
     xcsrftoken: document.querySelector('meta[name="csrf-token"]').content || '',
     events_set: false,
@@ -111,6 +113,9 @@ async function start_datatable() {
         </h1>`;
         console.error(error);
     }
+    finally {
+        await load_evaluacion_stats();
+    }
 }
 const init_view = async () => {
     await start_datatable();
@@ -134,9 +139,9 @@ async function set_modal_event_listener() {
             }
             const espacio_obj = JSON.parse(espacio);
             espacio_obj.status = 'validado';
-            console.log(espacio_obj);
             await set_status(espacio_obj.id, 'aprobado', state);
             $(state.modal).modal('hide');
+            const toast = createToast('Registros', 'Registro validado con éxito', 'success');
             await start_datatable();
         });
 
@@ -159,8 +164,10 @@ async function set_modal_event_listener() {
             }
             const espacio_obj = JSON.parse(espacio);
             espacio_obj.status = 'rechazado';
-            console.log(espacio_obj);
+            const toast = createToast('Registros', 'Registro rechazado con éxito', 'success');
             await set_status(espacio_obj.id, 'rechazado', state);
+            $(state.modal).modal('hide');
+            await start_datatable();
         });
     }
     for await (const btn of state.registrar_btn) {
@@ -194,6 +201,12 @@ async function store_values(form_data) {
     }
     const response = await post_registros(form_data, state);
     console.log(response);
+    if (response.error) {
+        console.error(response.error);
+        const toast = createToast('Registros', 'Error al guardar los registros', 'error');
+        return;
+    }
+    const toast = createToast('Registros', 'Registros guardados con éxito', 'success');
 
 }
 async function set_after_modal_load_evts() {
@@ -245,6 +258,126 @@ async function set_after_modal_load_evts() {
         await start_datatable();
     }
 }
+async function load_evaluacion_stats() {
+    const { data, error } = await get_stats(state.evaluacionId, state);
+    if (error) {
+        console.error(error);
+        createToast('Registros', 'Error al cargar las estadísticas', 'error');
+        return;
+    }
+    donut_chart(data);
+    total_meta(data);
+}
+function total_meta(data) {
+    const status = document.getElementById('status');
+    const meta_html = get_meta_html(data);
+    status.innerHTML = meta_html;
+    const total = document.getElementById('total');
+    const total_html = get_total_html(data);
+    total.innerHTML = total_html;
+}
+function get_total_html(data) {
+    const { total, sentido, totalValue, metaValue } = data;
+    let icon = '';
+    let color = '';
+    let text = '';
+    switch (sentido) {
+        case 'ascendente':
+            if (totalValue < metaValue) {
+                icon = '<i class="fas fa-arrow-down"></i>';
+                color = 'danger';
+            } else {
+                icon = '<i class="fas fa-arrow-up"></i>';
+                color = 'success';
+            }
+            break;
+        case 'descendente':
+            if (totalValue > metaValue) {
+                icon = '<i class="fas fa-arrow-up"></i>';
+                color = 'danger';
+            } else {
+                icon = '<i class="fas fa-arrow-down"></i>';
+                color = 'success';
+            }
+            break;
+        case 'constante':
+            if (totalValue == metaValue) {
+                icon = '<i class="fas fa-equals"></i>';
+                color = 'success';
+            }
+            break;
+        default:
+            icon = '';
+            break;
+    }
+    return `<span class="font-bold text-md">Total:</span><br> <span class="badge badge-${color} text-lg">
+        ${total}
+        ${icon}
+    </span>`;
+}
+function get_meta_html(data) {
+    const { meta, sentido } = data;
+    let icon = '';
+    switch (sentido) {
+        case 'ascendente':
+            icon = '<i class="fas fa-arrow-up"></i>';
+            break;
+        case 'descendente':
+            icon = '<i class="fas fa-arrow-down"></i>';
+            break;
+        case 'constante':
+            icon = '<i class="fas fa-equals"></i>';
+            break;
+        default:
+            icon = '';
+            break;
+    }
+    return `<span class="font-bold text-md">Meta:</span><br> <span class="badge badge-success text-lg">
+       ${meta}
+        ${icon}
+    </span>`;
+}
+function donut_chart(data) {
+    if (state.chart) {
+        state.chart.data.datasets[0].data = [data.results_aprobado,
+        data.results_pendiente,
+        data.results_capturado,
+        data.results_rechazado
+        ];
+        state.chart.update();
+        return;
+    }
+    const container = document.getElementById('donut-chart');
+    const { results_aprobado, results_pendiente, results_capturado, results_rechazado } = data;
+    const config = {
+        type: 'pie',
+        data: {
+            labels: ['Aprobados', 'Pendientes', 'En validación', 'Rechazados'],
+            datasets: [{
+                data: [results_aprobado,
+                    results_pendiente,
+                    results_capturado,
+                    results_rechazado
+                ],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: false,
+                    text: 'Chart.js Pie Chart'
+                }
+            }
+        },
+
+    }
+    state.chart = new Chart(container, config);
+}
+
 
 init_view().then(() => {
 })

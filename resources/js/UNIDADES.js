@@ -1,6 +1,14 @@
 
 const UNIDADES = [
     {
+        nombre: '%'
+        , simbolo: '%'
+        , oracion: 'por ciento'
+        , friendly: 'Porcentaje'
+        , oracion_corta: '% de'
+
+    },
+    {
         nombre: 'porcentaje',
         simbolo: '%',
         oracion: 'por ciento',
@@ -23,7 +31,7 @@ const UNIDADES = [
         oracion_corta: '',
     },
     {
-        nombre: 'dias',
+        nombre: 'días',
         simbolo: 'días',
         oracion: 'días',
         friendly: 'Días',

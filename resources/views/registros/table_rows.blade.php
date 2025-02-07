@@ -1,4 +1,4 @@
-<div class="flex items w-1/3 mb-2 border-black hidden">
+<div class="hidden items w-1/3 mb-2 border-black">
     <input type="text" class="form-control form-control-sm js-search" placeholder="Buscar"
         {{ $search ? 'value=' . $search : '' }}>
 </div>
@@ -7,9 +7,8 @@
 
         <tr>
             <th>Periodo</th>
-            <th>Fecha</th>
-            <th>Resultado</th>
             <th>Estado</th>
+            <th>Resultado</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -17,22 +16,24 @@
         @foreach ($evaluacion_results as $espacio)
             <tr>
                 <td>
+
+                    <span class="text-green-900 text-xs">{{ $espacio['fecha'] }}</span>
+                    <br>
                     @include('partials.periodos_counter', [
                         'frecuencia_medicion' => $frecuencia_medicion,
                         'index' => $loop->index + 1,
                     ])
-                </td>
-                <td>
-                    <span class="text-pink-900">{{ $espacio['fecha'] }}</span>
+                    <br>
+                    <span class="text-blue-900">{{ $espacio['days_left'] }}</span>
                 </td>
 
                 <td>
-                    @include('partials.registro_capture', [
+                    @include('partials.registro_status', [
                         'espacio' => $espacio,
                     ])
                 </td>
                 <td>
-                    @include('partials.registro_status', [
+                    @include('partials.registro_capture', [
                         'espacio' => $espacio,
                     ])
                 </td>
