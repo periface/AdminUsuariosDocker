@@ -48,10 +48,8 @@ return new class extends Migration
             $table->unsignedBigInteger("evaluacionId");
             $table->unsignedBigInteger("variableId");
             $table->unsignedBigInteger("usuarioId");
-            $table->unsignedBigInteger("aprobadoPorId")->nullable();
             $table->unsignedBigInteger("evaluacionResultId")->nullable();
             $table->foreign("evaluacionResultId")->references("id")->on("users")->onDelete("cascade");
-            $table->foreign("aprobadoPorId")->references("id")->on("users")->onDelete("cascade");
             $table->foreign("evaluacionId")->references("id")->on("evaluacion")->onDelete("cascade");
             $table->foreign("variableId")->references("id")->on("variable")->onDelete("cascade");
             $table->foreign("usuarioId")->references("id")->on("users")->onDelete("cascade");

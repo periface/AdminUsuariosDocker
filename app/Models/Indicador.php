@@ -70,6 +70,9 @@ class Indicador extends Model
                 return '$';
             case 'numero':
                 return '';
+
+            case 'días':
+                return '';
             default:
                 return $unidad_medida;
         }
@@ -85,6 +88,9 @@ class Indicador extends Model
                 return ' pesos';
             case 'numero':
                 return '';
+
+            case 'días':
+                return ' días';
             default:
                 return $unidad_medida;
         }

@@ -33,10 +33,12 @@ class RegistrosController extends BaseController
     {
         $evaluacion = Evaluacion::all()->find($id);
         $indicador = Indicador::all()->find($evaluacion["indicadorId"]);
+        $area = Area::all()->find($evaluacion["areaId"]);
         return view('registros.index', [
             'evaluacion' => $evaluacion,
             'indicador' => $indicador,
-            'evaluacionId' => $id
+            'evaluacionId' => $id,
+            'area' => $area
         ]);
     }
     public function get_rows(request $request, $evaluacionId)

@@ -34,11 +34,19 @@
                                 <div class="bg-white rounded-md shadow-sm p-3">
 
                                     <span class="badge bg-pink-950 rounded-none">
-                                        <i class="fa-solid fa-info"></i> | Información
+                                        <i class="fa-solid fa-info"></i> | Área
                                     </span>
                                     <p class="m-0 text-md">
                                         <span>
-                                            {{ $indicador['descripcion'] }}
+                                            {{ $area['nombre'] }}
+                                        </span>
+                                    </p>
+                                    <span class="badge bg-pink-950 rounded-none">
+                                        <i class="fa-solid fa-info"></i> | Indicador
+                                    </span>
+                                    <p class="m-0 text-md" title="{{ $indicador['descripcion'] }}">
+                                        <span>
+                                            {{ $indicador['nombre'] }}
                                         </span>
                                     </p>
 
@@ -49,6 +57,14 @@
                                         </div>
 
                                         <div id="total">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 mt-2">
+
+                                        <div class="w-full">
+                                            <span class="text-xs">
+                                                {{ $indicador['metodo_calculo'] }}
+                                            </span>
                                         </div>
                                     </div>
                                     <br>

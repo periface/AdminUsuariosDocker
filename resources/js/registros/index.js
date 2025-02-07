@@ -339,10 +339,11 @@ function get_meta_html(data) {
 }
 function donut_chart(data) {
     if (state.chart) {
-        state.chart.data.datasets[0].data = [data.results_aprobado,
-        data.results_pendiente,
-        data.results_capturado,
-        data.results_rechazado
+        state.chart.data.datasets[0].data = [
+            data.results_aprobado,
+            data.results_pendiente,
+            data.results_capturado,
+            data.results_rechazado
         ];
         state.chart.update();
         return;
