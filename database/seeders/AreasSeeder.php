@@ -34,5 +34,32 @@ class AreasSeeder extends Seeder
             'status' => 1,
             'departamento' => ''
         ]);
+
+        \App\Models\Area::factory()->create([
+            'nombre' => 'Dirección de Patrimonio',
+            'responsableId' => null,
+            'siglas' => 'DPATRIMONIO',
+            'secretariaId' => $secretaria->id,
+            'status' => 1,
+            'departamento' => ''
+        ]);
+
+        \App\Models\Area::factory()->create([
+            'nombre' => 'Dirección de Contratos',
+            'responsableId' => null,
+            'siglas' => 'DCONTRATOS',
+            'secretariaId' => $secretaria->id,
+            'status' => 1,
+            'departamento' => ''
+        ]);
+
+        \App\Models\Area::factory()->create([
+            'nombre' => 'Dirección de Planeación y Control Hacendario',
+            'responsableId' => null,
+            'siglas' => 'DCONTROLPLANEACION',
+            'secretariaId' => $secretaria->id,
+            'status' => 1,
+            'departamento' => ''
+        ]);
     }
 }

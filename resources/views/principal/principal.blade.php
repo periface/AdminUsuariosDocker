@@ -82,19 +82,19 @@
                 
                             <hr>
                 
-                            <h3 class="mt-3">¿Qué puedes hacer con este sistema?</h3>
-                            <ul class="list-group list-group-flush text-start mx-auto mt-3" style="max-width: 400px;">
-                                <li class="list-group-item">📊 Registrar y gestionar indicadores de desempeño.</li>
-                                <li class="list-group-item">📈 Visualizar reportes y gráficos en tiempo real.</li>
-                                <li class="list-group-item">📌 Evaluar la eficiencia y eficacia de los procesos.</li>
-                                <li class="list-group-item">⚡ Optimizar la toma de decisiones administrativas.</li>
+                            <h3 class="mt-3 text-gray-700">¿Qué puedes hacer con este sistema?</h3>
+                            <ul class="list-group list-group-flush text-start mx-auto mt-3 " style="max-width: 400px;">
+                                <li class="list-group-item text-gray-700">📊 Registrar y gestionar indicadores de desempeño.</li>
+                                <li class="list-group-item text-gray-700">📈 Visualizar reportes y gráficos en tiempo real.</li>
+                                <li class="list-group-item text-gray-700">📌 Evaluar la eficiencia y eficacia de los procesos.</li>
+                                <li class="list-group-item text-gray-700">⚡ Optimizar la toma de decisiones administrativas.</li>
                             </ul>
                 
                             <div class="mt-4">
                                 <a href="manual_usuario.pdf" class="btn btn-outline-secondary btn-sm">Ver Manual de Usuario</a>
                             </div>
                 
-                            <p class="footer mt-4">Para soporte técnico, contacta a: <br> <a href="mailto:soportecontroladministrativo@tamaulipas.gob.mx" class=" text-white lowercase badge bg-danger">soportecontroladministrativo@tamaulipas.gob.mx</a></p>
+                            <p class="footer mt-4">Para soporte técnico, contacte a: <br> <a href="mailto:soportecontroladministrativo@tamaulipas.gob.mx" class=" text-white lowercase badge bg-danger">soportecontroladministrativo@tamaulipas.gob.mx</a></p>
                         </div>
                     </div>
                 </div>

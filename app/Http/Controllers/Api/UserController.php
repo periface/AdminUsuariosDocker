@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\UserArea;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Services\RoleService;
 
 // Services
+use Illuminate\Http\Request;
+use App\Services\RoleService;
 use App\Services\UserService;
 use App\Services\PermissionService;
 use App\Http\Controllers\Controller;
@@ -80,8 +82,15 @@ class UserController extends Controller
         $data = $request->all();
         $data['activation_token'] = Str::random(60);
         $data['is_active'] = false;
-        $data['secretariaId'] = $request->user()->secretariaId;
+
         $user = User::create($data);
+
+        UserArea::create([
+            'userId' => $user->id,
+            'areaId' => $data['areaId'],
+            'updated_at' => Carbon::now(),
+            'created_at' => Carbon::now()
+        ]);
 
         $wb_data = [
             "email" => $user->email,

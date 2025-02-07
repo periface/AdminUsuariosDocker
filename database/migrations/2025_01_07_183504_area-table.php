@@ -23,7 +23,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 65);
             $table->unsignedBigInteger('responsableId')->nullable();
-            $table->string('siglas', 10);
+            $table->string('siglas', 25);
             $table->boolean('status')->default(true);
             $table->unsignedBigInteger('secretariaId');
             $table->timestamps();

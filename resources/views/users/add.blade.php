@@ -18,19 +18,6 @@
     </div>
     <div class="row mt-2">
         <div class="col">
-            <label for="area">Area:</label>
-            <select class="form-select" id="areaId" name="areaId">
-
-                @foreach ($areas as $area)
-                    <option value="{{ $area->id }}">
-                            {{ $area["nombre"]}}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col">
             <label for="email">Email:</label>
             <input type="email" name="email" class="form-control" placeholder="Correo electrónico">
         </div>
@@ -41,7 +28,34 @@
             <input type="password" name="password" class="form-control" placeholder="Contraseña">
         </div>
     </div>
-    <div class=" modal-footer">
+    <input type="hidden" name="secretariaId" value="4">
+    <div class="row mt-2">
+        <div class="col">
+            <label for="area">Area a la que pertenece:</label>
+            <select class="form-select" id="areaId" name="areaId">
+                <option value="0">Seleccione</option>
+                @foreach ($areas as $area)
+                    <option value="{{ $area->id }}">
+                            {{ $area["nombre"]}}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <label for="area">Rol que desempeña:</label>
+            <select class="form-select" id="roleId" name="roleId">
+                <option value="0">Seleccione</option>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->id }}">
+                            {{ $role->alias}}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class=" modal-footer mt-2">
         <button type="button" class="btn btn-inst3 btn-sm" data-bs-dismiss="modal">
             <small>CANCELAR</small>
         </button>

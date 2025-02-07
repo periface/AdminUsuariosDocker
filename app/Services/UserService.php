@@ -17,7 +17,6 @@ class UserService
         $usersDb = User::all();
 
         $userDtoList = array();
-
         if (count($usersDb) > 0) {
 
             foreach ($usersDb as $user) {
@@ -32,11 +31,10 @@ class UserService
                     $user->updated_at,
                     $user->areaId,
                     $user->secretariaId,
-                    $area != null ? $area->nombre : null,
+                    $area != null ? $area['nombre'] : null
                 );
             }
         }
-
         return $userDtoList;
     }
 
@@ -54,7 +52,7 @@ class UserService
             $user->updated_at,
             $user->areaId,
             $user->secretariaId,
-            $area != null ? $area->nombre : null,
+            $area != null ? $area['nombre'] : null,
         );
 
 

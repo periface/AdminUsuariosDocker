@@ -28,20 +28,23 @@ class UserController extends Controller
     {
 
         $users = $this->userService->getAllUsers();
+
         foreach ($users as $user) {
-            $user->areaName = Area::where('id', $user->areaId)->first()->nombre;
             $role = $this->roleService->getUserRoles($user);
             if (!empty($role)) {
                 $user->rol = $role[0]->alias;
             }
         }
+
         return view('users.index', compact('users'));
     }
 
     public function add(Request $request)
     {
         $areas = Area::all();
-        return view('users.add', compact('areas'));
+        $roles = $this->roleService->getAllRoles();
+
+        return view('users.add', compact('areas', 'roles'));
     }
 
     public function edit(User $user)

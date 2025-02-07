@@ -49,6 +49,7 @@ class AreaController extends Controller
     //
     public function store(Request $request)
     {
+
         try {
 
             $request->validate([
@@ -56,6 +57,8 @@ class AreaController extends Controller
                 'siglas' => 'required',
                 'secretariaId' => 'required'
             ]);
+
+
 
             $area = Area::create($request->all());
 
