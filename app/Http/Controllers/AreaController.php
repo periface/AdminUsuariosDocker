@@ -22,7 +22,20 @@ class AreaController extends Controller
 
     public function index()
     {
-        $areas = $this->areaService->getAllAreas();
+        $user = auth()->user();
+
+        $role = $user->getRoleNames();
+        dd($role);
+        switch ($role[0]) {
+            case 'SPA':
+                $areas = $this->areaService->getAreaById($user->areaId);
+                break;
+            
+            default:
+                $areas = $this->areaService->getAllAreas();
+                break;
+        }
+
 
         return view('areas.index', compact('areas'));
     }

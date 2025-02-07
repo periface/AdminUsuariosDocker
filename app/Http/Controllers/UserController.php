@@ -27,7 +27,21 @@ class UserController extends Controller
     public function index()
     {
 
-        $users = $this->userService->getAllUsers();
+        $user = auth()->user();
+        $role = $user->getRoleNames();
+
+
+        dd($role);
+
+        switch ($role[0]) {
+            case 'SPA':
+                $users = $this->userService->getUsersByArea($user);
+                break;
+            
+            default:
+                $users = $this->userService->getAllUsers();
+                break;
+        }
 
         foreach ($users as $user) {
             // $user->areaName = Area::where('id', $user->areaId)->first()->nombre;

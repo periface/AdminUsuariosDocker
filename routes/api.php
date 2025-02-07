@@ -56,6 +56,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('roles/{role}',                              [RoleController::class, 'update']);
         Route::delete('roles/{role}',                           [RoleController::class, 'destroy']);
     });
+    
+
+    // Accesos para responsables de área
+    Route::group(['middleware' => ['role:SPA|ADM']], function () {
+        Route::get('users',                                     [UserController::class, 'index']);
+        Route::get('areas',                                     [AreaController::class, 'index']);
+    });
+
     // Áreas
     Route::group(['middleware' => ['role:ADM|ADC']], function () {
         Route::get('areas',                                     [AreaController::class, 'index']);
