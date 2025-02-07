@@ -5,24 +5,20 @@
 <table class="table table-striped projects" id="evaluacionesTable">
     <thead class="small">
         <tr class="w-full">
-            <th style="width: 20%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
-                Nombre <i class="pl-2 fas fa-sort"></i>
+            <th style="width: 40%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
+                Evaluación <i class="pl-2 fas fa-sort"></i>
             </th>
-
-            <th style="width: 25%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
-                Área <i class="pl-2 fas fa-sort"></i>
-            </th>
-            <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
-                Meta <i class="pl-2 fas fa-sort"></i>
-            </th>
-
             <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
                 Total <i class="pl-2 fas fa-sort"></i>
+            </th>
+
+            <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
+                Meta <i class="pl-2 fas fa-sort"></i>
             </th>
             <th style="width: 20%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
                 Semaforo <i class="pl-2 fas fa-sort"></i>
             </th>
-            <th style="width: 50%" class="flex items-center align-middle">
+            <th style="width: 30%" class="flex items-center align-middle">
                 Acciones
             </th>
         </tr>
@@ -35,19 +31,20 @@
         @else
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
-                    <td>{{ $evaluacion['descripcion'] }}</td>
-                    <td>{{ $evaluacion->area['nombre'] }}</td>
-                    <td class="font-bold text-green-900">{{ $evaluacion['meta'] }}</td>
+                    <td>Evaluando
+                        <span class="font-bold text-pink-950">{{ $evaluacion->area['nombre'] }}</span> con
+                        <span class="font-bold text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span>
+                    </td>
                     <td class="font-bold">
-                        @if ($evaluacion['total'] < $evaluacion['meta'])
-                            <span class="badge badge-danger">
-                                {{ $evaluacion['total'] }}
-                            </span>
-                        @else
-                            <span class="badge badge-success text-xs">
-                                {{ $evaluacion['total'] }}
-                            </span>
-                        @endif
+                        @include('partials.evaluacion_total', [
+                            'evaluacion' => $evaluacion,
+                        ])
+                    </td>
+                    <td class="font-bold">
+
+                        @include('partials.evaluacion_meta', [
+                            'evaluacion' => $evaluacion,
+                        ])
                     </td>
                     <td>
                         <span class="">
@@ -89,7 +86,7 @@
                             </div>
                     </td>
                     <td>
-                        <div class="btn-group btn-group-sm" role="group"
+                        <div class="btn-group btn-group-xs" role="group"
                             aria-label="Button group with nested dropdown">
                             <button type="button" class="btn btnSecondaryOficial js-view-registros"
                                 data-id="{{ $evaluacion->id }}">Registros</button>

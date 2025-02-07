@@ -23,7 +23,7 @@ class IndicadoresSeeder extends Seeder
             'descripcion' => 'Mide el porcentaje de expedientes de compras devueltos por la DGCyOP a la Dirección Administrativa por motivo de observaciones',
             'status' => true,
             'sentido' => 'descendente',
-            'unidad_medida' => '%',
+            'unidad_medida' => 'porcentaje',
             'metodo_calculo' => '(Expedientes de compra devueltos con observaciones
 por la DGCyOP/ Expedientes de compra entregados a la DGCyOP) *100',
             'dimensionId' => $dimensionCalidad->id,

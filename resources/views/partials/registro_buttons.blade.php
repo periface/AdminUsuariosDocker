@@ -25,15 +25,12 @@
         @endif
     @else
         @if (auth()->user()->hasRole('ADM'))
-            <p class="text-sm">{{ $espacio['days_left'] }}</p> <br>
             <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
                 class="js-registrar btn btnSecondaryOficial btn-flat btn-sm indicadorModalBtn">
                 <i class="fa fa-plus
                                 "></i>
                 Editar
             </button>
-        @else
-            <span class="badge badge-warning">{{ $espacio['days_left'] }}</span>
         @endif
     @endif
 

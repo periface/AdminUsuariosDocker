@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Evaluacion;
 use App\Models\Indicador;
 use App\Models\Variable;

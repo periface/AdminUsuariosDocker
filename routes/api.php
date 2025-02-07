@@ -96,8 +96,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('/evaluacion', [EvaluacionController::class, 'post']);
         Route::delete('/evaluacion/{id}', [EvaluacionController::class, 'delete']);
+        Route::get('/evaluacion/{id}/stats', [EvaluacionController::class, 'get_evaluacion_stats_req']);
         // Registros
         Route::post('/registro', [RegistrosController::class, 'post']);
+        Route::get('/registro/{id}/{status}', [RegistrosController::class, 'set_status']);
+
         Route::get('/registro/{id}/{status}', [RegistrosController::class, 'set_status']);
     });
 });

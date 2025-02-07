@@ -26,32 +26,44 @@
                 </nav>
             </div>
 
-            <div id="table-container">
-            </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="bg-white rounded-md shadow-sm p-3">
 
-            <div class="grid grid-cols-1">
-                <div>
+                                    <span class="badge bg-pink-950 rounded-none">
+                                        <i class="fa-solid fa-info"></i> | Información
+                                    </span>
+                                    <p class="m-0 text-md">
+                                        <span>
+                                            {{ $indicador['descripcion'] }}
+                                        </span>
+                                    </p>
 
-                    <p class="m-0 text-sm">
-                        <span class="font-bold">
-                            Descripción:
-                        </span> <br>
-                        <span class="text-pink-900">
-                        </span>
-                        Indicador:
-                        <span>
-                            {{ $indicador['descripcion'] }}
-                        </span>
-                    </p>
+                                    <br>
+                                    <hr>
+                                    <div class="grid grid-cols-2 mt-2 text-center items-center">
+                                        <div id="status">
+                                        </div>
 
-                    <p class="m-0 text-sm">
-                        <span class="font-bold">
-                            Método de cálculo:
-                        </span> <br>
-                        <span>
-                            {{ $indicador['metodo_calculo'] }}
-                        </span>
-                    </p>
+                                        <div id="total">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <hr>
+                                    <br>
+                                    <canvas id="donut-chart" class="w-full h-auto">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div class="col-12 p-10">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="table-container" class="col-9 bg-white shadow-sm">
+                    </div>
                 </div>
             </div>
         </div>
