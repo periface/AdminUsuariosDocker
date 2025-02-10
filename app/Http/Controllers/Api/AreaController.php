@@ -58,8 +58,6 @@ class AreaController extends Controller
                 'secretariaId' => 'required'
             ]);
 
-
-
             $area = Area::create($request->all());
 
             return response()->json([

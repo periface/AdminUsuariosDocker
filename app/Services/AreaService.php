@@ -65,4 +65,12 @@ class AreaService
         }
         return $areaDtoList;
     }
+
+    public function setResponsableArea(User $user){
+
+        $area = Area::where('id', $user->areaId)
+                    ->update(['responsableId' => $user->id]);
+        return $area;
+    
+    }
 }
