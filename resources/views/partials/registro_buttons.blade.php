@@ -46,6 +46,11 @@
                 <li><a class="dropdown-item js-rechazar" href="#" data-id="{{ $espacio['id'] }}"
                         data-espacio="{{ json_encode($espacio) }}">Rechazar</a>
                 </li>
+                @if ($espacio['requiere_anexo'] == 1)
+                    <li><a class="dropdown-item js-anexo" href="#" data-id="{{ $espacio['id'] }}"
+                            data-espacio="{{ json_encode($espacio) }}">Subir Anexo</a>
+                    </li>
+                @endif
             @endif
         </ul>
     </div>

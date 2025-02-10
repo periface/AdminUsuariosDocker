@@ -277,10 +277,11 @@ function total_meta(data) {
     total.innerHTML = total_html;
 }
 function get_total_html(data) {
-    const { total, sentido, totalValue, metaValue } = data;
+    let { total, sentido, totalValue, metaValue } = data;
     let icon = '';
     let color = '';
-    let text = '';
+    totalValue = parseInt(totalValue);
+    metaValue = parseInt(metaValue);
     switch (sentido) {
         case 'ascendente':
             if (totalValue < metaValue) {
