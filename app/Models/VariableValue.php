@@ -46,8 +46,4 @@ class VariableValue extends Model
     {
         return $this->belongsTo(Secretaria::class, 'secretariaId', 'id');
     }
-    public function aprobadoPor()
-    {
-        return $this->belongsTo(User::class, 'aprobadoPorId', 'id');
-    }
 }

@@ -512,7 +512,6 @@ class EvaluacionController extends BaseController
                     'variableId' => $variable->id,
                     'usuarioId' => $user_id,
                     'status' => 'pendiente',
-                    'aprobadoPorId' => null
                 ];
                 $db_variable = \App\Models\VariableValue::insert($variable_valor);
                 $variables_valor[] = $db_variable;
