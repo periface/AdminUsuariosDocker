@@ -51,17 +51,17 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Accesos para responsables de área
-    Route::group(['middleware' => ['role:SPA|ADM']], function () {
-        Route::get('/users',                                         [UserController::class, 'index']);
-        Route::get('/areas',                                         [AreaController::class, 'index']);
-    });
+    // Route::group(['middleware' => ['role:ADM|SPA']], function () {
+        Route::get('/users',                                         [UserController::class, 'index'])->middleware('role:SPA|ADM');
+        Route::get('/areas',                                         [AreaController::class, 'index'])->middleware('role:SPA|ADM');
+    // });
 
     // Areas
-    Route::group(['middleware' => ['role:ADM|SPA']], function () {
+    // Route::group(['middleware' => ['role:ADM']], function () {
         Route::get('/areas',                                          [AreaController::class, 'index']);
         Route::get('/areas/{area}/edit',                              [AreaController::class, 'createOrEdit']);
         Route::get('/areas/create',                                   [AreaController::class, 'create']);
-    });
+    // });
 
     // Auth
     Route::post('/logout',                                            [AuthController::class, 'logout'])->name('logout');
@@ -102,8 +102,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('secretaria')->name("secretaria.")->group(function () {
-        Route::get('/',  [SecretariaController::class, 'index'])->name('index');
+        Route::get('/',  [SecretariaController::class, 'index'])->middleware('role:ADM')->name('index');
         Route::post('/get_table_rows',  [SecretariaController::class, 'get_rows'])->name('get_table_rows');
-        Route::get('/get_secretaria_fields',  [SecretariaController::class, 'get_secretaria_fields'])->name('get_secretaria_fields');
-    });
+        Route::get('/get_secretaria_fields',  [SecretariaController::class, 'get_secretaria_fields'])->middleware('role:ADM')->name('get_secretaria_fields');
+    })->middleware('role:ADM');
 });
