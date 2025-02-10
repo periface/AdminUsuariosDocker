@@ -36,15 +36,15 @@
                                     <span class="badge bg-pink-950 rounded-none">
                                         <i class="fa-solid fa-info"></i> | Área
                                     </span>
-                                    <p class="m-0 text-md">
+                                    <p class="m-0 text-sm font-bold">
                                         <span>
                                             {{ $area['nombre'] }}
                                         </span>
                                     </p>
-                                    <span class="badge bg-pink-950 rounded-none">
+                                    <span class="badge bg-pink-950 rounded-none text-md">
                                         <i class="fa-solid fa-info"></i> | Indicador
                                     </span>
-                                    <p class="m-0 text-md" title="{{ $indicador['descripcion'] }}">
+                                    <p class="m-0 text-sm font-bold" title="{{ $indicador['descripcion'] }}">
                                         <span>
                                             {{ $indicador['nombre'] }}
                                         </span>
@@ -81,6 +81,29 @@
                     <div id="table-container" class="col-9 bg-white shadow-sm">
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade modal-lg" id="anexoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="anexoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="anexoModalLabel">Anexos</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="anexoForm">
+                        <div id="anexoFields">
+                        </div>
+                        <div class="modal-footer mt-4">
+                            <hr>
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>

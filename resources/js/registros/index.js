@@ -1,6 +1,6 @@
 import { get_stats, load_registro_form, post_registros, set_status, get_rows } from './cruds.js';
 import { show_confirm_action } from '../utils/helpers.js';
-
+import { get_anexos, upload_file } from './anexos_cruds.js';
 import { Chart } from "chart.js/auto";
 import { debounce, createToast, assert, restart_popovers } from '../utils/helpers.js';
 import { Repl } from 'pochijs';
@@ -102,6 +102,7 @@ async function start_datatable() {
         set_table_header_events();
         await set_modal_event_listener();
         set_table_footer_events();
+        await set_anexos_event_listener();
 
     } catch (error) {
         state.is_table_loading = false;
@@ -120,7 +121,90 @@ async function start_datatable() {
 const init_view = async () => {
     await start_datatable();
 }
+async function set_anexos_event_listener() {
+    const modal = document.getElementById('anexoModal');
+    const container = document.getElementById('anexoFields');
+    const anexos = document.getElementsByClassName('js-anexo');
+    for await (const anexo of anexos) {
+        anexo.addEventListener('click', async (e) => {
+            const id = e.target.dataset.id;
+            const anexo = e.target.dataset.espacio;
+            console.log(anexo);
+            const { data, error } = await get_anexos(id, state);
+            if (error) {
+                console.error(error);
+                return;
+            }
+            container.innerHTML = data;
+            $(modal).modal('show');
+            await on_anexos_view_loaded();
+        });
+    }
 
+}
+async function on_anexos_view_loaded() {
+    const dropzone = document.getElementById('dropZone');
+    const jsFileTrigger = document.getElementById("js-file-trigger");
+    const jsFileInput = document.getElementById("js-file-input");
+
+    dropzone.addEventListener('dragover', async (e) => {
+        console.log('dragover');
+        e.preventDefault();
+        dropzone.classList.add('bg-gray-200');
+    });
+    dropzone.addEventListener('dragleave', async (e) => {
+        console.log('dragleave');
+        e.preventDefault();
+        dropzone.classList.remove('bg-gray-200');
+    });
+    dropzone.addEventListener('drop', async (e) => {
+        e.preventDefault();
+
+        const files = [];
+        if (e.dataTransfer.items) {
+            [...e.dataTransfer.items].forEach(async (item) => {
+                if (item.kind === 'file') {
+                    const file = item.getAsFile();
+                    files.push(file);
+                }
+            });
+            await upload_files(files);
+        }
+        else {
+            [...e.dataTransfer.files].forEach((file, i) => {
+                files.push(file);
+            });
+            await upload_files(files);
+        }
+    });
+    jsFileTrigger.addEventListener('click', async (e) => {
+        jsFileInput.click();
+    });
+    jsFileInput.addEventListener('change', async (e) => {
+        const files = e.target.files;
+        for await (const file of files) {
+            upload_file(file, state.evaluacionId, state);
+        }
+    });
+}
+async function upload_files(files) {
+    const file_count = files.length;
+    let uploaded_files = 0;
+    for (let i = 0; i < file_count; i++) {
+        const file = files[i];
+        const form_data = new FormData();
+        form_data.append('file', file);
+        const response = await upload_file(form_data, state.evaluacionId, state);
+        if (response.error) {
+            console.error(response.error);
+            return;
+        }
+        uploaded_files++;
+        const percent = (uploaded_files / file_count) * 100;
+        console.log(percent);
+    }
+
+}
 async function set_modal_event_listener() {
     if (state.events_set) return;
     for await (const validar_btn of state.validar_btns) {
@@ -277,11 +361,14 @@ function total_meta(data) {
     total.innerHTML = total_html;
 }
 function get_total_html(data) {
+    //es decimal  //es decimal tambn :v
     let { total, sentido, totalValue, metaValue } = data;
     let icon = '';
     let color = '';
+    // neta que a veces te odio js
     totalValue = parseInt(totalValue);
     metaValue = parseInt(metaValue);
+    //
     switch (sentido) {
         case 'ascendente':
             if (totalValue < metaValue) {
@@ -305,6 +392,8 @@ function get_total_html(data) {
             if (totalValue == metaValue) {
                 icon = '<i class="fas fa-equals"></i>';
                 color = 'success';
+            } else {
+                color = 'danger';
             }
             break;
         default:

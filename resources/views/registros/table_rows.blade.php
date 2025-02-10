@@ -23,6 +23,12 @@
                         'frecuencia_medicion' => $frecuencia_medicion,
                         'index' => $loop->index + 1,
                     ])
+
+                    @if ($espacio['requiere_anexo'] == 1)
+                        <a href="#" target="_blank">
+                            <span class="text-red-900 fa fa-paperclip text-sm ml-2"></span>
+                        </a>
+                    @endif
                     <br>
                     <span class="text-blue-900">{{ $espacio['days_left'] }}</span>
                 </td>

@@ -21,4 +21,8 @@ class EvaluacionResult extends Model
         'fecha',
         'status',
     ];
+    public function anexos()
+    {
+        return $this->hasMany(Anexo::class, 'evaluacionResultId', 'id');
+    }
 }

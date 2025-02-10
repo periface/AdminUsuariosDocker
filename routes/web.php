@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnexosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthController;
@@ -65,13 +66,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Auth
     Route::post('/logout',                                            [AuthController::class, 'logout'])->name('logout');
-    
 
-    Route::group(['middleware' => ['role:ADM']], function(){
+
+    Route::group(['middleware' => ['role:ADM']], function () {
         Route::get('/monitor',                                        [MonitorController::class, 'index']);
     });
 
-    
+
     // PERI WEB ROUTES
 
     Route::prefix('dimension')->name("dimension.")->group(function () {
@@ -105,5 +106,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/',  [SecretariaController::class, 'index'])->name('index');
         Route::post('/get_table_rows',  [SecretariaController::class, 'get_rows'])->name('get_table_rows');
         Route::get('/get_secretaria_fields',  [SecretariaController::class, 'get_secretaria_fields'])->name('get_secretaria_fields');
+    });
+
+    Route::prefix('anexos')->name("anexos.")->group(function () {
+        Route::get('/{id}',  [AnexosController::class, 'index'])->name('index');
+        Route::post('/upload/{id}', [AnexosController::class, 'upload'])->name('upload');
     });
 });
