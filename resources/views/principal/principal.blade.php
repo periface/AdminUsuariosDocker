@@ -74,6 +74,10 @@
         </div>
         <div class="col">
             <div class="row">
+                <!-- As a heading -->
+                <nav class="navbar navbar-light bg-light">
+                    <small class="navbar-brand mb-0 ml-10">Área{{ $area['nombre'] }}</small>
+                </nav>
                 <div id="content">
                     <div class="container welcome-container">
                         <div class="card">

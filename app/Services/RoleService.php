@@ -127,4 +127,11 @@ class RoleService{
 
     }
 
+    public function IsAdmin(User $user){
+        
+        $role = $user->getRoleNames();
+        
+        return ($role[0] === 'ADM') ? true : false;
+    }
+
 }
