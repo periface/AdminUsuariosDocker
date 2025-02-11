@@ -25,10 +25,11 @@ class AreaController extends Controller
         $user = auth()->user();
 
         $role = $user->getRoleNames();
-        dd($role);
+        
         switch ($role[0]) {
             case 'SPA':
-                $areas = $this->areaService->getAreaById($user->areaId);
+                $area = Area::find($user->areaId);
+                $areas = $this->areaService->getAreaById($area);
                 break;
             
             default:

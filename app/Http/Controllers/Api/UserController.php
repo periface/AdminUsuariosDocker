@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 // Services
 use Illuminate\Http\Request;
+use App\Services\AreaService;
 use App\Services\RoleService;
 use App\Services\UserService;
 use Spatie\Permission\Models\Role;
@@ -25,16 +26,19 @@ class UserController extends Controller
     protected $roleService;
     protected $permissionService;
     protected $roleController;
+    protected $areaService;
 
     public function __construct(UserService $userService, 
                                 RoleService $roleService, 
                                 PermissionService $permissionService,
-                                RoleController $roleController)
+                                RoleController $roleController,
+                                AreaService $areaService)
     {
         $this->userService          = $userService;
         $this->roleService          = $roleService;
         $this->permissionService    = $permissionService;
         $this->roleController       = $roleController;
+        $this->areaService          = $areaService;
     }
 
     /**
@@ -102,12 +106,18 @@ class UserController extends Controller
             // Le asignamos el rol
             $assignRoleResponse = $this->roleController->attachRole($user, $role);
 
+            // Establecemos la relación uno a muchos
             UserArea::create([
                 'userId' => $user->id,
                 'areaId' => $data['areaId'],
                 'updated_at' => Carbon::now(),
                 'created_at' => Carbon::now()
             ]);
+            
+            // Establecemos el responsable
+            if($role->name == "SPA"){
+                $area = $this->areaService->setResponsableArea($user);
+            }
 
             $wb_data = [
                 "email" => $user->email,

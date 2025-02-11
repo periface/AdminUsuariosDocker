@@ -30,9 +30,6 @@ class UserController extends Controller
         $user = auth()->user();
         $role = $user->getRoleNames();
 
-
-        dd($role);
-
         switch ($role[0]) {
             case 'SPA':
                 $users = $this->userService->getUsersByArea($user);

@@ -42,7 +42,35 @@ class AreaService
     }
 
     public function getAreaById(Area $area){
-        $area = Area::find($area->id);
-        dd($area);
+        $areasDb = Area::where('id', $area->id)
+                        ->get();
+        if (count($areasDb) > 0) {
+
+            foreach ($areasDb as $area) {
+                Log::info($area);
+                $user = User::find($area["responsableId"]);
+                $name = "Sin responsable asignado";
+                if ($user != null) {
+                    $name = $user->name . ' ' . $user->apPaterno . ' ' . $user->apMaterno;
+                }
+                $areaDtoList[] = new AreaDTO(
+                    $area->id,
+                    $area['nombre'],
+                    $area["siglas"],
+                    $name,
+                    $area["created_at"],
+                    $area["secretariaId"]
+                );
+            }
+        }
+        return $areaDtoList;
+    }
+
+    public function setResponsableArea(User $user){
+
+        $area = Area::where('id', $user->areaId)
+                    ->update(['responsableId' => $user->id]);
+        return $area;
+    
     }
 }
