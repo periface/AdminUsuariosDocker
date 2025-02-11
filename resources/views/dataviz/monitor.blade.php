@@ -1,3 +1,17 @@
+@section('estilos')
+    <style>
+        .error {
+            color: red;
+            font-weight: normal !important;
+            font-size: 14px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 35vh !important;
+        }
+    </style>
+@endsection
 <div class="container mt-3">
     <div class="row">
         <div class="col-12">
@@ -7,7 +21,7 @@
                         <span class="navbar-text text-bold text-white">
                             <i class="fas fa-chart-line"></i> | Monitor de Indicadores
                         </span>
-                      </div>
+                    </div>
                 </div>
                 <div class="col-6 d-flex justify-content-end pe-3 pt-2">
                     <span class="mb-2 btn btn-sm add-area btn-inst2">
@@ -23,7 +37,8 @@
                 <div class="col">
                     <h2 class="font-bold">Objetivo</h2>
                     <p class="mt-2">
-                        El objetivo del presente dashboard es presentar un análisis centrado en la eficiencia operativa, la gestión de recursos
+                        El objetivo del presente dashboard es presentar un análisis centrado en la eficiencia operativa,
+                        la gestión de recursos
                         y el cumplimiento de normas y la toma de deciones estratégicas.
                     </p>
                 </div>
@@ -39,28 +54,30 @@
                     <label class=" ml-5 mt-2 text-gray-500 font-bold"> 1.- Medición de dimensiones por área</label>
                     <p class=" ml-7 text-gray-500">
                         Propuesta: Gráfica de radar <br>
-                        Objetivo: Comparar el desempeño por área en cada una de las dimensiones. 
+                        Objetivo: Comparar el desempeño por área en cada una de las dimensiones.
                     </p>
-                    <label class=" ml-5 mt-2 text-gray-500 font-bold"> 2.- Análisis de desempeño interno por área</label>
+                    <label class=" ml-5 mt-2 text-gray-500 font-bold"> 2.- Análisis de desempeño interno por
+                        área</label>
                     <p class=" ml-7 text-gray-500">
                         Propuesta: Gráfica de barras apiladas <br>
                         Objetivo: Mostrar el desempeño interno de las dimensiones por cada área.
                     </p>
                 </div>
                 <div class="col-6">
-                    <label class=" ml-5 mt-2 text-gray-500 font-bold"> 
+                    <label class=" ml-5 mt-2 text-gray-500 font-bold">
                         3.- % Comparación de cumplimiento por área en un mismo
-                        indicador 
+                        indicador
                     </label>
                     <p class=" ml-7 text-gray-500">
-                        Propuesta: Gráfica de barras agrupadas que permita ver que porcentaje de cumplimiento 
+                        Propuesta: Gráfica de barras agrupadas que permita ver que porcentaje de cumplimiento
                         tiene cada área en un mismo indicador
                     </p>
-                    <label class=" ml-5 mt-2 text-gray-500 font-bold"> 
+                    <label class=" ml-5 mt-2 text-gray-500 font-bold">
                         4.- Detalle por área
                     </label>
                     <p class=" ml-7 text-gray-500">
-                        Propuesta: Tabla con el detalle de cumplimiento por cada área, permitir elegir una área o indicador en especifico
+                        Propuesta: Tabla con el detalle de cumplimiento por cada área, permitir elegir una área o
+                        indicador en especifico
                         y mostrar una página de detalle con esa área o indicador.
                     </p>
                 </div>

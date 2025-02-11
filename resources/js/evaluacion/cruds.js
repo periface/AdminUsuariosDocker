@@ -143,4 +143,43 @@ async function load_evaluacion_config(areaId, indicadorId, state) {
         toggle_loading(false);
     }
 }
-export { delete_evaluacion, load_evaluacion_config, get_rows, post_evaluacion, load_evaluacion_form };
+
+async function get_stats(id, state) {
+    try {
+        toggle_loading(true);
+        const response = await fetch("/api/v1/evaluacion" + '/' + id + '/stats', {
+            headers: {
+                'X-CSRF-TOKEN': state.xcsrftoken,
+                "Accept": "application/json, text/plain, */*",
+                "X-Requested-With": "XMLHttpRequest",
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + state.bearertoken
+            },
+            credentials: 'same-origin'
+        });
+        const json_response = await response.json();
+
+        return {
+            error: null,
+            data: json_response
+        };
+    }
+    catch (error) {
+        console.error(error);
+        return {
+            error: error,
+            data: null
+        };
+    }
+    finally {
+        toggle_loading(false);
+    }
+}
+export {
+    delete_evaluacion,
+    load_evaluacion_config,
+    get_rows,
+    post_evaluacion,
+    load_evaluacion_form,
+    get_stats
+};

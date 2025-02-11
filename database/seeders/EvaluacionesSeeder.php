@@ -107,7 +107,9 @@ class EvaluacionesSeeder extends Seeder
                 'resultado' => $result,
                 'status' => self::get_random_status(),
                 'fecha' => $fecha->fecha_captura,
-                'aprobadoPorId' => null
+                'aprobadoPorId' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             \App\Models\EvaluacionResult::insert($evaluacion_result);

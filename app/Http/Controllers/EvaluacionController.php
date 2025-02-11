@@ -283,7 +283,9 @@ class EvaluacionController extends BaseController
     {
         $evaluacion = Evaluacion::find($id);
         $evaluacion["area"] = Area::find($evaluacion["areaId"]);
-        $evaluacion["results"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)->count();
+
+        $evaluacion["evaluation_results"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)->get();
+        $evaluacion["results"] = count($evaluacion["evaluation_results"]);
 
         $evaluacion["results_capturado"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)
             ->where('status', 'capturado')
@@ -548,16 +550,22 @@ class EvaluacionController extends BaseController
     public function ficha($id)
     {
         $evaluacion = Evaluacion::find($id);
-        $evaluacion_results = EvaluacionResult::where('evaluacionId', $id)->get();
-        $variables = VariableValue::where('evaluacionId', $id)->get();
         $indicador = Indicador::find($evaluacion["indicadorId"]);
         $area = Area::find($evaluacion["areaId"]);
         return view('evaluacion.ficha', [
             'evaluacion' => $evaluacion,
-            'evaluacion_results' => $evaluacion_results,
-            'variables' => $variables,
             'indicador' => $indicador,
             'area' => $area
         ]);
+    }
+    public function get_chart_data(Request $request)
+    {
+        $id = $request->id;
+        $evaluacion_results = EvaluacionResult::where('evaluacionId', $id)->get();
+        response()->json([
+            'status' => 'success',
+            'data' => $evaluacion_results,
+            'statusCode' => 200
+        ], 200);
     }
 }

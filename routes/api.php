@@ -56,7 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('roles/{role}',                              [RoleController::class, 'update']);
         Route::delete('roles/{role}',                           [RoleController::class, 'destroy']);
     });
-    
+
 
     // Accesos para responsables de área
     Route::group(['middleware' => ['role:ADM|SPA']], function () {

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class EvaluacionResult extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTimestamps;
     public $evaluacionId;
     public $resultado;
     public $fecha;
