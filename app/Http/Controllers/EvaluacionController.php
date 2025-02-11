@@ -3,22 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
-use App\Models\Dimension;
-use App\Models\Evaluacion;
-use App\Models\EvaluacionResult;
-use App\Models\Indicador;
-use App\Models\Secretaria;
 use App\Models\User;
-use Illuminate\Routing\Controller as BaseController;
+use App\Models\Dimension;
+use App\Models\Indicador;
+use App\Models\Evaluacion;
+use App\Models\Secretaria;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
-
+use App\Models\VariableValue;
+use App\Services\RoleService;
+use App\Models\EvaluacionResult;
 use function Illuminate\Log\log;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controller as BaseController;
 
 class EvaluacionController extends BaseController
 {
+
+    protected $roleService;
+
+    public function __construct(RoleService $roleService){
+
+        $this->roleService = $roleService;
+
+    }
+
     public function index()
     {
         return view('evaluacion.index');
@@ -208,8 +219,27 @@ class EvaluacionController extends BaseController
         $totalRows = 0;
         $totalPages = 0;
         try {
+            /**
+             * Inicia valida ROL
+             * En este bloque se valida el rol que tenga el usuario logueado
+             * para limitar la información que va a consultar dependiendo el ROL
+             * con el que cuente.
+             */
+            $user = auth()->user();
+            $roles = $user->getRoleNames();
+            if(!($roles[0] === "ADM")){
+                $evaluaciones = Evaluacion::where('areaId', $user->areaId)
+                                                ->get();
+            }else {
+                $evaluaciones = Evaluacion::all();
+            }
+
+            /**
+             * Fin valida ROL
+             */
+
             if ($search !== '') {
-                $evaluaciones = Evaluacion::where('descripcion', 'like', "%$search%")
+                $evaluaciones = $evaluaciones::where('descripcion', 'like', "%$search%")//Evaluacion::where('descripcion', 'like', "%$search%")
                     ->orderBy($sort, $order)
                     ->limit($limit)
                     ->offset($offset)
@@ -219,11 +249,11 @@ class EvaluacionController extends BaseController
                 $grandTotalRows = $totalRows;
                 $totalPages = ceil($totalRows / $limit);
             } else {
-                $evaluaciones = Evaluacion::orderBy($sort, $order)
+                $evaluaciones = $evaluaciones::orderBy($sort, $order) //Evaluacion::orderBy($sort, $order)
                     ->limit($limit)
                     ->offset($offset)
                     ->get();
-                $grandTotalRows = Evaluacion::count();
+                $grandTotalRows = $evaluaciones::count(); //Evaluacion::count();
                 $totalRows = $grandTotalRows;
                 $totalPages = ceil($totalRows / $limit);
             }
@@ -236,7 +266,6 @@ class EvaluacionController extends BaseController
         foreach ($evaluaciones as $evaluacion) {
             $evaluacion = $this->get_evaluacion_stats($evaluacion);
         }
-
         return view('evaluacion.table_rows', [
             'evaluaciones' => $evaluaciones,
             'totalRows' => $totalRows,

@@ -19,8 +19,8 @@ class UserController extends Controller
 
     public function __construct(UserService $userService, RoleService $roleService, PermissionService $permissionService)
     {
-        $this->userService = $userService;
-        $this->roleService = $roleService;
+        $this->userService       = $userService;
+        $this->roleService       = $roleService;
         $this->permissionService = $permissionService;
     }
 
