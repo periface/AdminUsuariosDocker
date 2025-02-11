@@ -1,6 +1,6 @@
 import { get_stats, load_registro_form, post_registros, set_status, get_rows } from './cruds.js';
 import { show_confirm_action } from '../utils/helpers.js';
-import { get_anexos, upload_file } from './anexos_cruds.js';
+import { get_anexos, upload_file, delete_anexo } from './anexos_cruds.js';
 import { Chart } from "chart.js/auto";
 import { debounce, createToast, assert, restart_popovers } from '../utils/helpers.js';
 import { Repl } from 'pochijs';
@@ -121,89 +121,115 @@ async function start_datatable() {
 const init_view = async () => {
     await start_datatable();
 }
-async function set_anexos_event_listener() {
+async function load_anexos_modal_html(id) {
     const modal = document.getElementById('anexoModal');
     const container = document.getElementById('anexoFields');
+    const { data, error } = await get_anexos(id, state);
+    if (error) {
+        console.error(error);
+        return;
+    }
+    container.innerHTML = data;
+    $(modal).modal('show');
+    await on_anexos_view_loaded();
+}
+async function set_anexos_event_listener() {
     const anexos = document.getElementsByClassName('js-anexo');
     for await (const anexo of anexos) {
         anexo.addEventListener('click', async (e) => {
+            e.preventDefault();
             const id = e.target.dataset.id;
-            const anexo = e.target.dataset.espacio;
-            console.log(anexo);
-            const { data, error } = await get_anexos(id, state);
-            if (error) {
-                console.error(error);
-                return;
-            }
-            container.innerHTML = data;
-            $(modal).modal('show');
-            await on_anexos_view_loaded();
+            await load_anexos_modal_html(id);
         });
     }
 
+}
+async function reload_anexos() {
+    await load_anexos_modal_html(state.evaluacionId);
 }
 async function on_anexos_view_loaded() {
     const dropzone = document.getElementById('dropZone');
     const jsFileTrigger = document.getElementById("js-file-trigger");
     const jsFileInput = document.getElementById("js-file-input");
-
+    const jsDeleteAnexo = document.getElementsByClassName('js-delete-anexo');
     dropzone.addEventListener('dragover', async (e) => {
-        console.log('dragover');
         e.preventDefault();
         dropzone.classList.add('bg-gray-200');
     });
     dropzone.addEventListener('dragleave', async (e) => {
-        console.log('dragleave');
         e.preventDefault();
         dropzone.classList.remove('bg-gray-200');
     });
     dropzone.addEventListener('drop', async (e) => {
         e.preventDefault();
-
         const files = [];
         if (e.dataTransfer.items) {
-            [...e.dataTransfer.items].forEach(async (item) => {
+            [...e.dataTransfer.items].forEach((item) => {
                 if (item.kind === 'file') {
                     const file = item.getAsFile();
+                    if (file) {
+                        files.push(file);
+                    }
+                }
+            });
+            const files_form_data = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                files_form_data.append('file[]', files[i]);
+            }
+            await upload_file(files_form_data, state.evaluacionId, state);
+            await reload_anexos();
+        }
+        else {
+            [...e.dataTransfer.files].forEach((file) => {
+                if (file) {
                     files.push(file);
                 }
             });
-            await upload_files(files);
-        }
-        else {
-            [...e.dataTransfer.files].forEach((file, i) => {
-                files.push(file);
-            });
-            await upload_files(files);
+            const files_form_data = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                files_form_data.append('file[]', files[i]);
+            }
+            await upload_file(files_form_data, state.evaluacionId, state);
+            await reload_anexos();
         }
     });
-    jsFileTrigger.addEventListener('click', async (e) => {
+    jsFileTrigger.addEventListener('click', (e) => {
         jsFileInput.click();
     });
     jsFileInput.addEventListener('change', async (e) => {
         const files = e.target.files;
-        for await (const file of files) {
-            upload_file(file, state.evaluacionId, state);
-        }
-    });
-}
-async function upload_files(files) {
-    const file_count = files.length;
-    let uploaded_files = 0;
-    for (let i = 0; i < file_count; i++) {
-        const file = files[i];
-        const form_data = new FormData();
-        form_data.append('file', file);
-        const response = await upload_file(form_data, state.evaluacionId, state);
-        if (response.error) {
-            console.error(response.error);
+        if (!files) {
+            console.error('No files selected');
             return;
         }
-        uploaded_files++;
-        const percent = (uploaded_files / file_count) * 100;
-        console.log(percent);
-    }
+        const files_form_data = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            files_form_data.append('file[]', files[i]);
+        }
+        await upload_file(files_form_data, state.evaluacionId, state);
+        await reload_anexos();
+    });
+    for await (const delete_anexo_btn of jsDeleteAnexo) {
+        delete_anexo_btn.addEventListener('click', async (e) => {
+            const id = e.target.dataset.id;
+            if (!id) {
+                console.error('Id no definido');
+                return;
+            }
+            const response = await show_confirm_action(
+                '¿Esta seguro(a) de eliminar este anexo?',
+                'Esta acción no se puede deshacer',
+                'warning'
+            );
+            if (!response) {
+                return;
+            }
+            await delete_anexo(id, state);
+            await reload_anexos();
+            createToast('Anexos', 'Anexo eliminado con éxito', 'success');
+        });
 
+    }
 }
 async function set_modal_event_listener() {
     if (state.events_set) return;

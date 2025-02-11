@@ -55,8 +55,7 @@
                                     <div class="grid grid-cols-2 mt-2 text-center items-center">
                                         <div id="status">
                                         </div>
-
-                                        <div id="total">
+                                       <div id="total">
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-1 mt-2">
@@ -90,7 +89,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="anexoModalLabel">Anexos</h1>
+                    <h1 class="modal-title fs-5" id="anexoModalLabel">Medio de Verificación</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

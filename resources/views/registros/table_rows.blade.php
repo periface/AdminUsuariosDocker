@@ -25,7 +25,7 @@
                     ])
 
                     @if ($espacio['requiere_anexo'] == 1)
-                        <a href="#" target="_blank">
+                        <a target="_blank" class="cursor-pointer">
                             <span class="text-red-900 fa fa-paperclip text-sm ml-2"></span>
                         </a>
                     @endif

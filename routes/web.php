@@ -110,6 +110,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('anexos')->name("anexos.")->group(function () {
         Route::get('/{id}',  [AnexosController::class, 'index'])->name('index');
+        Route::get('/get_rows/{id}',  [AnexosController::class, 'get_rows'])->name('get_rows');
         Route::post('/upload/{id}', [AnexosController::class, 'upload'])->name('upload');
+        Route::delete('/{id}', [AnexosController::class, 'delete'])->name('delete');
     });
 });
