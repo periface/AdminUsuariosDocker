@@ -100,6 +100,13 @@ function get_meta_html(data) {
         ${icon}
     </span>`;
 }
+function get_month_name_and_day(date) {
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const d = new Date(date);
+    const result = `${months[d.getMonth()]} ${d.getDate()}`;
+    // add year at end
+    return result + ' ' + d.getFullYear();
+}
 function get_line_data(data) {
     console.log(data);
     data.evaluation_results = data.evaluation_results.filter((evaluation) => evaluation.resultado != null);
@@ -117,7 +124,7 @@ function get_line_data(data) {
     const data_set = [];
     let index = 0;
     for (const evaluation of data.evaluation_results) {
-        labels.push(evaluation.fecha);
+            labels.push(get_month_name_and_day(evaluation.fecha));
         main_data_set.data.push({
             x: labels[index],
             y: evaluation.resultado
