@@ -47,6 +47,7 @@
                 <li><a class="dropdown-item js-rechazar cursor-pointer"  data-id="{{ $espacio['id'] }}"
                         data-espacio="{{ json_encode($espacio) }}">Rechazar</a>
                 </li>
+
             @endif
 
             @if ($espacio['requiere_anexo'] == 1)

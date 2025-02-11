@@ -94,6 +94,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/get_evaluacion_fields',  [EvaluacionController::class, 'get_evaluacion_fields'])->name('get_evaluacion_fields');
         Route::get('/get_evaluacion_details',  [EvaluacionController::class, 'get_evaluacion_details'])->name('get_evaluacion_details');
         Route::get('/{id}/registros',  [RegistrosController::class, 'registros'])->name('registros');
+        Route::get('/{id}/ficha',  [EvaluacionController::class, 'ficha'])->name('ficha');
     });
 
     Route::prefix('registro')->name("registro.")->group(function () {

@@ -95,8 +95,14 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
+
+                                    <li><a class="dropdown-item ficha cursor-pointer"
+                                            href="{{ route('evaluacion.ficha', ['id' => $evaluacion->id]) }}"
+                                            data-id="{{ $evaluacion->id }}">Ficha</a>
+                                    </li>
                                     <li><a class="dropdown-item js-delete-evaluacion" href="#"
                                             data-id="{{ $evaluacion->id }}">Eliminar</a></li>
+
                                 </ul>
                             </div>
                         </div>

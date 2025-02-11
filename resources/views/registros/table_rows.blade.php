@@ -24,11 +24,6 @@
                         'index' => $loop->index + 1,
                     ])
 
-                    @if ($espacio['requiere_anexo'] == 1)
-                        <a target="_blank" class="cursor-pointer">
-                            <span class="text-red-900 fa fa-paperclip text-sm ml-2"></span>
-                        </a>
-                    @endif
                     <br>
                     <span class="text-blue-900">{{ $espacio['days_left'] }}</span>
                 </td>

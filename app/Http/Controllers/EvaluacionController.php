@@ -24,10 +24,10 @@ class EvaluacionController extends BaseController
 
     protected $roleService;
 
-    public function __construct(RoleService $roleService){
+    public function __construct(RoleService $roleService)
+    {
 
         $this->roleService = $roleService;
-
     }
 
     public function index()
@@ -227,10 +227,10 @@ class EvaluacionController extends BaseController
              */
             $user = auth()->user();
             $roles = $user->getRoleNames();
-            if(!($roles[0] === "ADM")){
+            if (!($roles[0] === "ADM")) {
                 $evaluaciones = Evaluacion::where('areaId', $user->areaId)
-                                                ->get();
-            }else {
+                    ->get();
+            } else {
                 $evaluaciones = Evaluacion::all();
             }
 
@@ -239,7 +239,7 @@ class EvaluacionController extends BaseController
              */
 
             if ($search !== '') {
-                $evaluaciones = $evaluaciones::where('descripcion', 'like', "%$search%")//Evaluacion::where('descripcion', 'like', "%$search%")
+                $evaluaciones = $evaluaciones::where('descripcion', 'like', "%$search%") //Evaluacion::where('descripcion', 'like', "%$search%")
                     ->orderBy($sort, $order)
                     ->limit($limit)
                     ->offset($offset)
@@ -544,5 +544,20 @@ class EvaluacionController extends BaseController
             }
         }
         return [$variables_valor, $evaluation_results];
+    }
+    public function ficha($id)
+    {
+        $evaluacion = Evaluacion::find($id);
+        $evaluacion_results = EvaluacionResult::where('evaluacionId', $id)->get();
+        $variables = VariableValue::where('evaluacionId', $id)->get();
+        $indicador = Indicador::find($evaluacion["indicadorId"]);
+        $area = Area::find($evaluacion["areaId"]);
+        return view('evaluacion.ficha', [
+            'evaluacion' => $evaluacion,
+            'evaluacion_results' => $evaluacion_results,
+            'variables' => $variables,
+            'indicador' => $indicador,
+            'area' => $area
+        ]);
     }
 }
