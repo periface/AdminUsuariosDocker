@@ -133,4 +133,10 @@ async function set_status(id, status, state) {
         toggle_loading(false);
     }
 }
-export { get_rows, load_registro_form, post_registros, set_status, get_stats };
+export {
+    get_rows,
+    load_registro_form,
+    post_registros,
+    set_status,
+    get_stats
+};

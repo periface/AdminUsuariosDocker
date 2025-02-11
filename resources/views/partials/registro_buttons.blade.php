@@ -39,12 +39,19 @@
             aria-expanded="false">
         </button>
         <ul class="dropdown-menu">
+
             @if (Auth::user()->hasRole('ADM'))
                 <li><a class="dropdown-item js-validar" href="#" data-id="{{ $espacio['id'] }}"
                         data-espacio="{{ json_encode($espacio) }}">Validar</a>
                 </li>
                 <li><a class="dropdown-item js-rechazar" href="#" data-id="{{ $espacio['id'] }}"
                         data-espacio="{{ json_encode($espacio) }}">Rechazar</a>
+                </li>
+            @endif
+
+            @if ($espacio['requiere_anexo'] == 1)
+                <li><a class="dropdown-item js-anexo" href="#" data-id="{{ $espacio['id'] }}"
+                        data-espacio="{{ json_encode($espacio) }}">Anexos</a>
                 </li>
             @endif
         </ul>

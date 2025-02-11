@@ -10,7 +10,7 @@
     </span>
 @elseif ($evaluacion['sentido'] == 'constante')
     <span class="badge badge-success text-xs">
-        {{ $evaluacion['meta'] }}
         <i class="fas fa-equals"></i>
+        {{ $evaluacion['meta'] }}
     </span>
 @endif

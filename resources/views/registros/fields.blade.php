@@ -14,8 +14,3 @@
             name="registro_{{ $loop->index }}" placeholder="Valor" value="{{ $registro['valor'] ?? '' }}" />
     </div>
 @endforeach
-@if ($indicador['requiere_anexo'] == 1)
-    <label for="anexo" class="form-label text-sm">Anexo: {{ $indicador['medio_verificacion'] }}</label>
-    <input type="file" class="form-control" id="anexo" name="anexo" placeholder="Anexo">
-    <small class="text-muted">El archivo debe ser en formato PDF</small>
-@endif

@@ -67,5 +67,4 @@
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/js/dimensiones/index.js'])
-    @vite(['resources/js/usuarios/index.js', 'resources/js/auth/permissions/permisos.js', 'resources/js/areas/index.js']);
 @endsection

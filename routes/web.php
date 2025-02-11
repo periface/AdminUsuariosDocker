@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnexosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthController;
@@ -52,26 +53,26 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Accesos para responsables de área
     // Route::group(['middleware' => ['role:ADM|SPA']], function () {
-        Route::get('/users',                                         [UserController::class, 'index'])->middleware('role:SPA|ADM');
-        Route::get('/areas',                                         [AreaController::class, 'index'])->middleware('role:SPA|ADM');
+    Route::get('/users',                                         [UserController::class, 'index'])->middleware('role:SPA|ADM');
+    Route::get('/areas',                                         [AreaController::class, 'index'])->middleware('role:SPA|ADM');
     // });
 
     // Areas
     // Route::group(['middleware' => ['role:ADM']], function () {
-        Route::get('/areas',                                          [AreaController::class, 'index']);
-        Route::get('/areas/{area}/edit',                              [AreaController::class, 'createOrEdit']);
-        Route::get('/areas/create',                                   [AreaController::class, 'create']);
+    Route::get('/areas',                                          [AreaController::class, 'index']);
+    Route::get('/areas/{area}/edit',                              [AreaController::class, 'createOrEdit']);
+    Route::get('/areas/create',                                   [AreaController::class, 'create']);
     // });
 
     // Auth
     Route::post('/logout',                                            [AuthController::class, 'logout'])->name('logout');
-    
 
-    Route::group(['middleware' => ['role:ADM']], function(){
+
+    Route::group(['middleware' => ['role:ADM']], function () {
         Route::get('/monitor',                                        [MonitorController::class, 'index']);
     });
 
-    
+
     // PERI WEB ROUTES
 
     Route::prefix('dimension')->name("dimension.")->group(function () {
@@ -105,5 +106,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/',  [SecretariaController::class, 'index'])->middleware('role:ADM')->name('index');
         Route::post('/get_table_rows',  [SecretariaController::class, 'get_rows'])->name('get_table_rows');
         Route::get('/get_secretaria_fields',  [SecretariaController::class, 'get_secretaria_fields'])->middleware('role:ADM')->name('get_secretaria_fields');
-    })->middleware('role:ADM');
+    });
+
+    Route::prefix('anexos')->name("anexos.")->group(function () {
+        Route::get('/{id}',  [AnexosController::class, 'index'])->name('index');
+        Route::post('/upload/{id}', [AnexosController::class, 'upload'])->name('upload');
+    });
 });

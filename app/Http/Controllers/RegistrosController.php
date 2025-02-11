@@ -13,6 +13,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
+use function Illuminate\Log\log;
+
 class VariableValueModel
 {
     public $id;
@@ -53,7 +55,12 @@ class RegistrosController extends BaseController
         $grandTotalRows = 0;
         $totalRows = 0;
         $totalPages = 0;
-        $frecuencia_medicion = Evaluacion::all()->find($evaluacionId)["frecuencia_medicion"];
+        $evaluacion = Evaluacion::all()->find($evaluacionId);
+        $frecuencia_medicion = $evaluacion["frecuencia_medicion"];
+        $indiadorId = $evaluacion["indicadorId"];
+        $indicador = Indicador::all()->find($indiadorId);
+
+        $unidad_medida = $indicador["unidad_medida"];
         try {
             if ($search !== '') {
                 $evaluacion_results = EvaluacionResult::where('resultado', 'like', "%$search%")
@@ -79,6 +86,8 @@ class RegistrosController extends BaseController
 
             foreach ($evaluacion_results as $espacio) {
                 $espacio["days_left"] = $this->get_days_left($espacio["fecha"]);
+                $espacio["requiere_anexo"] = $indicador["requiere_anexo"];
+                $espacio["value"] = Indicador::get_value(intval($espacio["resultado"]), $unidad_medida);
             }
             return view('registros.table_rows', [
                 'frecuencia_medicion' => $frecuencia_medicion,
@@ -116,7 +125,6 @@ class RegistrosController extends BaseController
         $evaluacion = Evaluacion::all()->find($evaluacionId);
         $indicador = Indicador::all()->find($evaluacion["indicadorId"]);
         $registros = $this->get_registros_input_info($evaluacionId, $fecha);
-        log::info($indicador);
         return view('registros.fields', [
             'indicador' => $indicador,
             'evaluacion' => $evaluacion,
@@ -146,7 +154,6 @@ class RegistrosController extends BaseController
     {
         $request_data = $request->all();
         $registros = json_decode($request_data["registros"]);
-        log::info($registros);
         $user = Auth::user();
         $created = [];
         foreach ($registros as $evaluacion_result) {

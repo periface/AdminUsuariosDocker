@@ -300,7 +300,6 @@ class EvaluacionController extends BaseController
         $suma_porcentaje_aprobados = 0;
         foreach ($aprobados as $aprobado) {
             $aprobados_count++;
-            log::info($aprobado["resultado"]);
             $suma_porcentaje_aprobados += $aprobado["resultado"];
         }
 
@@ -337,7 +336,6 @@ class EvaluacionController extends BaseController
         $evaluacion["sentido"] = $indicador["sentido"];
         // porcentaje total de evaluaciones aprobadas en relacion a la meta
         $evaluacion["indicador"] = $indicador;
-        Log::info($evaluacion);
         return $evaluacion;
     }
     function get_evaluacion_stats(Evaluacion $evaluacion)
