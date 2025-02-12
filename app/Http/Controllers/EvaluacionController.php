@@ -29,7 +29,6 @@ class EvaluacionController extends BaseController
 
         $this->roleService = $roleService;
     }
-
     public function index()
     {
         return view('evaluacion.index');

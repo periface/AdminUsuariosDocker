@@ -15,7 +15,7 @@
 
 import papaparse from "papaparse";
 import { Repl } from 'pochijs';
-import { delete_indicador, get_rows, load_indicador_form, post_indicador } from './cruds.js';
+import { delete_indicador, get_rows, load_indicador_form, post_indicador, get_dimension_by_name } from './cruds.js';
 import { debounce, createToast, show_confirm_action, assert, restart_popovers } from '../utils/helpers.js';
 const state = {
     API_URL: "/api/v1/indicador",
@@ -503,7 +503,57 @@ async function bind_upload_file() {
             }
         }
         render_indicadores_db(indicadores_db);
+        set_indicadores_form_evt(indicadores_db);
     });
+}
+function set_indicadores_form_evt(indicadores_db) {
+    state.indicadores_batch_form.onsubmit = async (e) => {
+        e.preventDefault();
+        const badgeProcessing = `<span class="badge bg-primary text-xs">Procesando</span>`;
+        const badgeProcessed = `<span class="badge bg-success text-xs">Procesado</span>`;
+        const badgeError = `<span class="badge bg-danger text-xs">Error</span>`;
+        let i = 0;
+        for await (let indicador of indicadores_db) {
+            const estado = document.querySelector(`.js-estados-${i}`);
+            estado.innerHTML = badgeProcessing;
+            const dimension_response = await get_dimension_by_name(indicador.dimension, state);
+            console.log(dimension_response.data[0]);
+            if (dimension_response.error) {
+                estado.innerHTML = badgeError;
+                continue;
+            }
+            if (dimension_response.data.length === 0) {
+                estado.innerHTML = badgeError;
+                continue;
+            }
+            const dimensionId = dimension_response.data[0].id;
+            const form_data = new FormData();
+            form_data.append('nombre', indicador.nombre);
+            form_data.append('descripcion', indicador.descripcion);
+            form_data.append('status', indicador.status);
+            form_data.append('unidad_medida', indicador.unidad_medida || '');
+            form_data.append('metodo_calculo', indicador.metodo_calculo);
+            form_data.append('evaluable_formula', indicador.evaluable_formula);
+            form_data.append('non_evaluable_formula', indicador.non_evaluable_formula);
+            form_data.append('indicador_confirmado', indicador.indicador_confirmado);
+            form_data.append('sentido', indicador.sentido);
+            form_data.append('dimensionId', dimensionId);
+            form_data.append('requiere_anexo', indicador.requiere_anexo);
+            form_data.append('medio_verificacion', indicador.medio_verificacion);
+            form_data.append('categoria', indicador.categoria);
+            const response_json = await post_indicador(form_data, state);
+            if (!response_json.error && response_json?.data.statusCode === 200) {
+                estado.innerHTML = badgeProcessed;
+            } else {
+                estado.innerHTML = badgeError;
+            }
+
+            i++;
+        }
+
+        state.indicador_batch_view.modal('hide');
+    }
+
 }
 function render_indicadores_db(indicadores_db) {
     const container = state.indicadores_batch_field_container;
@@ -511,6 +561,9 @@ function render_indicadores_db(indicadores_db) {
 <table class="table" id="indicadoresTable">
     <thead class="small">
         <tr class="w-full">
+            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+                Estado
+            </th>
             <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Nombre
             </th>
@@ -528,9 +581,12 @@ function render_indicadores_db(indicadores_db) {
 
     </thead>
     <tbody>
-        ${indicadores_db.map(indicador => {
+        ${indicadores_db.map((indicador, index) => {
         return `
             <tr>
+                <td class="text-xs js-estados-${index}">
+                <span class="badge bg-primary text-xs">En espera</span>
+            </td>
                 <td class="text-xs">${indicador.nombre}</td>
                 <td class="text-xs">${indicador.categoria}</td>
                 <td class="text-xs">${indicador.metodo_calculo}</td>
@@ -606,6 +662,7 @@ async function group_dimensiones(data) {
         if (row["Dimensión"] === undefined) {
             continue;
         }
+
         if (dimensiones[row["Dimensión"]] !== undefined) {
             dimensiones[row["Dimensión"]].indicadores.push({
                 categoria: row["Categoría"],
@@ -615,9 +672,12 @@ async function group_dimensiones(data) {
                 medio_verificacion: row["Medio de Verificación"],
                 metodo_calculo: row["Método de Cálculo"],
                 nombre: row["Nombre"],
-                sentido: row["Sentido"],
+                sentido: row["Sentido"].toLowerCase(),
                 unidad_medida: row["Unidad de medida"],
                 area: row["Área que genera información"],
+                indicador_confirmado: 0,
+                dimensionId: row["dimensionId"],
+                requiere_anexo: 0,
             });
             continue;
         }
@@ -630,9 +690,12 @@ async function group_dimensiones(data) {
                 medio_verificacion: row["Medio de Verificación"],
                 metodo_calculo: row["Método de Cálculo"],
                 nombre: row["Nombre"],
-                sentido: row["Sentido"],
+                sentido: row["Sentido"].toLowerCase(),
                 unidad_medida: row["Unidad de medida"],
                 area: row["Área que genera información"],
+                indicador_confirmado: 0,
+                dimensionId: row["dimensionId"],
+                requiere_anexo: 0,
             }]
         };
     }

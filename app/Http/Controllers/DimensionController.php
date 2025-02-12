@@ -17,6 +17,33 @@ class DimensionController extends BaseController
     {   // todo: viewmodelllll para vista principal
         return view('dimension.index');
     }
+
+    public function get_by_name(Request $request)
+    {
+        if (!$request->name) {
+            return response()->json([
+                'status' => 'error',
+                'data' => null,
+                'statusCode' => 400,
+                'error' => "No se encontró la evaluación"
+            ], 400);
+        }
+        $name = $request->name;
+        $dimension = Dimension::where('nombre', $name)->get();
+        if ($dimension->count() === 0) {
+            return response()->json([
+                'status' => 'error',
+                'data' => null,
+                'statusCode' => 404,
+                'error' => "No se encontró la evaluación"
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $dimension,
+            'statusCode' => 200
+        ], 200);
+    }
     private function resolve_secretaria($secretariaId)
     {
         $secretaria = Secretaria::find($secretariaId);
