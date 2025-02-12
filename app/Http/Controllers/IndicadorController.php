@@ -328,6 +328,7 @@ class IndicadorController extends BaseController
             'dimensionId' => 'required',
             'requiere_anexo' => 'required',
             'medio_verificacion' => 'required',
+            'categoria' => 'nullable',
         ]);
         $input_id = $request->id ?? null;
         if ($validator->fails()) {

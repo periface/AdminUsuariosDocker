@@ -71,7 +71,7 @@
                                 <span class="nav-link px-0 align-middle text-white cursor-pointer">
                                     <a href="{{ route('evaluacion.index') }}" class="">
                                         <i class="fa-solid fa-chart-diagram"></i> <span
-                                            class="ms-1 d-none d-sm-inline">Evaluaciones</span>
+                                            class="ms-1 d-none d-sm-inline">Monitoreo</span>
                                     </a>
                                 </span>
                             </li>

@@ -153,7 +153,6 @@ function debounce(func, wait, immediate) {
         if (callNow) func.apply(context, args);
     };
 }
-
 async function bind_modal_events() {
     if (state.rowsEventsSet) {
         return;

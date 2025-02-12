@@ -21,11 +21,6 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-6 d-flex justify-content-end pe-3 pt-2">
-                    <span class="mb-2 btn btn-sm dimensionModalBtn btn-inst2">
-                        <i class="fa-regular fa-plus"></i> | Agregar Dimensión
-                    </span>
-                </div>
             </nav>
         </div>
     </div>

@@ -176,15 +176,24 @@ async function after_render_evaluacion_form() {
     const indicadorId = document.getElementById('indicadorId');
     init_stepper();
     areaId.addEventListener('change', async (e) => {
+        e.preventDefault();
         const data = e.target.options[e.target.selectedIndex].dataset;
         area_json = data && data.json ? JSON.parse(data.json) : null;
-        console.log('Area selected', area_json);
+        if (!area_json || !indicador_json) {
+            console.error('No area_json provided');
+
+            return;
+        }
         await render_evaluacion_details(area_json, indicador_json);
     });
     indicadorId.addEventListener('change', async (e) => {
+        e.preventDefault();
         const data = e.target.options[e.target.selectedIndex].dataset;
         indicador_json = data && data.json ? JSON.parse(data.json) : null;
-        console.log('Indicador selected', indicador_json);
+        if (!indicador_json || !area_json) {
+            console.error('No indicador_json provided');
+            return;
+        }
         await render_evaluacion_details(area_json, indicador_json);
     });
 }
@@ -195,12 +204,6 @@ async function render_evaluacion_details(area, indicador) {
     const indicadorId = indicador?.id;
 
     state.step_1_valid = areaId && indicadorId;
-    if (!areaId || !indicadorId) {
-        console.error('No areaId or indicadorId provided');
-        evaluacion_config.innerHTML = '';
-        state.step_btn.disabled = true;
-        return;
-    }
     state.indicador = indicador;
     state.area = area;
     state.step_btn.disabled = false;
@@ -407,7 +410,8 @@ async function open_evaluacion_form_evt(modal_open_btn) {
     if (state.step_1_events_set) {
         return
     }
-    modal_open_btn.addEventListener('click', async function() {
+    modal_open_btn.addEventListener('click', async function(e) {
+        e.preventDefault();
         const id = this.dataset.id;
         await render_evaluacion_form(id);
         await after_render_evaluacion_form();
@@ -415,14 +419,12 @@ async function open_evaluacion_form_evt(modal_open_btn) {
         state.evaluacion_view.modal('show');
         state.validate_form();
         state.evaluacion_form.onsubmit = async (e) => {
-            console.log(state.indicador);
+            e.preventDefault();
             if (!state.is_date_valid) {
                 e.preventDefault();
                 return;
             }
-            e.preventDefault();
             let form_data = new FormData(state.evaluacion_form);
-            console.log(state.indicador);
             const unidad = UNIDADES.find((unidad) => unidad.nombre === state.indicador["unidad_medida"]);
             if (!unidad) {
                 createToast('Administración de Evaluaciones',
@@ -436,9 +438,6 @@ async function open_evaluacion_form_evt(modal_open_btn) {
             form_data.append('non_evaluable_formula', state.indicador["non_evaluable_formula"]);
             form_data.append('descripcion', descripcion);
             form_data = await add_periodos(form_data);
-            for (let key of form_data.keys()) {
-                console.log(key, form_data.get(key));
-            }
             const { data, error } = await post_evaluacion(form_data, state);
             if (error) {
                 console.error(error);
@@ -501,6 +500,7 @@ function bind_step2_events() {
             periodicidad_value);
     });
     fecha_fin.addEventListener('change', (e) => {
+
         const fecha_inicio_value = fecha_inicio.value;
         const fecha_fin_value = e.target.value;
         const periodicidad_value = periodicidad.value;
@@ -538,7 +538,8 @@ function set_table_header_events() {
     // SORT EVENTS
     const elements = state.sort
     for (let element of elements) {
-        element.addEventListener('click', (_) => {
+        element.addEventListener('click', (e) => {
+            e.preventDefault();
             const is_equal = element.dataset.sort === state.table_req.sort;
             if (is_equal) {
                 state.table_req.order = state.table_req.order === 'asc'
@@ -557,7 +558,8 @@ function set_table_header_events() {
     state.columns_events_set = true;
 }
 function delete_evaluacion_evt(delete_button) {
-    delete_button.addEventListener('click', async function() {
+    delete_button.addEventListener('click', async function(e) {
+        e.preventDefault();
         const id = delete_button.dataset.id;
         const delete_evaluacion_confirmed = await show_confirm_action();
         if (delete_evaluacion_confirmed) {
@@ -583,7 +585,8 @@ async function set_modal_trigger_evts() {
     }
 
     for (let view_registros_btn of state.view_registros_btn) {
-        view_registros_btn.addEventListener('click', async function() {
+        view_registros_btn.addEventListener('click', async function(e) {
+            e.preventDefault();
             const id = this.dataset.id;
             window.location.href = `${state.WEB_URL}/${id}/registros`;
         });

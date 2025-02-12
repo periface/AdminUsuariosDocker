@@ -15,6 +15,36 @@
                 <input type="hidden" name="non_evaluable_formula" value="sin método de cálculo">
             @endif
             <div class="mt-2">
+                <label for="categoria" class="form-label text-sm">Categoría: </label>
+                <select class="form-select" id="categoria" name="categoria">
+                    <option value="">Seleccione una categoría</option>
+                    @if ($indicador && $indicador->id)
+                        <option value="Capital Humano"
+                            {{ $indicador['categoria'] == 'Capital Humano' ? 'selected' : '' }}>
+                            Capital Humano</option>
+                        <option value="Capital Organizacional"
+                            {{ $indicador['categoria'] == 'Capital Organizacional' ? 'selected' : '' }}>Capital
+                            Organizacional
+                        </option>
+                        <option value="Capital Tecnologico"
+                            {{ $indicador['categoria'] == 'Capital Tecnologico' ? 'selected' : '' }}>Capital Tecnologico
+                        </option>
+                        <option value="Capital Financiero"
+                            {{ $indicador['categoria'] == 'Capital Financiero' ? 'selected' : '' }}>Capital Financiero
+                        </option>
+                        <option value="Capital Relacional"
+                            {{ $indicador['categoria'] == 'Capital Relacional' ? 'selected' : '' }}>Capital Relacional
+                        </option>
+                    @else
+                        <option value="Capital Humano">Capital Humano</option>
+                        <option value="Capital Organizacional">Capital Organizacional</option>
+                        <option value="Capital Tecnologico">Capital Tecnologico</option>
+                        <option value="Capital Financiero">Capital Financiero</option>
+                        <option value="Capital Relacional">Capital Relacional</option>
+                    @endif
+                </select>
+            </div>
+            <div class="mt-2">
                 <label for="nombre" class="form-label text-sm">Nombre: </label>
                 <input class="form-control" id="nombre" name="nombre" placeholder="Nombre del indicador"
                     value="{{ $indicador['nombre'] ?? '' }}">
@@ -76,10 +106,11 @@
             <div class="mt-2">
                 <div class="form-check form-switch">
                     @if ($indicador && $indicador->id)
-                        <input class="form-check-input" type="checkbox" role="switch" id="status" name="status"
-                            {{ $indicador['status'] == 1 ? 'checked' : '' }} />
+                        <input class="form-check-input" type="checkbox" role="switch" id="status"
+                            name="status" {{ $indicador['status'] == 1 ? 'checked' : '' }} />
                     @else
-                        <input class="form-check-input" type="checkbox" role="switch" id="status" name="status" />
+                        <input class="form-check-input" type="checkbox" role="switch" id="status"
+                            name="status" />
                     @endif
                     <label class="form-check-label" for="status">Activo</label>
                 </div>

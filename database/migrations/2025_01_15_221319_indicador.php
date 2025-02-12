@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string("secretaria");
             $table->string("medio_verificacion");
             $table->boolean("requiere_anexo")->default(false);
+            $table->string("categoria")->nullable();
             $table->timestamps();
         });
     }
