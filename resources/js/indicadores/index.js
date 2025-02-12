@@ -506,6 +506,13 @@ async function bind_upload_file() {
         set_indicadores_form_evt(indicadores_db);
     });
 }
+async function wait(ms) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, ms);
+    });
+}
 function set_indicadores_form_evt(indicadores_db) {
     state.indicadores_batch_form.onsubmit = async (e) => {
         e.preventDefault();
@@ -517,6 +524,7 @@ function set_indicadores_form_evt(indicadores_db) {
             const estado = document.querySelector(`.js-estados-${i}`);
             estado.innerHTML = badgeProcessing;
             const dimension_response = await get_dimension_by_name(indicador.dimension, state);
+            wait(1000);
             console.log(dimension_response.data[0]);
             if (dimension_response.error) {
                 estado.innerHTML = badgeError;
@@ -531,7 +539,7 @@ function set_indicadores_form_evt(indicadores_db) {
             form_data.append('nombre', indicador.nombre);
             form_data.append('descripcion', indicador.descripcion);
             form_data.append('status', indicador.status);
-            form_data.append('unidad_medida', indicador.unidad_medida || '');
+            form_data.append('unidad_medida', indicador.unidad_medida.toLowerCase() || '');
             form_data.append('metodo_calculo', indicador.metodo_calculo);
             form_data.append('evaluable_formula', indicador.evaluable_formula);
             form_data.append('non_evaluable_formula', indicador.non_evaluable_formula);

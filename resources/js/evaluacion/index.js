@@ -181,7 +181,6 @@ async function after_render_evaluacion_form() {
         area_json = data && data.json ? JSON.parse(data.json) : null;
         if (!area_json || !indicador_json) {
             console.error('No area_json provided');
-
             return;
         }
         await render_evaluacion_details(area_json, indicador_json);
@@ -215,6 +214,7 @@ async function render_evaluacion_details(area, indicador) {
     evaluacion_config.innerHTML = 'Cargando...';
     const { data, error } = await load_evaluacion_config(areaId, indicadorId, state);
     if (error) {
+        console.error(error);
         createToast('Administración de Evaluaciones',
             `Ocurrió un error al cargar la información.`,
             false);

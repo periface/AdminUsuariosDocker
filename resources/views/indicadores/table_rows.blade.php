@@ -8,7 +8,7 @@
             <th style="width: 10%" data-sort="id" data-order="desc" class="sort cursor-pointer ">
                 # <i class="fas fa-sort pl-2"></i>
             </th>
-            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 30%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Nombre <i class="fas fa-sort pl-2"></i>
             </th>
 
@@ -19,7 +19,7 @@
             <th style="width: 20%" data-sort="metodo_calculo" data-order="asc" class="sort cursor-pointer">
                 Método de Cálculo <i class="fas fa-sort pl-2[a"></i>
             </th>
-            <th style="width: 20%" data-sort="status" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 10%" data-sort="status" data-order="asc" class="sort cursor-pointer">
                 Status <i class="fas fa-sort pl-2"></i>
             </th>
             <th style="width: 100%" class="flex align-middle items-center">
