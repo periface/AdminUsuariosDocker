@@ -13,7 +13,6 @@
 @endsection
 @section('content')
     <meta name="token" id="token" content="{{ csrf_token() }}">
-
     <div class="card shadow mb-4">
         <div class="card-header py3">
             <div class="flex align-middle items-center">
@@ -30,7 +29,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="dimensionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="dimensionModalLabel" aria-hidden="true">

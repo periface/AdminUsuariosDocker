@@ -46,10 +46,11 @@ const getAreas = async () => {
 
 }
 
-areas.addEventListener('click', (event) => {
-    event.preventDefault();
-    getAreas();
-});
+// Con el cambio MPA no se requiere esta función
+// areas.addEventListener('click', (event) => {
+//     event.preventDefault();
+//     getAreas();
+// });
 
 const addArea = async (registerForm) => {
     console.log('En addRole ', registerForm);
@@ -146,6 +147,7 @@ const editArea = (element) => {
     }
 }
 
+
 const showFormEdit = async (area) => {
 
     const response = await fetch(`/areas/${area}/edit`, {
@@ -236,3 +238,12 @@ const confirmDelete = (area) => {
         }
     });
 }
+
+// Editar
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('edit-area')) {
+        event.preventDefault();
+        let id = event.target.dataset.id || event.target.id;
+        showFormEdit(id);
+    }
+})
