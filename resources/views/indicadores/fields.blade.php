@@ -1,6 +1,5 @@
             @if ($indicador && $indicador->id)
                 <input type="hidden" name="id" value="{{ $indicador->id }}">
-                <input type="hidden" name="dimensionId" value="{{ $indicador['dimensionId'] }}">
                 <input class="form-control" type="hidden" id="metodo_calculo" name="metodo_calculo"
                     value="{{ $indicador['metodo_calculo'] ?? '' }}">
                 <input type="hidden" name="evaluable_formula" value="{{ $indicador['evaluable_formula'] }}">
@@ -9,11 +8,24 @@
                     value="{{ $indicador['indicador_confirmado'] }}">
             @endif
             @if (!$indicador || !$indicador->id)
-                <input type="hidden" name="dimensionId" value="{{ $dimensionId }}">
                 <input type="hidden" name="metodo_calculo" value="">
                 <input type="hidden" name="evaluable_formula" value="sin método de cálculo">
                 <input type="hidden" name="non_evaluable_formula" value="sin método de cálculo">
             @endif
+            <div class="mt-2">
+            <label for="dimension" class="form-label text-sm">Dimensión: </label>
+            <select class="form-select" id="dimensionId" name="dimensionId">
+                <option value="">Seleccione una dimensión</option>
+                @foreach ($dimensiones as $dimension)
+                    @if ($indicador && $indicador->id)
+                        <option value="{{ $dimension['id'] }}"
+                            {{ $indicador['dimensionId'] == $dimension['id'] ? 'selected' : '' }}>
+                            {{ $dimension['nombre'] }}</option>
+                    @else
+                        <option value="{{ $dimension['id'] }}">{{ $dimension['nombre'] }}</option>
+                    @endif
+                @endforeach
+            </select>
             <div class="mt-2">
                 <label for="categoria" class="form-label text-sm">Categoría: </label>
                 <select class="form-select" id="categoria" name="categoria">

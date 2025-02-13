@@ -323,8 +323,11 @@ async function open_indicador_form_evt(modal_open_btn, load_set_formula_window =
             }
             const response_json = await post_indicador(form_data, state);
             if (!response_json.error && response_json?.data.statusCode === 200) {
+
                 state.indicador_view.modal('hide');
-                await start_datatable();
+                if (state.dimensionId) {
+                    await start_datatable();
+                }
                 createToast('Administración de Dimensiones',
                     `Se guardó correctamente la información.
                     <a href="${state.WEB_URL}/${response_json.data}"
@@ -411,9 +414,6 @@ async function set_modal_trigger_evts() {
     if (state.rows_events_set) {
         return;
     }
-    for (let modal_open_btn of state.modal_open_buttons) {
-        await open_indicador_form_evt(modal_open_btn);
-    }
     for (let set_formula_button of state.set_formula_buttons) {
         await open_indicador_form_evt(set_formula_button, true);
     }
@@ -455,6 +455,9 @@ async function start_view() {
         </p>
     </h1>`;
 
+    for (let modal_open_btn of state.modal_open_buttons) {
+        await open_indicador_form_evt(modal_open_btn);
+    }
     await bind_upload_file();
 }
 
