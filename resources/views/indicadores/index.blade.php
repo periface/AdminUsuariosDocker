@@ -6,49 +6,51 @@
             font-weight: normal !important;
             font-size: 14px;
         }
+
+        .form-switch {
+            padding-left: 2.5em !important;
+        }
     </style>
+@endsection
+@section('title')
+    <h6 class="m-0 font-weight-bold">CATALOGOS: INDICADORES</h6>
 @endsection
 @section('content')
     <meta name="token" id="token" content="{{ csrf_token() }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar bg-body-tertiary bg-inst">
-                <div class="col-6">
-                    <div class="container-fluid">
-                        <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | INDICADORES
-                        </span>
-                    </div>
-                </div>
-                <div class="col-6 d-flex justify-content-end pe-3 pt-2">
-                    <span class="mb-2 mr-2 btn btn-sm indicadorModalBtn btn-inst2 bg-gray-200">
-                        <i class="fa-regular fa-plus"></i> | Agregar Indicador
-                    </span>
+    <div class="card shadow mb-4">
+        <div class="card-header py3">
+            <div class="flex align-middle items-center">
 
-                    <span class="mb-2 btn btn-sm btn-inst2" id="subir">
-                        <i class="fa-regular fa-file"></i> | Subir Layout
-                    </span>
+                <h6 class="m-0 font-weight-bold mr-2">INDICADORES REGISTRADOS</h6>
+                <button class="btn btn-sm btn-primary indicadorModalBtn mr-2">
+                    Crear Indicador
+                </button>
 
-                    <input type="file" id="file" class="d-none" accept=".csv">
-                </div>
-            </nav>
+                <button id="subir" class="btn btn-sm btn-primary indicadorModalBtn ">
+                    Cargar Indicadores
+                </button>
+
+                <input type="file" id="file" class="d-none" accept=".csv">
+            </div>
         </div>
-    </div>
-    <div id="dimensiones_select" class="row mt-3 ">
-        <div class="col-12">
-            <select class="form-select form-select-md" id="dimensiones_select" aria-label="Default select example">
-                <option value="0" selected>Seleccione una dimensión</option>
-                @foreach ($dimensiones as $dimension)
-                    <option value="{{ $dimension['id'] }}">{{ $dimension['nombre'] }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
 
-    <div id="table-container" class="mt-3">
-        @include('partials.table_loader')
+        <div id="dimensiones_select" class="row mt-3 ">
+            <div class="col-12">
+                <select class="form-select form-select-md" id="dimensiones_select" aria-label="Default select example">
+                    <option value="0" selected>Seleccione una dimensión</option>
+                    @foreach ($dimensiones as $dimension)
+                        <option value="{{ $dimension['id'] }}">{{ $dimension['nombre'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="table-container">
+                @include('partials.table_loader')
+            </div>
+        </div>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="indicadorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

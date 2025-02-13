@@ -1,87 +1,104 @@
-@extends('layout')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Sistema de Indicadores">
+    <meta name="author" content="Secretaría de Administración">
 
-@section('content')
+    <title>Login</title>
 
-<div class="d-flex vh-100" style="">
-    <div class="container-fluid my-auto">
-        <div class="row">
-            <div class="col px-52">
-                <!-- Login 5 - Bootstrap Brain Component -->
-            <section class="p-3 p-md-4 p-xl-5">
-                <div class="container">
-                <div class="card shadow-sm">
-                    <div class="row g-0">
-                    <div class="col-12 col-md-6 bg-inst">
-                        <div class="d-flex align-items-center justify-content-center h-100">
-                            <div class="col-10 col-xl-8 py-3 text-center text-white">
-                                <img class="img-fluid rounded mb-4" loading="lazy" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLcBubmZ-qQsYes0JJ-Dd9S_Gi5vGYqEXMaA&s" alt="BootstrapBrain Logo">
-                                <hr class="border-white-subtle mb-4 w-4/5 ml-7">
-                                <h2 class=" h3 mb-4">Sistema de Indicadores</h2>
-                                <p class="lead m-0">Secretaría de Administración <br>
-                                Gobierno del Estado de Tamaulipas</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 text-gray-500">
-                        <div class="card-body p-3 p-md-4 p-xl-5">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&display=swap" rel="stylesheet">
+
+     <!-- Frameworks -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Icons -->
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"> --}}
+
+    <!-- Custom styles for this template-->
+    @vite(['resources/css/app.css','resources/css/sb-admin-2.min.css',
+            'resources/fontawesome-free/css/all.min.css'])
+    <style>
+        body
+        {
+            font-family: "Encode Sans", serif;
+        }
+   </style>
+</head>
+<body class="bg-inst">
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-20">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-12">
-                            <div class="mb-5">
-                                <h1 class="h4">Iniciar Sesión</h1>
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                                <img class=" mt-20" src="https://img.freepik.com/free-vector/data-analysis-concept-illustration_114360-8053.jpg?t=st=1739474291~exp=1739477891~hmac=5273104c5a720b104d124d04ffa098466d5395462a3690fb3af2294822823788&w=826" alt="">
                             </div>
-                            </div>
-                        </div>
-                        <form method="POST" action="{{ route('login') }}" >
-                            @csrf
-                            <div class="row gy-3 gy-md-4 overflow-hidden">
-                            <div class="col-12">
-                                <label for="email" class="form-label">Correo Electrónico: <span class="text-danger">*</span></label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        <i class="fa-solid fa-at"></i>
-                                    </span>
-                                    <input type="email" name="email" class="form-control" placeholder="Correo electrónico"
-                                    name="email" required>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <label for="password" class="form-label">Contraseña: <span class="text-danger">*</span></label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        <i class="fa-solid fa-key"></i>
-                                    </span>
-                                    <input type="password" name="password" class="form-control" placeholder="Contraseña"
-                                    name="Passowrd" required>
-                                </div>
-                                @if ($message !== null)
-                                <span class="text-danger">* {{ $message }}</span>
-                                @endif
-                            </div>
-                                <div class="col-12">
-                                    <div class="d-grid">
-                                        <button class="btn bsb-btn-xl btn-inst" type="submit">Iniciar Sesión</button>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="">
+                                        <h1 class="h4 text-gray-900 mb-2">Sistema de Indicadores</h1>
+                                        <p>
+                                            Secretaría de Administración <br>
+                                            Gobierno del Estado de Tamaulipas
+                                        </p>
+                                    </div>
+                                    <form  method="POST" action="{{ route('login') }}"  class="user mt-4">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="email" class="form-label">Correo Electrónico: <span class="text-danger">*</span></label>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    <i class="fas fa-at"></i>
+                                                </span>
+                                                <input type="email" name="email" class="form-control" placeholder="Correo electrónico"
+                                                name="email" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password" class="form-label">Contraseña: <span class="text-danger">*</span></label>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    <i class="fas fa-key"></i>
+                                                </span>
+                                                <input type="password" name="password" class="form-control" placeholder="Contraseña"
+                                                name="Passowrd" required>
+                                            </div>
+                                            @if ($message !== null)
+                                            <span class="text-danger">* {{ $message }}</span>
+                                            @endif
+                                        </div>
+                                        <button class="btn bsb-btn-xl btn-inst btn-block" type="submit">Iniciar Sesión</button>
+                                        <hr>
+                                    </form>
+                                    <hr>
+                                    <div class="text-right">
+                                        <a class="link-secondary text-decoration-none cursor-pointer">¿Olvidó su contraseña?</a>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <div class="row">
-                            <div class="col-12">
-                            <hr class="mt-5 border-secondary-subtle">
-                            <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                                <a class="link-secondary text-decoration-none cursor-pointer">¿Olvidó su contraseña?</a>
-                            </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
-                    </div>
                 </div>
-                </div>
-            </section>
+
             </div>
+
         </div>
+
     </div>
-</div>
-@endsection
-@section('scripts')
-@endsection
+</body>
+</html>

@@ -3,13 +3,13 @@
         @if ($espacio['status'] == 'capturado')
             @if (Auth::user()->hasRole('ADM'))
                 <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
-                    class="js-registrar btn btnSecondaryOficial btn-flat btn-sm indicadorModalBtn">
+                    class="js-registrar btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
                     <i class="fa fa-plus
                                 "></i>
                     Editar
                 </button>
             @else
-                <button type="button" class="btn btnSecondaryOficial btn-flat btn-sm indicadorModalBtn">
+                <button type="button" class="btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
                     <i class="fa fa-plus
                                 "></i>
                     En validación
@@ -17,7 +17,7 @@
             @endif
         @else
             <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
-                class="js-registrar btn btnSecondaryOficial btn-flat btn-sm indicadorModalBtn">
+                class="js-registrar btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
                 <i class="fa fa-plus
                                 "></i>
                 Registrar
@@ -26,7 +26,7 @@
     @else
         @if (auth()->user()->hasRole('ADM'))
             <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
-                class="js-registrar btn btnSecondaryOficial btn-flat btn-sm indicadorModalBtn">
+                class="js-registrar btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
                 <i class="fa fa-plus
                                 "></i>
                 Editar
@@ -35,7 +35,7 @@
     @endif
 
     <div class="btn-group" role="group">
-        <button type="button" class="btn btnSecondaryOficial dropdown-toggle" data-bs-toggle="dropdown"
+        <button type="button" class="btn btnSecondaryOficial btn-primary dropdown-toggle" data-bs-toggle="dropdown"
             aria-expanded="false">
         </button>
         <ul class="dropdown-menu">

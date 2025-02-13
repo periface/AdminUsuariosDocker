@@ -8,26 +8,29 @@
         }
     </style>
 @endsection
+@section('title')
+    <h6 class="m-0 font-weight-bold">CATALOGOS: DIMENSIONES</h6>
+@endsection
 @section('content')
     <meta name="token" id="token" content="{{ csrf_token() }}">
 
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar bg-body-tertiary bg-inst">
-                <div class="col-6">
-                    <div class="container-fluid">
-                        <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | DIMENSIONES REGISTRADAS EN EL SISTEMA
-                        </span>
-                    </div>
-                </div>
-            </nav>
+    <div class="card shadow mb-4">
+        <div class="card-header py3">
+            <div class="flex align-middle items-center">
+
+                <h6 class="m-0 font-weight-bold mr-2">DIMENSIONES REGISTRADAS</h6>
+                <button class="btn btn-sm btn-primary dimensionModalBtn ">
+                    Crear Dimensión
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="table-container">
+                @include('partials.table_loader')
+            </div>
         </div>
     </div>
 
-    <div id="table-container">
-        @include('partials.table_loader')
-    </div>
     <!-- Modal -->
     <div class="modal fade" id="dimensionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="dimensionModalLabel" aria-hidden="true">

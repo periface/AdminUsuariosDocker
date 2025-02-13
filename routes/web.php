@@ -26,6 +26,11 @@ Route::post('/', [AuthController::class, 'store'])->name('login');
 //Ruta para activar la cuenta
 Route::get('/activate/{token}', [UserController::class, 'activate']);
 
+//Ruta demo admin
+// Route::get('/welcome', function(){
+//     return view('layout.welcome');
+// });
+
 Route::middleware('auth:sanctum')->group(function () {
 
     // Dashboard
@@ -54,12 +59,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // Accesos para responsables de área
     // Route::group(['middleware' => ['role:ADM|SPA']], function () {
     Route::get('/users',                                         [UserController::class, 'index'])->middleware('role:SPA|ADM');
-    Route::get('/areas',                                         [AreaController::class, 'index'])->middleware('role:SPA|ADM');
+    Route::get('/areas',                                         [AreaController::class, 'index'])->middleware('role:SPA|ADM')->name('areas');
     // });
 
     // Areas
     // Route::group(['middleware' => ['role:ADM']], function () {
-    Route::get('/areas',                                          [AreaController::class, 'index']);
+    Route::get('/areas',                                          [AreaController::class, 'index'])->name('areas');
     Route::get('/areas/{area}/edit',                              [AreaController::class, 'createOrEdit']);
     Route::get('/areas/create',                                   [AreaController::class, 'create']);
     // });

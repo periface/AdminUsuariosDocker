@@ -21,7 +21,7 @@
             <th style="width: 20%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
                 Periodos
             </th>
-            <th style="width: 10%" class="flex items-center align-middle">
+            <th style="width: 10%" class="">
                 Acciones
             </th>
         </tr>
@@ -101,10 +101,10 @@
                     <td>
                         <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
-                            <button type="button" class="btn btnSecondaryOficial js-view-registros"
+                            <button type="button" class="btn btn-primary js-view-registros"
                                 data-id="{{ $evaluacion->id }}">Registros</button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btnSecondaryOficial dropdown-toggle"
+                                <button type="button" class="btn btn-primary dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
