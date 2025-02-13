@@ -86,6 +86,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/dimension/{id}', [DimensionController::class, 'put']);
         Route::delete('/dimension/{id}', [DimensionController::class, 'delete']);
         Route::get('/dimension/{id}/area', [DimensionController::class, 'getAreas']);
+        Route::get('/dimension/get_by_name/{name}',  [DimensionController::class, 'get_by_name'])->name('get_by_name');
 
         Route::get('/indicador', [IndicadorController::class, 'get']);
         Route::post('/indicador', [IndicadorController::class, 'post']);

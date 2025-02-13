@@ -8,18 +8,18 @@
             <th style="width: 10%" data-sort="id" data-order="desc" class="sort cursor-pointer ">
                 # <i class="fas fa-sort pl-2"></i>
             </th>
-            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 30%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Nombre <i class="fas fa-sort pl-2"></i>
             </th>
 
-            <th style="width: 20%" data-sort="sentido" data-order="asc" class="sort cursor-pointer">
-                Sentido <i class="fas fa-sort pl-2"></i>
+            <th style="width: 20%" data-sort="categoria" data-order="asc" class="sort cursor-pointer">
+                Categoría <i class="fas fa-sort pl-2"></i>
             </th>
 
             <th style="width: 20%" data-sort="metodo_calculo" data-order="asc" class="sort cursor-pointer">
                 Método de Cálculo <i class="fas fa-sort pl-2[a"></i>
             </th>
-            <th style="width: 20%" data-sort="status" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 10%" data-sort="status" data-order="asc" class="sort cursor-pointer">
                 Status <i class="fas fa-sort pl-2"></i>
             </th>
             <th style="width: 100%" class="flex align-middle items-center">
@@ -36,8 +36,23 @@
             @foreach ($indicadores as $indicador)
                 <tr>
                     <td>{{ $indicador['id'] }}</td>
-                    <td>{{ $indicador['nombre'] }}</td>
-                    <td>{{ $indicador['sentido'] }}</td>
+                    <td>{{ $indicador['nombre'] }}
+                        @if ($indicador['sentido'] == 'ascendente')
+                            <span class="text-xs text-green-600">
+                                [Ascendente]
+                            </span>
+                        @elseif ($indicador['sentido'] == 'descendente')
+                            <span class="text-xs text-blue-600">
+                                [Descendente]
+                            </span>
+                        @else
+                            <span class="text-xs text-teal-600">
+                                [Constante]
+                            </span>
+                        @endif
+
+                    </td>
+                    <td>{{ $indicador['categoria'] }}</td>
                     <td>
                         @if ($indicador['indicador_confirmado'])
                             <span class="badge badge-success">

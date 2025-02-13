@@ -33,7 +33,8 @@ por la DGCyOP/ Expedientes de compra entregados a la DGCyOP) *100',
             'secretariaId' => $secretaria->id,
             'secretaria' => $secretaria['nombre'],
             'medio_verificacion' => 'No definido',
-            'requiere_anexo' => false
+            'requiere_anexo' => false,
+            'categoria' => 'Capital Organizacional'
         ]);
 
         self::create_variable($indicador["id"], 'Expedientes de compra devueltos con observaciones por la DGCyOP', 'ECADO');
@@ -56,7 +57,8 @@ Total de expedientes devueltos con observaciones por procedimiento de compra',
             'secretariaId' => $secretaria->id,
             'secretaria' => $secretaria['nombre'],
             'medio_verificacion' => 'No definido',
-            'requiere_anexo' => false
+            'requiere_anexo' => false,
+            'categoria' => 'Capital Organizacional'
         ]);
 
         self::create_variable($indicador2["id"], 'Suma del tiempo total de atención a observaciones por tipo de procedimiento de compra', 'STTAOTPC');

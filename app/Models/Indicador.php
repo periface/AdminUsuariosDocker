@@ -24,6 +24,7 @@ class Indicador extends Model
     public $medio_verificacion;
     public $requiere_anexo;
     public $secretaria;
+    public $categoria;//capital humano, capital estructural, capital relacional, capital tecnologico
     protected $fillable = [
         'nombre',
         'descripcion',
@@ -39,6 +40,7 @@ class Indicador extends Model
         'secretaria',
         'medio_verificacion',
         'requiere_anexo',
+        'categoria'
     ];
     public function dimension()
     {

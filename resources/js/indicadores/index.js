@@ -1,5 +1,21 @@
+// Describe el flujo del codigo:
+// 1. Se inicializa el estado de la aplicación
+// 2. Se inicializa la vista de la tabla
+// 3. Se inicializan los eventos de la tabla
+// 4. Se inicializan los eventos de los botones de abrir modal
+// 5. Se inicializan los eventos de los botones de eliminar
+// 6. Se inicializan los eventos de los botones de cambiar página
+// 7. Se inicializan los eventos de los botones de cambiar número de filas
+// 8. Se inicializan los eventos de los botones de ordenar
+// 9. Se inicializan los eventos de los botones de búsqueda
+// 10. Se inicializan los eventos de los botones de confirmar indicador
+// 11. Se inicializan los eventos de los botones de guardar indicador
+// 12. Se inicializan los eventos de los botones de setear fórmula
+// // Interesanteeeee
+
+import papaparse from "papaparse";
 import { Repl } from 'pochijs';
-import { delete_indicador, get_rows, load_indicador_form, post_indicador } from './cruds.js';
+import { delete_indicador, get_rows, load_indicador_form, post_indicador, get_dimension_by_name } from './cruds.js';
 import { debounce, createToast, show_confirm_action, assert, restart_popovers } from '../utils/helpers.js';
 const state = {
     API_URL: "/api/v1/indicador",
@@ -29,9 +45,12 @@ const state = {
     dimensionId: document.querySelector('meta[name="dimensionId"]').content || '',
     bearertoken: localStorage.getItem('token') || '',
     indicador_view: $("#indicadorModal"),
+    indicador_batch_view: $("#indicadorBatchModal"),
     indicadores_table_container: document.getElementById('table-container'),
     indicadores_form: document.getElementById('indicadorForm'),
+    indicadores_batch_form: document.getElementById('indicadorBatchForm'),
     indicadores_field_container: document.getElementById('indicadorFields'),
+    indicadores_batch_field_container: document.getElementById('indicadorBatchFields'),
     variables_container: document.getElementById('js-variables'),
     modal_open_buttons: document.getElementsByClassName('indicadorModalBtn'),
     rows_per_page_input: document.getElementsByClassName('js-change-rows'),
@@ -47,6 +66,9 @@ const state = {
     repl: new Repl(),
     repl_result: null,
     restart_popovers: restart_popovers,
+
+    subirBtn: document.getElementById('subir'),
+    fileInput: document.getElementById('file'),
     validate_form: () => {
         $("#indicadorForm").validate({
             rules: {
@@ -87,6 +109,8 @@ async function start_datatable() {
         state.indicadores_table_container.innerHTML = html;
         set_table_header_events();
         await set_modal_trigger_evts();
+
+        await bind_upload_file();
         set_table_footer_events();
         state.restart_popovers();
     } catch (error) {
@@ -101,7 +125,6 @@ async function start_datatable() {
     }
 }
 function update_metodo_calculo(formula_str) {
-    state.repl.skippable_words = ['de', 'la', 'el', 'en', 'con', 'del', 'al', 'a', 'por']
     if (!formula_str) {
         return;
     }
@@ -124,10 +147,10 @@ function update_metodo_calculo(formula_str) {
     state.restart_popovers();
 }
 function show_formula(pochi_result) {
-    const samples = []
     const formula_container = document.getElementById('js-formula');
     const formula = pochi_result.non_evaluable_formula;
     const variables = pochi_result.variables;
+    const samples = []
     if (samples.length === 0) {
         pochi_result.variables.forEach(v => {
             const code = v.code;
@@ -160,6 +183,7 @@ function show_formula(pochi_result) {
     formula_container.innerHTML = variables_html + formula_html;
 }
 start_view().then(() => {
+    state.repl.skippable_words = ['de', 'la', 'el', 'en', 'con', 'del', 'al', 'a', 'por']
     state.indicador_view.on('hidden.bs.modal', function() {
         state.repl_result = null;
     });
@@ -456,4 +480,259 @@ function searchTable(search) {
     }).catch((error) => {
         console.log(error);
     })
+}
+
+
+
+async function bind_upload_file() {
+    state.subirBtn.addEventListener('click', async function() {
+        state.fileInput.click();
+    });
+    state.fileInput.addEventListener('change', async function() {
+        const file = this.files[0];
+        const data = await parse_json(file);
+        const dimensiones = await group_dimensiones(data);
+        const indicadores_db = make_indicadores_db(dimensiones);
+        console.log(indicadores_db);
+        for (let dimension in indicadores_db) {
+            if (indicadores_db[dimension].error) {
+                createToast('Administración de Dimensiones',
+                    `Error en la dimensión ${dimension}: ${indicadores_db[dimension].error}`,
+                    false);
+                continue;
+            }
+        }
+        render_indicadores_db(indicadores_db);
+        set_indicadores_form_evt(indicadores_db);
+    });
+}
+async function wait(ms) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, ms);
+    });
+}
+function set_indicadores_form_evt(indicadores_db) {
+    state.indicadores_batch_form.onsubmit = async (e) => {
+        e.preventDefault();
+        const badgeProcessing = `<span class="badge bg-primary text-xs">Procesando</span>`;
+        const badgeProcessed = `<span class="badge bg-success text-xs">Procesado</span>`;
+        const badgeError = `<span class="badge bg-danger text-xs">Error</span>`;
+        let i = 0;
+        for await (let indicador of indicadores_db) {
+            const estado = document.querySelector(`.js-estados-${i}`);
+            estado.innerHTML = badgeProcessing;
+            const dimension_response = await get_dimension_by_name(indicador.dimension, state);
+            wait(1000);
+            console.log(dimension_response.data[0]);
+            if (dimension_response.error) {
+                estado.innerHTML = badgeError;
+                continue;
+            }
+            if (dimension_response.data.length === 0) {
+                estado.innerHTML = badgeError;
+                continue;
+            }
+            const dimensionId = dimension_response.data[0].id;
+            const form_data = new FormData();
+            form_data.append('nombre', indicador.nombre);
+            form_data.append('descripcion', indicador.descripcion);
+            form_data.append('status', indicador.status);
+            form_data.append('unidad_medida', indicador.unidad_medida.toLowerCase() || '');
+            form_data.append('metodo_calculo', indicador.metodo_calculo);
+            form_data.append('evaluable_formula', indicador.evaluable_formula);
+            form_data.append('non_evaluable_formula', indicador.non_evaluable_formula);
+            form_data.append('indicador_confirmado', indicador.indicador_confirmado);
+            form_data.append('sentido', indicador.sentido);
+            form_data.append('dimensionId', dimensionId);
+            form_data.append('requiere_anexo', indicador.requiere_anexo);
+            form_data.append('medio_verificacion', indicador.medio_verificacion);
+            form_data.append('categoria', indicador.categoria);
+            const response_json = await post_indicador(form_data, state);
+            if (!response_json.error && response_json?.data.statusCode === 200) {
+                estado.innerHTML = badgeProcessed;
+            } else {
+                estado.innerHTML = badgeError;
+            }
+
+            i++;
+        }
+
+        state.indicador_batch_view.modal('hide');
+    }
+
+}
+function render_indicadores_db(indicadores_db) {
+    const container = state.indicadores_batch_field_container;
+    container.innerHTML = `
+<table class="table" id="indicadoresTable">
+    <thead class="small">
+        <tr class="w-full">
+            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+                Estado
+            </th>
+            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+                Nombre
+            </th>
+
+            <th style="width: 15%" data-sort="categoria" data-order="asc" class="sort cursor-pointer">
+                Categoría            </th>
+
+            <th style="width: 20%" data-sort="metodo_calculo" data-order="asc" class="sort cursor-pointer">
+                Método de Cálculo
+            </th>
+
+            <th style="width: 30%" data-sort="metodo_calculo" data-order="asc" class="sort cursor-pointer">
+                Ejemplo de sustitución de variables
+            </th>
+
+    </thead>
+    <tbody>
+        ${indicadores_db.map((indicador, index) => {
+        return `
+            <tr>
+                <td class="text-xs js-estados-${index}">
+                <span class="badge bg-primary text-xs">En espera</span>
+            </td>
+                <td class="text-xs">${indicador.nombre}</td>
+                <td class="text-xs">${indicador.categoria}</td>
+                <td class="text-xs">${indicador.metodo_calculo}</td>
+                <td class="text-xs">
+                ${indicador.non_evaluable_formula}<br>
+                <strong>=></strong><br>
+                ${indicador.evaluate_result.replaced_formula}<br>
+                ${indicador.evaluate_result.error ? indicador.evaluate_result.error : ''}
+            </td>
+            </tr>
+            `;
+    }
+    ).join('')}
+    </tbody>
+</table>`
+    state.indicador_batch_view.modal('show');
+
+
+}
+function make_indicadores_db(dimensiones) {
+    let indicadores = [];
+    for (let dimension in dimensiones) {
+        indicadores = dimensiones[dimension].indicadores.map(indicador => {
+            // just fill the blanks
+            indicador["evaluable_formula"] = "";
+            indicador["non_evaluable_formula"] = "";
+            indicador["variables"] = [];
+            indicador["dimension"] = dimension;
+            const pochi_result = state.repl.parse_formula(indicador["metodo_calculo"]);
+            console.log(pochi_result);
+            if (pochi_result.error) {
+                indicador["error"] = pochi_result.error;
+                return indicador;
+            }
+            const ilegals = pochi_result.tokens.filter(t => t.type === 'ILLEGAL');
+            if (ilegals.length > 0) {
+                indicador["error"] = `Error al evaluar la fórmula: ${ilegals.map(i => i.literal).join(', ')}`;
+                return indicador;
+            }
+            indicador["evaluable_formula"] = pochi_result.evaluable_formula;
+            indicador["non_evaluable_formula"] = pochi_result.non_evaluable_formula;
+            indicador["variables"] = pochi_result.variables.map(v => {
+                return {
+                    code: v.code,
+                    literal: v.literal
+                }
+            });
+
+            const samples = []
+            if (samples.length === 0) {
+                pochi_result.variables.forEach(v => {
+                    const code = v.code;
+                    const sample = {
+                        code,
+                        value: Math.floor(Math.random() * 100)
+                    };
+                    samples.push(sample);
+                });
+            }
+            indicador["samples"] = samples;
+
+            const evaluate_result = pochi_result.evaluate_with(samples);
+            indicador["evaluate_result"] = evaluate_result;
+            return indicador;
+        });
+
+    }
+    return indicadores;
+}
+async function group_dimensiones(data) {
+    const dimensiones = [];
+    for (let row of data) {
+        if (row["Dimensión"] === undefined) {
+            continue;
+        }
+
+        if (dimensiones[row["Dimensión"]] !== undefined) {
+            dimensiones[row["Dimensión"]].indicadores.push({
+                categoria: row["Categoría"],
+                descripcion: row["Descripción General"],
+                status: row["Estado"] === 'Aprobado' ? 1 : 0,
+                fecuencia_medicion: row["Frecuencia de medición"],
+                medio_verificacion: row["Medio de Verificación"],
+                metodo_calculo: row["Método de Cálculo"],
+                nombre: row["Nombre"],
+                sentido: row["Sentido"].toLowerCase(),
+                unidad_medida: row["Unidad de medida"],
+                area: row["Área que genera información"],
+                indicador_confirmado: 0,
+                dimensionId: row["dimensionId"],
+                requiere_anexo: 0,
+            });
+            continue;
+        }
+        dimensiones[row["Dimensión"]] = {
+            indicadores: [{
+                categoria: row["Categoría"],
+                descripcion: row["Descripción General"],
+                status: row["Estado"] === 'Aprobado' ? 1 : 0,
+                fecuencia_medicion: row["Frecuencia de medición"],
+                medio_verificacion: row["Medio de Verificación"],
+                metodo_calculo: row["Método de Cálculo"],
+                nombre: row["Nombre"],
+                sentido: row["Sentido"].toLowerCase(),
+                unidad_medida: row["Unidad de medida"],
+                area: row["Área que genera información"],
+                indicador_confirmado: 0,
+                dimensionId: row["dimensionId"],
+                requiere_anexo: 0,
+            }]
+        };
+    }
+    return dimensiones;
+}
+async function parse_json(file) {
+    return new Promise((resolve, reject) => {
+        try {
+            papaparse.parse(file, {
+                header: true,
+                complete: function(results) {
+                    const data = results.data.map((row) => {
+                        // remove properties starting with _
+                        for (let key in row) {
+                            if (key.startsWith('_')) {
+                                delete row[key];
+                            }
+                        }
+                        return row;
+                    });
+                    resolve(data);
+                },
+                error: function(error) {
+                    reject(error);
+                }
+            });
+        }
+        catch (error) {
+            reject(error);
+        }
+    });
 }

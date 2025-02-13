@@ -18,13 +18,13 @@
                 <div class="col-6">
                     <div class="container-fluid">
                         <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | EVALUACIONES REGISTRADAS EN EL SISTEMA
+                            <i class="fa-solid fa-users-gear"></i> | MONITOREOS INICIADOS
                         </span>
                     </div>
                 </div>
                 <div class="col-6 d-flex justify-content-end pe-3 pt-2">
                     <span class="mb-2 btn btn-sm evaluacionModalBtn btn-inst2">
-                        <i class="fa-regular fa-plus"></i> | Agregar Evaluación
+                        <i class="fa-regular fa-plus"></i> | Monitorear Indicador
                     </span>
                 </div>
             </nav>
@@ -47,7 +47,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="evaluacionModalLabel">Crear/Editar Evaluación</h1>
+                    <h1 class="modal-title fs-5" id="evaluacionModalLabel">Iniciar Monitoreo</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

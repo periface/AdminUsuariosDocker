@@ -24,9 +24,15 @@
                     </div>
                 </div>
                 <div class="col-6 d-flex justify-content-end pe-3 pt-2">
-                    <span class="mb-2 btn btn-sm indicadorModalBtn btn-inst2">
+                    <span class="mb-2 mr-2 btn btn-sm indicadorModalBtn btn-inst2">
                         <i class="fa-regular fa-plus"></i> | Agregar Indicador
                     </span>
+
+                    <span class="mb-2 btn btn-sm btn-inst2" id="subir">
+                        <i class="fa-regular fa-file"></i> | Subir Layout
+                    </span>
+
+                    <input type="file" id="file" class="d-none" accept=".csv">
                 </div>
             </nav>
         </div>
@@ -57,6 +63,30 @@
                     </form>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade modal-lg" id="indicadorBatchModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="indicadorBatchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="indicadorBatchModalLabel">Carga de Indicadores</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="indicadorBatchForm">
+                        <div id="indicadorBatchFields">
+                        </div>
+                        <div class="modal-footer mt-4">
+                            <hr>
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary btn-sm" id="js-guardar-indicador">Guardar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
