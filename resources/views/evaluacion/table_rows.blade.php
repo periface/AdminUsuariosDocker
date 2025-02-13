@@ -5,20 +5,23 @@
 <table class="table table-striped projects" id="evaluacionesTable">
     <thead class="small">
         <tr class="w-full">
+            <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
+                Periodo
+            </th>
             <th style="width: 40%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
-                Evaluación <i class="pl-2 fas fa-sort"></i>
+                Monitoreo
             </th>
             <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
-                Total <i class="pl-2 fas fa-sort"></i>
+                Total Actual
             </th>
 
             <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
-                Meta <i class="pl-2 fas fa-sort"></i>
+                Meta Esperada
             </th>
             <th style="width: 20%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
-                Semaforo <i class="pl-2 fas fa-sort"></i>
+                Periodos
             </th>
-            <th style="width: 30%" class="flex items-center align-middle">
+            <th style="width: 10%" class="flex items-center align-middle">
                 Acciones
             </th>
         </tr>
@@ -31,10 +34,20 @@
         @else
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
-                    <td>Evaluando
-                        <span class="font-bold text-pink-950">{{ $evaluacion->area['nombre'] }}</span> con
-                        <span class="font-bold text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span>
+                    <td class="text-sm">
+                        {{ $evaluacion['fecha_inicio'] }} -> {{ $evaluacion['fecha_fin'] }}
                     </td>
+                    @if($evaluacion->indicador)
+
+                    <td>Monitoreando
+                        <span class="font-bold text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span> en
+                        <span class="font-bold text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                    </td>
+                    @else
+                    <td> Error: el indicador de esta evaluación no existe, por favor contacte al administrador del
+                        sistema.
+                    </td>
+                    @endif
                     <td class="font-bold">
                         @include('partials.evaluacion_total', [
                             'evaluacion' => $evaluacion,
@@ -86,7 +99,7 @@
                             </div>
                     </td>
                     <td>
-                        <div class="btn-group btn-group-xs" role="group"
+                        <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
                             <button type="button" class="btn btnSecondaryOficial js-view-registros"
                                 data-id="{{ $evaluacion->id }}">Registros</button>

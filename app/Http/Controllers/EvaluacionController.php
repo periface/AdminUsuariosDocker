@@ -277,7 +277,6 @@ class EvaluacionController extends BaseController
             'search' => $search
         ]);
     }
-
     function get_evaluacion_stats_req($id)
     {
         $evaluacion = Evaluacion::find($id);
@@ -365,6 +364,9 @@ class EvaluacionController extends BaseController
         }
 
         $indicador = Indicador::find($evaluacion["indicadorId"]);
+        if (!$indicador) {
+            return $evaluacion;
+        }
         $evaluacion["results_aprobado"] = $aprobados_count;
         $evaluacion["total"] = 0;
         $evaluacion["totalValue"] = 0;

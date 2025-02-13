@@ -24,8 +24,21 @@ class EvaluacionesSeeder extends Seeder
     {
         self::generar_evaluaciones();
     }
+    public static function create_capture_months($start_date, $end_date)
+    {
+        $fechas_captura = [];
+        $start = strtotime($start_date);
+        $end = strtotime($end_date);
+        while ($start <= $end) {
+            $fecha = date('Y-m-d', $start);
+            $fechas_captura[] = new FechaCaptura($fecha, 100);
+            $start = strtotime("+1 month", $start);
+        }
+        return $fechas_captura;
+    }
     public static function generar_evaluaciones()
     {
+        $random_meta = rand(1, 100);
         $indicador = \App\Models\Indicador::where('nombre', 'Expedientes de Compras con Observaciones')->first();
         $area = \App\Models\Area::where('siglas', 'DGCYOP')->first();
         $usuario = \App\Models\User::where('email', 'test@example.com')->first();
@@ -33,7 +46,7 @@ class EvaluacionesSeeder extends Seeder
             'areaId' => $area->id,
             'indicadorId' => $indicador->id,
             'frecuencia_medicion' => 'mensual',
-            'meta' => 100,
+            'meta' => $random_meta,
             'fecha_fin' => '2025-12-1',
             'fecha_inicio' => '2025-01-01',
             'usuarioId' => $usuario->id,
@@ -44,20 +57,7 @@ class EvaluacionesSeeder extends Seeder
         ]);
 
 
-        $fechas_captura = [
-            new FechaCaptura('2025-01-01', 100),
-            new FechaCaptura('2025-02-01', 100),
-            new FechaCaptura('2025-03-01', 100),
-            new FechaCaptura('2025-04-01', 100),
-            new FechaCaptura('2025-05-01', 100),
-            new FechaCaptura('2025-06-01', 100),
-            new FechaCaptura('2025-07-01', 100),
-            new FechaCaptura('2025-08-01', 100),
-            new FechaCaptura('2025-09-01', 100),
-            new FechaCaptura('2025-10-01', 100),
-            new FechaCaptura('2025-11-01', 100),
-            new FechaCaptura('2025-12-01', 100),
-        ];
+        $fechas_captura = self::create_capture_months('2025-01-01', '2027-12-01');
 
 
         $evaluacion = \App\Models\Evaluacion::where('indicadorId', $indicador->id)->first();

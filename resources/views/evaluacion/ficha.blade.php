@@ -81,14 +81,14 @@
 
 
     </div>
-    <div class="grid grid-cols-[30%_70%] mt-3">
+    <div class="grid grid-cols-[70%_30%] mt-3">
+        <div>
+            <canvas id="line-chart">
+            </canvas>
+        </div>
         <div class="grid grid-cols-1">
 
             <canvas id="donut-chart">
-            </canvas>
-        </div>
-        <div>
-            <canvas id="line-chart">
             </canvas>
         </div>
     </div>

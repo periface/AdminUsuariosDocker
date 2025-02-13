@@ -19,7 +19,8 @@ class IndicadorController extends BaseController
     // SI NO SE MIDE, CREAN ESQUEMAS
     public function index()
     {
-        return view('indicador.index');
+        $dimensiones = Dimension::all();
+        return view('indicadores.index',compact('dimensiones'));
     }
     public function dimension_indicadores(Request $request)
     {

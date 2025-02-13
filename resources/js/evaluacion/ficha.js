@@ -1,6 +1,6 @@
 import { get_stats } from './cruds.js';
 
-import { Chart } from "chart.js/auto";
+import { Chart, Interaction } from "chart.js/auto";
 const state = {
     API_URL: "/api/v1/evaluacion",
     WEB_URL: "/evaluacion",
@@ -124,7 +124,7 @@ function get_line_data(data) {
     const data_set = [];
     let index = 0;
     for (const evaluation of data.evaluation_results) {
-            labels.push(get_month_name_and_day(evaluation.fecha));
+        labels.push(get_month_name_and_day(evaluation.fecha));
         main_data_set.data.push({
             x: labels[index],
             y: evaluation.resultado
@@ -141,6 +141,39 @@ function get_line_data(data) {
 function line_chart(data) {
     const line_data = get_line_data(data);
     const container = document.getElementById('line-chart');
+
+    const totalDuration = 10000;
+    const delayBetweenPoints = totalDuration / line_data.labels.length;
+    console.log("delayBetweenPoints", delayBetweenPoints);
+    const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
+    const animation = {
+        x: {
+            type: 'number',
+            easing: 'easeOutQuad',
+            duration: delayBetweenPoints,
+            from: NaN, // the point is initially skipped
+            delay(ctx) {
+                if (ctx.type !== 'data' || ctx.xStarted) {
+                    return 0;
+                }
+                ctx.xStarted = true;
+                return ctx.index * delayBetweenPoints;
+            }
+        },
+        y: {
+            type: 'number',
+            easing: 'easeOutQuad',
+            duration: delayBetweenPoints,
+            from: previousY,
+            delay(ctx) {
+                if (ctx.type !== 'data' || ctx.yStarted) {
+                    return 0;
+                }
+                ctx.yStarted = true;
+                return ctx.index * delayBetweenPoints;
+            }
+        }
+    };
     const config = {
         type: 'line',
         data: {
@@ -148,6 +181,10 @@ function line_chart(data) {
             datasets: line_data.datasets
         },
         options: {
+            //animation,
+            interaction: {
+                intersect: false,
+            },
             responsive: true,
             plugins: {
                 legend: {

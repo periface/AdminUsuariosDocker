@@ -42,16 +42,14 @@
                         <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
                             <button class="btn btnSecondaryOficial btn-sm js-details">
-                                <a class="dropdown-item" href="/dimension/{{ $dimension->id }}/indicadores"
-                                    data-id="{{ $dimension->id }}">Indicadores</a>
+                                <a class="dimensionModalBtn"
+                                    data-id="{{ $dimension->id }}">Editar</a>
                             </button>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btnSecondaryOficial dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item dimensionModalBtn" href="#"
-                                            data-id="{{ $dimension->id }}">Editar</a></li>
                                     <li><a class="dropdown-item js-delete-dimension" href="#"
                                             data-id="{{ $dimension->id }}">Eliminar</a></li>
                                 </ul>

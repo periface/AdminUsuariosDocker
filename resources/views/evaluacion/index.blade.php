@@ -18,7 +18,7 @@
                 <div class="col-6">
                     <div class="container-fluid">
                         <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | MONITOREOS INICIADOS
+                            <i class="fa-solid fa-users-gear"></i> | MONITOREO DE INDICADORES
                         </span>
                     </div>
                 </div>

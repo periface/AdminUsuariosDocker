@@ -76,25 +76,39 @@
                                 </span>
                             </li>
 
-                        <li>
-                            <span class="nav-link px-0 align-middle text-white cursor-pointer" id="dimensiones">
-                                                        <a href="{{ route('secretaria.index') }}" class="">
-                                <i class="fa-solid fa-chart-diagram"></i> <span class="ms-1 d-none d-sm-inline">Secretarias</span>
-                                </a>
-                            </span>
-                        </li>
+                            <li>
+                                <span class="nav-link px-0 align-middle text-white cursor-pointer" id="dimensiones">
+                                    <a href="{{ route('secretaria.index') }}" class="">
+                                        <i class="fa-solid fa-chart-diagram"></i> <span
+                                            class="ms-1 d-none d-sm-inline">Secretarias</span>
+                                    </a>
+                                </span>
+                            </li>
                             <li>
                                 <span class="nav-link px-0 align-middle text-white cursor-pointer" id="areas">
                                     <i class="fa-solid fa-sitemap"></i> <span
                                         class="ms-1 d-none d-sm-inline">Áreas</span>
                                 </span>
                             </li>
-                            <span class="nav-link px-0 align-middle text-white cursor-pointer">
-                                <a href="{{ route('dimension.index') }}" class="">
-                                    <i class="fa-solid fa-chart-diagram"></i> <span
-                                        class="ms-1 d-none d-sm-inline">Dimensiones</span>
-                                </a>
-                            </span>
+                            <li>
+
+                                <span class="nav-link px-0 align-middle text-white cursor-pointer">
+                                    <a href="{{ route('dimension.index') }}" class="">
+                                        <i class="fa-solid fa-chart-diagram"></i> <span
+                                            class="ms-1 d-none d-sm-inline">Dimensiones</span>
+                                    </a>
+                                </span>
+                            </li>
+                            <li>
+
+                                <span class="nav-link px-0 align-middle text-white cursor-pointer">
+                                    <a href="{{ route('indicador.index') }}" class="">
+                                        <i class="fa-solid fa-chart-diagram"></i> <span
+                                            class="ms-1 d-none d-sm-inline">Indicadores</span>
+                                    </a>
+                                </span>
+                            </li>
+
                             <li>
                                 <span class="nav-link px-0 align-middle text-white cursor-pointer" id="users">
                                     <i class="fa-solid fa-users"></i> <span

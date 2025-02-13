@@ -42,7 +42,7 @@ const state = {
     confirm_indicador_events_set: false,
     xcsrftoken: document.querySelector('meta[name="csrf-token"]').content || '',
 
-    dimensionId: document.querySelector('meta[name="dimensionId"]').content || '',
+    dimensionId: null,
     bearertoken: localStorage.getItem('token') || '',
     indicador_view: $("#indicadorModal"),
     indicador_batch_view: $("#indicadorBatchModal"),
@@ -109,8 +109,6 @@ async function start_datatable() {
         state.indicadores_table_container.innerHTML = html;
         set_table_header_events();
         await set_modal_trigger_evts();
-
-        await bind_upload_file();
         set_table_footer_events();
         state.restart_popovers();
     } catch (error) {
@@ -440,9 +438,24 @@ async function render_indicador_form(id, load_set_formula_window = false) {
         update_metodo_calculo(formula.value);
     }
 }
-
+function set_select_dimension_evt() {
+    const select = document.getElementById('dimensiones_select');
+    select.addEventListener('change', (e) => {
+        state.dimensionId = e.target.value;
+        start_datatable();
+    });
+}
 async function start_view() {
-    await start_datatable();
+
+    set_select_dimension_evt();
+    state.indicadores_table_container.innerHTML = `
+    <h1 class="text-center">
+        <p colspan="5"
+         class="text-center p-5 text-2xl">Seleccione una dimensión para ver los indicadores
+        </p>
+    </h1>`;
+
+    await bind_upload_file();
 }
 
 // TABLE EVENTS
@@ -491,7 +504,8 @@ async function bind_upload_file() {
     state.fileInput.addEventListener('change', async function() {
         const file = this.files[0];
         const data = await parse_json(file);
-        const dimensiones = await group_dimensiones(data);
+        const dimensiones = group_dimensiones(data);
+        console.log(dimensiones);
         const indicadores_db = make_indicadores_db(dimensiones);
         console.log(indicadores_db);
         for (let dimension in indicadores_db) {
@@ -524,8 +538,6 @@ function set_indicadores_form_evt(indicadores_db) {
             const estado = document.querySelector(`.js-estados-${i}`);
             estado.innerHTML = badgeProcessing;
             const dimension_response = await get_dimension_by_name(indicador.dimension, state);
-            wait(1000);
-            console.log(dimension_response.data[0]);
             if (dimension_response.error) {
                 estado.innerHTML = badgeError;
                 continue;
@@ -552,14 +564,14 @@ function set_indicadores_form_evt(indicadores_db) {
             const response_json = await post_indicador(form_data, state);
             if (!response_json.error && response_json?.data.statusCode === 200) {
                 estado.innerHTML = badgeProcessed;
+                indicador.error = null;
             } else {
+                indicador.error = response_json.error;
                 estado.innerHTML = badgeError;
             }
 
             i++;
         }
-
-        state.indicador_batch_view.modal('hide');
     }
 
 }
@@ -577,7 +589,7 @@ function render_indicadores_db(indicadores_db) {
             </th>
 
             <th style="width: 15%" data-sort="categoria" data-order="asc" class="sort cursor-pointer">
-                Categoría            </th>
+                Dimension            </th>
 
             <th style="width: 20%" data-sort="metodo_calculo" data-order="asc" class="sort cursor-pointer">
                 Método de Cálculo
@@ -596,7 +608,7 @@ function render_indicadores_db(indicadores_db) {
                 <span class="badge bg-primary text-xs">En espera</span>
             </td>
                 <td class="text-xs">${indicador.nombre}</td>
-                <td class="text-xs">${indicador.categoria}</td>
+                <td class="text-xs">${indicador.dimension}</td>
                 <td class="text-xs">${indicador.metodo_calculo}</td>
                 <td class="text-xs">
                 ${indicador.non_evaluable_formula}<br>
@@ -615,16 +627,15 @@ function render_indicadores_db(indicadores_db) {
 
 }
 function make_indicadores_db(dimensiones) {
-    let indicadores = [];
+    let indicadores_res = [];
     for (let dimension in dimensiones) {
-        indicadores = dimensiones[dimension].indicadores.map(indicador => {
+        const indicadores = dimensiones[dimension].indicadores.map(indicador => {
             // just fill the blanks
             indicador["evaluable_formula"] = "";
             indicador["non_evaluable_formula"] = "";
             indicador["variables"] = [];
             indicador["dimension"] = dimension;
             const pochi_result = state.repl.parse_formula(indicador["metodo_calculo"]);
-            console.log(pochi_result);
             if (pochi_result.error) {
                 indicador["error"] = pochi_result.error;
                 return indicador;
@@ -660,11 +671,12 @@ function make_indicadores_db(dimensiones) {
             indicador["evaluate_result"] = evaluate_result;
             return indicador;
         });
+        indicadores_res = indicadores_res.concat(indicadores);
 
     }
-    return indicadores;
+    return indicadores_res;
 }
-async function group_dimensiones(data) {
+function group_dimensiones(data) {
     const dimensiones = [];
     for (let row of data) {
         if (row["Dimensión"] === undefined) {
@@ -687,25 +699,26 @@ async function group_dimensiones(data) {
                 dimensionId: row["dimensionId"],
                 requiere_anexo: 0,
             });
-            continue;
         }
-        dimensiones[row["Dimensión"]] = {
-            indicadores: [{
-                categoria: row["Categoría"],
-                descripcion: row["Descripción General"],
-                status: row["Estado"] === 'Aprobado' ? 1 : 0,
-                fecuencia_medicion: row["Frecuencia de medición"],
-                medio_verificacion: row["Medio de Verificación"],
-                metodo_calculo: row["Método de Cálculo"],
-                nombre: row["Nombre"],
-                sentido: row["Sentido"].toLowerCase(),
-                unidad_medida: row["Unidad de medida"],
-                area: row["Área que genera información"],
-                indicador_confirmado: 0,
-                dimensionId: row["dimensionId"],
-                requiere_anexo: 0,
-            }]
-        };
+        else {
+            dimensiones[row["Dimensión"]] = {
+                indicadores: [{
+                    categoria: row["Categoría"],
+                    descripcion: row["Descripción General"],
+                    status: row["Estado"] === 'Aprobado' ? 1 : 0,
+                    fecuencia_medicion: row["Frecuencia de medición"],
+                    medio_verificacion: row["Medio de Verificación"],
+                    metodo_calculo: row["Método de Cálculo"],
+                    nombre: row["Nombre"],
+                    sentido: row["Sentido"].toLowerCase(),
+                    unidad_medida: row["Unidad de medida"],
+                    area: row["Área que genera información"],
+                    indicador_confirmado: 0,
+                    dimensionId: row["dimensionId"],
+                    requiere_anexo: 0,
+                }]
+            };
+        }
     }
     return dimensiones;
 }

@@ -19,7 +19,7 @@
                     <div class="col-12">
                         <div class="container-fluid">
                             <span class="navbar-text text-bold text-white">
-                                <i class="fa-solid fa-users-gear"></i> | REGISTROS DE {{ strtoupper($indicador['nombre']) }}
+                                <i class="fa-solid fa-users-gear"></i> | MONITOREO DE {{ strtoupper($indicador['nombre']) }}
                             </span>
                         </div>
                     </div>
@@ -32,42 +32,35 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="bg-white rounded-md shadow-sm p-3">
-
-                                    <span class="badge bg-pink-950 rounded-none">
-                                        <i class="fa-solid fa-info"></i> | Área
-                                    </span>
-                                    <p class="m-0 text-sm font-bold">
+                                    <p class="m-0 text-lg text-red-950 font-bold">
                                         <span>
                                             {{ $area['nombre'] }}
                                         </span>
                                     </p>
-                                    <span class="badge bg-pink-950 rounded-none text-md">
-                                        <i class="fa-solid fa-info"></i> | Indicador
-                                    </span>
-                                    <p class="m-0 text-sm font-bold" title="{{ $indicador['descripcion'] }}">
-                                        <span>
-                                            {{ $indicador['nombre'] }}
-                                        </span>
-                                    </p>
-
-                                    <br>
                                     <hr>
-                                    <div class="grid grid-cols-2 mt-2 text-center items-center">
-                                        <div id="status">
-                                        </div>
-                                       <div id="total">
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-1 mt-2">
+                                    <br>
+                                    <div class="grid grid-cols-1">
 
                                         <div class="w-full">
-                                            <span class="text-xs">
-                                                {{ $indicador['metodo_calculo'] }}
-                                            </span>
+                                            <p class="text-center m-0"> Método de Cálculo</p>
+                                            <p>
+
+                                                <span class="text-xs text-pink-950 font-bold">
+                                                    {{ $indicador['nombre'] }}= </span>
+                                                <span class="text-xs text-blue-950">
+                                                    {{ $indicador['metodo_calculo'] }}
+                                                </span>
+                                            </p>
                                         </div>
                                     </div>
                                     <br>
                                     <hr>
+                                    <div class="hidden grid grid-cols-2 mt-4 text-center items-center">
+                                        <div id="status">
+                                        </div>
+                                        <div id="total">
+                                        </div>
+                                    </div>
                                     <br>
                                     <canvas id="donut-chart" class="w-full h-auto">
                                     </canvas>
@@ -77,7 +70,12 @@
                             </div>
                         </div>
                     </div>
-                    <div id="table-container" class="col-9 bg-white shadow-sm">
+
+                    <div class="col-9">
+                        <div class="grid grid-cols-1 bg-white">
+                            <div id="table-container" class="p-2">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -525,10 +525,16 @@ function bind_step2_events() {
         const fecha_fin_value = fecha_fin.value;
         const periodicidad_value = periodicidad.value;
         state.meta = parseFloat(meta.value);
+        const totalElm = document.getElementById('total');
+        if (totalElm) {
+            totalElm.innerHTML = state.meta + '%';
+        }
         handle_evaluacion_params(fecha_inicio_value,
             fecha_fin_value,
             periodicidad_value);
     });
+
+
     state.step_2_events_set = true;
 }
 function set_table_header_events() {

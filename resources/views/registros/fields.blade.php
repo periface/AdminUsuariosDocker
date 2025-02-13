@@ -9,7 +9,7 @@
         value="{{ $registro['variableId'] }}" />
     <div class="form-group">
         <label for="registro_{{ $loop->index }}"
-            class="form-label text-sm">{{ $registro['nombre_variable'] }}</label>
+            class="form-label text-sm uppercase">{{ $registro['nombre_variable'] }}</label>
         <input class="form-control" type="number" id="registro_{{ $loop->index }}"
             name="registro_{{ $loop->index }}" placeholder="Valor" value="{{ $registro['valor'] ?? '' }}" />
     </div>

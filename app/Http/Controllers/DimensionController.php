@@ -25,7 +25,7 @@ class DimensionController extends BaseController
                 'status' => 'error',
                 'data' => null,
                 'statusCode' => 400,
-                'error' => "No se encontró la evaluación"
+                'error' => "No se encontró la dimensión"
             ], 400);
         }
         $name = $request->name;
