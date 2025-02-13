@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout.app')
 
 @section('content')
 <div class="container-fluid"  style="background-color:#fff;">
@@ -8,7 +8,7 @@
             <div class="overlay">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none py-3">
-                        <span class="fs-5 d-none d-sm-inline">Sistema de Indicadores <br> <small>Dirección de Control Administrativo</small></span>
+                        <span class="fs-5 d-none d-sm-inline">Sistema de Indicadores <br> <small>Secretaría de Administración</small></span>
                     </a>
                     <hr width="100%">
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-4" >
@@ -76,7 +76,7 @@
             <div class="row">
                 <!-- As a heading -->
                 <nav class="navbar navbar-light bg-light">
-                    <small class="navbar-brand mb-0 ml-10">Área{{ $area['nombre'] }}</small>
+                    <small class="navbar-brand mb-0 ml-10">Área {{ $area['nombre'] }}</small>
                 </nav>
                 <div id="content">
                     <div class="container welcome-container">

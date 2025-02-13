@@ -12,7 +12,7 @@
 @endsection
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-12">
             <nav class="navbar bg-body-tertiary bg-inst">
                 <div class="col-6">
@@ -29,11 +29,18 @@
                 </div>
             </nav>
         </div>
-    </div>
+    </div> --}}
+    <div class="card shadow mb-4">
+        <div class="card-header py3">
+            <h6 class="m-0 font-weight-bold"><i class="fa-solid fa-users-gear"></i> | EVALUACIONES REGISTRADAS EN EL SISTEMA</h6>
+        </div>
+        <div class="card-body">
+            <div id="table-container">
 
-    <div id="table-container">
-
+            </div>
+        </div>
     </div>
+    
     <!-- Modal -->
     <div class="modal fade" id="evaluacionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="evaluacionModalLabel" aria-hidden="true">
