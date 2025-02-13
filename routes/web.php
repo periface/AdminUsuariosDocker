@@ -44,13 +44,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/users/{user}/roles-permissions',                [UserController::class, 'userRolesAndPermissions']);
 
         // Roles
-        Route::get('/roles',                                         [RoleController::class, 'index']);
+        Route::get('/roles',                                         [RoleController::class, 'index'])->name('roles');
         Route::get('/roles/create',                                  [RoleController::class, 'add']);
         Route::get('/roles/{role}/edit',                             [RoleController::class, 'edit']);
         Route::get('/roles/{role}/permissions',                      [RoleController::class, 'rolePermissions']);
 
         // Permissions
-        Route::get('/permissions',                                   [PermissionController::class, 'index']);
+        Route::get('/permissions',                                   [PermissionController::class, 'index'])->name('permisos');
         Route::get('/permissions/{user}/available-permissions',      [PermissionController::class, 'getAvailablePermissions']);
         Route::get('/permissions/{role}/available-permissions-role', [PermissionController::class, 'getAvailablePermissionsRole']);
         Route::get('/permissions/add',                               [PermissionController::class, 'addPermissionForm']);
@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Accesos para responsables de área
     // Route::group(['middleware' => ['role:ADM|SPA']], function () {
-    Route::get('/users',                                         [UserController::class, 'index'])->middleware('role:SPA|ADM');
+    Route::get('/users',                                         [UserController::class, 'index'])->middleware('role:SPA|ADM')->name('usuarios');
     Route::get('/areas',                                         [AreaController::class, 'index'])->middleware('role:SPA|ADM')->name('areas');
     // });
 

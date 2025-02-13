@@ -10,24 +10,20 @@
 @endsection
 @section('content')
     <meta name="token" id="token" content="{{ csrf_token() }}">
-
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar bg-body-tertiary bg-inst">
-                <div class="col-6">
-                    <div class="container-fluid">
-                        <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | DIMENSIONES REGISTRADAS EN EL SISTEMA
-                        </span>
-                    </div>
-                </div>
-            </nav>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">
+                <i class="fa-solid fa-users-gear"></i> | DIMENSIONES REGISTRADAS EN EL SISTEMA
+            </h6>
+        </div>
+        <div class="card-body">
+            <div id="table-container">
+                @include('partials.table_loader')
+            </div>
         </div>
     </div>
 
-    <div id="table-container">
-        @include('partials.table_loader')
-    </div>
+    
     <!-- Modal -->
     <div class="modal fade" id="dimensionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="dimensionModalLabel" aria-hidden="true">
