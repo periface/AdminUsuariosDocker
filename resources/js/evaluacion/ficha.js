@@ -73,7 +73,7 @@ function get_total_html(data) {
             icon = '';
             break;
     }
-    return `<span class="font-bold text-md">Total alcanzado:</span><span class="${color} text-md">
+    return `<span class="font-bold text-lg">Total alcanzado:</span><br><span class="${color} text-lg">
         ${total}
         ${icon}
     </span>`;
@@ -95,7 +95,7 @@ function get_meta_html(data) {
             icon = '';
             break;
     }
-    return `<span class="font-bold text-md">Meta esperada:</span> <span class="text-md">
+    return `<span class="font-bold text-lg text-center">Meta esperada:</span><br> <span class="text-lg">
        ${meta}
         ${icon}
     </span>`;
