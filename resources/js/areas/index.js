@@ -247,3 +247,12 @@ document.addEventListener('click', (event) => {
         showFormEdit(id);
     }
 })
+
+// Eliminar
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-area')) {
+        event.preventDefault();
+        let id = event.target.dataset.id || event.target.id;
+        confirmDelete(id);
+    }
+})

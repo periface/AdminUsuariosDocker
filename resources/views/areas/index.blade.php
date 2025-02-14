@@ -25,10 +25,16 @@
         
         <div class="col-12 mt-4">
             <div class="card shadow mb-4">
-                <div class="card-header py-3">
+                <div class="card-header d-flex justify-content-between py-3">
                     <h6 class="m-0 font-weight-bold text-gray-800">
                         ÁREAS REGISTRADAS EN EL SISTEMA
                     </h6>
+                    <a href="#" class="btn bg-inst2 btn-icon-split btn-sm add-area">
+                        <span class="icon text-white">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        <span class="text text-white">Agregar Área</span>
+                    </a>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">

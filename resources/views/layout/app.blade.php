@@ -73,7 +73,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Cumplimiento
+                Seguimiento
             </div>
 
             <!-- Nav Item - Charts -->
@@ -103,14 +103,6 @@
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-sitemap"></i>
                     <span>Áreas</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Indicadores</span>
                 </a>
             </li>
 
