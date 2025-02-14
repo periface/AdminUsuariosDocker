@@ -166,6 +166,15 @@ class DimensionController extends BaseController
     {
         try {
             $dimension = Dimension::find($request->id);
+            $indicadores_dimension = $dimension->indicadores;
+            if ($indicadores_dimension->count() > 0) {
+                return response()->json([
+                    'status' => 'error',
+                    'error' => 'No se puede eliminar la dimensión porque tiene indicadores asociados',
+                    'data' => null,
+                    'statusCode' => 400
+                ], 400);
+            }
             if (!$dimension) {
                 return response()->json([
                     'status' => 'error',

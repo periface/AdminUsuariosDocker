@@ -24,7 +24,7 @@ class Indicador extends Model
     public $medio_verificacion;
     public $requiere_anexo;
     public $secretaria;
-    public $categoria;//capital humano, capital estructural, capital relacional, capital tecnologico
+    public $categoria; //capital humano, capital estructural, capital relacional, capital tecnologico
     protected $fillable = [
         'nombre',
         'descripcion',
@@ -72,7 +72,6 @@ class Indicador extends Model
                 return '$';
             case 'numero':
                 return '';
-
             case 'días':
                 return '';
             default:
@@ -90,7 +89,6 @@ class Indicador extends Model
                 return ' pesos';
             case 'numero':
                 return '';
-
             case 'días':
                 return ' días';
             default:

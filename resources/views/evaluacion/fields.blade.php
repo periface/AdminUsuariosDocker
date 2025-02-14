@@ -1,18 +1,19 @@
 <div class="bs-stepper">
     <div class="bs-stepper-header" role="tablist">
         <!-- your steps here -->
+
         <div class="step" data-target="#asignacion-part">
             <button type="button" class="step-trigger" role="tab" aria-controls="asignacion-part"
                 id="asignacion-part-trigger">
                 <span class="bs-stepper-circle">1</span>
-                <span class="bs-stepper-label">Seleccion de area/indicador</span>
+                <span class="bs-stepper-label">Elija un indicador</span>
             </button>
         </div>
         <div class="line"></div>
         <div class="step" data-target="#meta-part">
             <button type="button" class="step-trigger" role="tab" aria-controls="meta-part" id="meta-part-trigger">
                 <span class="bs-stepper-circle">2</span>
-                <span class="bs-stepper-label">Configurar meta</span>
+                <span class="bs-stepper-label">Configure periodo/meta</span>
             </button>
         </div>
 
@@ -29,18 +30,8 @@
         <!-- your steps content here -->
         <div id="asignacion-part" class="content" role="tabpanel" aria-labelledby="asignacion-part-trigger">
 
-            <div class="grid grid-cols-1 md:grid-cols-2">
-                <div class="p-2 mt-2">
-                    <select class="form-select" id="areaId" name="areaId">
-                        <option value="">Seleccione un área</option>
-                        @foreach ($areas as $area)
-                            <option value="{{ $area->id }}" data-json="{{ $area }}">{{ $area['nombre'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="p-2 mt-2">
+            <div class="grid grid-cols-1">
+                <div class="p-2 mt-2 w-full">
                     <select class="form-select" id="indicadorId" name="indicadorId">
                         <option value="">Seleccione un indicador</option>
                         @foreach ($dimensiones as $dimension)
@@ -61,8 +52,19 @@
                         @endforeach
                     </select>
                 </div>
-                <div id="asignacion-details" class="p-2 mt-2 md:col-span-2">
+                <div class="p-2 mt-2">
+                    <select class="form-select" id="areaId" name="areaId">
+                        <option value="">Seleccione un área</option>
+                        @foreach ($areas as $area)
+                            <option value="{{ $area->id }}" data-json="{{ $area }}">{{ $area['nombre'] }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
+
+            </div>
+
+            <div id="asignacion-details" class="p-2 mt-2 md:col-span-2">
             </div>
         </div>
         <div id="meta-part" class="content" role="tabpanel" aria-labelledby="meta-part-trigger">

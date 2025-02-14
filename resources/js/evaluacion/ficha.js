@@ -1,3 +1,4 @@
+import { UNIDADES } from '../UNIDADES.js';
 import { get_stats } from './cruds.js';
 
 import { Chart, Interaction } from "chart.js/auto";
@@ -25,80 +26,103 @@ async function load_evaluacion_stats() {
     line_chart(data);
     total_meta(data);
 }
-function total_meta(data) {
-    const status = document.getElementById('status');
-    const meta_html = get_meta_html(data);
-    status.innerHTML = meta_html;
-    const total = document.getElementById('total');
-    const total_html = get_total_html(data);
-    total.innerHTML = total_html;
-}
-function get_total_html(data) {
-    //es decimal  //es decimal tambn :v
-    let { total, sentido, totalValue, metaValue } = data;
-    let icon = '';
+function total_card(data) {
     let color = '';
-    // neta que a veces te odio js
+    let icon = '';
+    let { total, sentido, totalValue, metaValue } = data;
     totalValue = parseInt(totalValue);
     metaValue = parseInt(metaValue);
-    //
+
     switch (sentido) {
         case 'ascendente':
             if (totalValue < metaValue) {
-                icon = '<i class="fas fa-arrow-down"></i>';
-                color = 'text-red-500';
+                icon = '<i class="fas fa-2x fa-arrow-down text-red-500"></i>';
+                color = 'danger';
             } else {
-                icon = '<i class="fas fa-arrow-up"></i>';
-                color = 'text-green-500';
+                icon = '<i class="fas fa-2x fa-arrow-up text-green-500"></i>';
+                color = 'success';
             }
             break;
         case 'descendente':
             if (totalValue > metaValue) {
-                icon = '<i class="fas fa-arrow-up"></i>';
-                color = 'text-red-500';
+                icon = '<i class="fas fa-2x fa-arrow-up text-red-500"></i>';
+                color = 'danger';
             } else {
-                icon = '<i class="fas fa-arrow-down"></i>';
-                color = 'text-green-500';
+                icon = '<i class="fas fa-2x fa-arrow-down text-green-500"></i>';
+                color = 'success';
             }
             break;
         case 'constante':
             if (totalValue == metaValue) {
-                icon = '<i class="fas fa-equals"></i>';
-                color = 'text-green-500';
+                icon = '<i class="fas fa-2x fa-equals text-green-500"></i>';
+                color = 'success';
             } else {
-                color = 'text-red-500';
+                color = 'danger';
             }
             break;
         default:
             icon = '';
             break;
     }
-    return `<span class="font-bold text-lg">Total alcanzado:</span><br><span class="${color} text-lg">
-        ${total}
-        ${icon}
-    </span>`;
+    return `
+    <div class="card border-left-${color} shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-${color} text-uppercase mb-1">
+                        Total alcanzado</div>
+                    <div class="h2 mb-0 font-weight-bold text-gray-800">${total}</div>
+                </div>
+                <div class="col-auto">
+                    ${icon}
+                </div>
+            </div>
+        </div>
+    </div>
+`
 }
-function get_meta_html(data) {
+function meta_card(data) {
     const { meta, sentido } = data;
     let icon = '';
     switch (sentido) {
         case 'ascendente':
-            icon = '<i class="fas fa-arrow-up"></i>';
+            icon = '<i class="fas fa-arrow-up fa-2x text-gray-500"></i>';
             break;
         case 'descendente':
-            icon = '<i class="fas fa-arrow-down"></i>';
+            icon = '<i class="fas fa-arrow-down fa-2x text-gray-500"></i>';
             break;
         case 'constante':
-            icon = '<i class="fas fa-equals"></i>';
+            icon = '<i class="fas fa-equals fa-2x text-gray-500"></i>';
             break;
         default:
             icon = '';
             break;
     }
-    return `<span class="font-bold text-lg text-center">Meta esperada:</span><br> <span class="text-lg">
-       ${meta}
-        ${icon}
-    </span>`;
+    return `
+
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Meta esperada</div>
+                    <div class="h2 mb-0 font-weight-bold text-gray-800">${meta}</div>
+                </div>
+                <div class="col-auto">
+                    ${icon}
+                </div>
+            </div>
+        </div>
+    </div>
+`
+}
+function total_meta(data) {
+    const status = document.getElementById('status');
+    const meta_html = meta_card(data);
+    status.innerHTML = meta_html;
+    const total = document.getElementById('total');
+    const total_html = total_card(data);
+    total.innerHTML = total_html;
 }
 function get_month_name_and_day(date) {
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
@@ -113,26 +137,93 @@ function get_line_data(data) {
     data.evaluation_results.sort((a, b) => {
         return new Date(a.fecha) - new Date(b.fecha);
     });
-    data.evaluation_results = data.evaluation_results.filter((evaluation) => evaluation.status === 'aprobado');
     const labels = []
     const main_data_set = {
-        label: data.indicador.nombre,
+        label: "Aprobados",
         data: [],
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: "rgba(78, 115, 223, 0.05)",
+        borderColor: "rgba(78, 115, 223, 1)",
+        lineTension: 0.3,
+        pointRadius: 3,
+        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointBorderColor: "rgba(78, 115, 223, 1)",
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+        stepped: true,
     }
+    // yellowish colors
+    const envalidacion_data_set = {
+        label: 'En validación',
+        data: [],
+        fill: false,
+        backgroundColor: "rgba(255, 193, 7, 0.05)",
+        borderColor: "rgba(255, 193, 7, 1)",
+        lineTension: 0.3,
+        pointRadius: 3,
+        pointBackgroundColor: "rgba(255, 193, 7, 0.05)",
+        pointBorderColor: "rgba(255, 193, 7, 1)",
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "rgba(255, 193, 7, 1)",
+        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+        borderDash: [5, 5],
+        stepped: true,
+    }
+    const rechazados_data_set = {
+        label: 'Rechazados',
+        data: [],
+        fill: false,
+        backgroundColor: "rgba(255, 0, 0, 0.05)",
+        borderColor: "rgba(255, 0, 0, 1)",
+        lineTension: 0.3,
+        pointRadius: 3,
+        pointBackgroundColor: "rgba(255, 0, 0, 0.05)",
+        pointBorderColor: "rgba(255, 0, 0, 1)",
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "rgba(255, 0, 0, 1)",
+        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+        borderDash: [5, 5],
+        stepped: true,
+    }
+
     const data_set = [];
+
     let index = 0;
     for (const evaluation of data.evaluation_results) {
         labels.push(get_month_name_and_day(evaluation.fecha));
-        main_data_set.data.push({
-            x: labels[index],
-            y: evaluation.resultado
-        });
+        console.log(evaluation);
+        if (evaluation.status === 'aprobado') {
+            main_data_set.data.push({
+                x: labels[index],
+                y: evaluation.resultado,
+                status: evaluation.status
+            });
+        }
+        else if (evaluation.status === 'capturado') {
+            envalidacion_data_set.data.push({
+                x: labels[index],
+                y: evaluation.resultado,
+                status: evaluation.status
+            });
+        } else if (evaluation.status === 'rechazado') {
+            rechazados_data_set.data.push({
+                x: labels[index],
+                y: evaluation.resultado,
+                status: evaluation.status
+            });
+        }
         index++;
     }
     data_set.push(main_data_set);
-    console.log(data_set);
+    //data_set.push(envalidacion_data_set);
+    //data_set.push(rechazados_data_set);
     return {
         labels,
         datasets: data_set
@@ -141,39 +232,14 @@ function get_line_data(data) {
 function line_chart(data) {
     const line_data = get_line_data(data);
     const container = document.getElementById('line-chart');
-
-    const totalDuration = 10000;
-    const delayBetweenPoints = totalDuration / line_data.labels.length;
-    console.log("delayBetweenPoints", delayBetweenPoints);
-    const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
-    const animation = {
-        x: {
-            type: 'number',
-            easing: 'easeOutQuad',
-            duration: delayBetweenPoints,
-            from: NaN, // the point is initially skipped
-            delay(ctx) {
-                if (ctx.type !== 'data' || ctx.xStarted) {
-                    return 0;
-                }
-                ctx.xStarted = true;
-                return ctx.index * delayBetweenPoints;
-            }
-        },
-        y: {
-            type: 'number',
-            easing: 'easeOutQuad',
-            duration: delayBetweenPoints,
-            from: previousY,
-            delay(ctx) {
-                if (ctx.type !== 'data' || ctx.yStarted) {
-                    return 0;
-                }
-                ctx.yStarted = true;
-                return ctx.index * delayBetweenPoints;
-            }
-        }
-    };
+    const unidad = UNIDADES.filter((unidad) => unidad.nombre === data.indicador.unidad_medida);
+    let simbolo = '';
+    if (unidad.length > 0) {
+        simbolo = unidad[0].friendly + " " + unidad[0].simbolo;
+    }
+    else {
+        simbolo = data.indicador.unidad_medida;
+    }
     const config = {
         type: 'line',
         data: {
@@ -181,7 +247,46 @@ function line_chart(data) {
             datasets: line_data.datasets
         },
         options: {
-            //animation,
+            mantainAspectRatio: false,
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            },
+            scales: {
+
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Periodos de captura',
+                        color: '#AB0033',
+                        font: {
+                            family: 'Encode Sans',
+                            size: 20,
+                            lineHeight: 1.2,
+                        },
+                        padding: { top: 20, left: 0, right: 0, bottom: 0 }
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: simbolo,
+                        color: '#AB0033',
+                        font: {
+                            family: 'Encode Sans',
+                            size: 20,
+                            lineHeight: 1.2
+                        },
+                        padding: { top: 30, left: 0, right: 0, bottom: 0 }
+                    }
+                }
+            },
             interaction: {
                 intersect: false,
             },
@@ -192,7 +297,7 @@ function line_chart(data) {
                 },
                 title: {
                     display: true,
-                    text: 'Evolución del indicador'
+                    text: "Registros de " + data.indicador.nombre
                 }
             }
         },

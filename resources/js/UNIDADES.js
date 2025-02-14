@@ -14,7 +14,6 @@ const UNIDADES = [
         oracion: 'por ciento',
         friendly: 'Porcentaje',
         oracion_corta: '% de',
-
     },
     {
         nombre: 'moneda',

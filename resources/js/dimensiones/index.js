@@ -204,11 +204,12 @@ async function bind_modal_events() {
                     }
                 });
                 const responseJson = await response.json();
+                console.log(responseJson);
                 if (!responseJson.error) {
                     createToast('Administración de Dimensiones', 'Se eliminó correctamente la información', true);
                     await fetch_rows();
                 } else {
-                    createToast('Administración de Dimensiones', 'Ocurrió un error inesperado', false);
+                    createToast('Administración de Dimensiones', responseJson.error, false);
                 }
             }
         });

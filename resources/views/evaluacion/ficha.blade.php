@@ -61,18 +61,26 @@
                 </div>
 
                 <div class="grid grid-cols-1 p-3">
-                    <div class="grid grid-cols-1">
-                        <div id="status" class="w-full text-center">
-                        </div>
-                        <div id="total" class="w-full text-center">
-                        </div>
-                    </div>
+
+
                     <div class="text-center">
                         <p><span class="font-bold text-center">De:</span> {{ $evaluacion['fecha_inicio'] }} a
                             {{ $evaluacion['fecha_fin'] }}
                         </p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-3 mb-4">
+
+        <div class="p-1 w-full">
+            <div id="status" class="">
+            </div>
+        </div>
+        <div class="p-1 w-full">
+            <div id="total" class="">
             </div>
         </div>
     </div>

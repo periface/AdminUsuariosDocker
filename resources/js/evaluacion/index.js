@@ -262,24 +262,24 @@ function move_to_step(step) {
 function create_asignacion_details(area, indicador) {
     const responsableName = area["responsable"] ? area["responsable"]["name"] + " " + area["responsable"]["primer_apellido"] + " " + area["responsable"]["segundo_apellido"] : 'Sin responsable';
     return `
-<div class="grid md:grid-cols-2 grid-cols-1 justify-center items-center content-evenly justify-items-center"
-    style="
-    grid-auto-columns: minmax(0, 1fr);
-    "
->
+<div class="grid md:grid-cols-1 grid-cols-1 justify-center items-center content-evenly justify-items-center"
+    style="grid-auto-columns: minmax(0, 1fr);">
     <div class="p-2">
-<div class="">
+        <div class="card shadow">
             <p class="m-0 text-pink-900">${area["nombre"]}</p>
-            <hr/>
             <p class="m-0 text-gray-900 text-sm">Responsable: ${responsableName}</p>
             </p>
         </div>
     </div>
     <div class="p-2">
         <div class="">
-            <p class="m-0 text-pink-900" title="${indicador["metodo_calculo"]}">${indicador["descripcion"]}</p>
+
+            <p class="m-0 text-pink-950 font-bold" >${indicador["nombre"]}:</p>
+            <p class="m-0 text-yellow-950">${indicador["descripcion"]}</p>
             <hr/>
-            <p class="m-0 text-gray-900 text-sm">Sentido: ${indicador["sentido"]}</p>
+            <p class="m-0 text-red-950 text-sm uppercase"><span class="font-bold">Método de cálculo:</span> ${indicador["metodo_calculo"]}</p>
+            <p class="m-0 text-red-950 text-sm uppercase"><span class="font-bold">Sentido:</span> ${indicador["sentido"]}</p>
+            <p class="m-0 text-red-950 text-sm uppercase"><span class="font-bold">Unidad de medida:</span> ${indicador["unidad_medida"]}</p>
         </div>
     </div>
 </div>

@@ -24,11 +24,11 @@
             <div class="flex align-middle items-center">
 
                 <h6 class="m-0 font-weight-bold mr-2">INDICADORES REGISTRADOS</h6>
-                <button class="btn btn-sm btn-primary indicadorModalBtn mr-2">
+                <button disabled class="btn btn-sm btn-primary indicadorModalBtn mr-2">
                     Crear Indicador
                 </button>
 
-                <button id="subir" class="btn btn-sm btn-primary indicadorModalBtn ">
+                <button id="subir" class="btn btn-sm btn-primary">
                     Cargar Indicadores
                 </button>
 
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade modal-lg" id="indicadorBatchModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    <div class="modal fade" id="indicadorBatchModal" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="indicadorBatchModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

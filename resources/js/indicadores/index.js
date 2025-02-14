@@ -109,6 +109,7 @@ async function start_datatable() {
         state.indicadores_table_container.innerHTML = html;
         set_table_header_events();
         await set_modal_trigger_evts();
+
         set_table_footer_events();
         state.restart_popovers();
     } catch (error) {
@@ -396,6 +397,7 @@ function delete_indcador_evt(delete_button) {
         const delete_indicador_confirmed = await show_confirm_action();
         if (delete_indicador_confirmed) {
             const response_json = await delete_indicador(id, state);
+            console.log(response_json);
             if (!response_json.error) {
                 createToast('Administración de Dimensiones',
                     `Se eliminó correctamente la información.`,
@@ -403,7 +405,7 @@ function delete_indcador_evt(delete_button) {
                 await start_datatable();
             } else {
                 createToast('Administración de Dimensiones',
-                    `Ocurrió un error al eliminar la información.`,
+                    `${response_json.error}`,
                     false);
             }
         }
@@ -413,6 +415,11 @@ function delete_indcador_evt(delete_button) {
 async function set_modal_trigger_evts() {
     if (state.rows_events_set) {
         return;
+    }
+
+    for (let modal_open_btn of state.modal_open_buttons) {
+        // enable button
+        await open_indicador_form_evt(modal_open_btn);
     }
     for (let set_formula_button of state.set_formula_buttons) {
         await open_indicador_form_evt(set_formula_button, true);
@@ -442,6 +449,23 @@ function set_select_dimension_evt() {
     const select = document.getElementById('dimensiones_select');
     select.addEventListener('change', (e) => {
         state.dimensionId = e.target.value;
+        if (state.dimensionId === '0') {
+            console.log('No dimension selected');
+            state.indicadores_table_container.innerHTML = `
+            <h1 class="text-center">
+                <p colspan="5"
+                 class="text-center p-5 text-2xl">Seleccione una dimensión para ver los indicadores
+                </p>
+            </h1>`;
+            //disable buttons
+            for (let modal_open_btn of state.modal_open_buttons) {
+                modal_open_btn.disabled = true;
+            }
+            return;
+        }
+        for (let modal_open_btn of state.modal_open_buttons) {
+            modal_open_btn.disabled = false;
+        }
         start_datatable();
     });
 }
@@ -455,9 +479,6 @@ async function start_view() {
         </p>
     </h1>`;
 
-    for (let modal_open_btn of state.modal_open_buttons) {
-        await open_indicador_form_evt(modal_open_btn);
-    }
     await bind_upload_file();
 }
 
@@ -508,9 +529,7 @@ async function bind_upload_file() {
         const file = this.files[0];
         const data = await parse_json(file);
         const dimensiones = group_dimensiones(data);
-        console.log(dimensiones);
         const indicadores_db = make_indicadores_db(dimensiones);
-        console.log(indicadores_db);
         for (let dimension in indicadores_db) {
             if (indicadores_db[dimension].error) {
                 createToast('Administración de Dimensiones',
@@ -521,13 +540,6 @@ async function bind_upload_file() {
         }
         render_indicadores_db(indicadores_db);
         set_indicadores_form_evt(indicadores_db);
-    });
-}
-async function wait(ms) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve();
-        }, ms);
     });
 }
 function set_indicadores_form_evt(indicadores_db) {

@@ -17,12 +17,14 @@
             <tr>
                 <td>
 
-                    <span class="text-green-900 text-xs">{{ $espacio['fecha'] }}</span>
+                    <span class="text-green-900 text-md font-bold">{{ $espacio['fecha'] }}</span>
                     <br>
+                    <span class="text-2xl">
                     @include('partials.periodos_counter', [
                         'frecuencia_medicion' => $frecuencia_medicion,
                         'index' => $loop->index + 1,
                     ])
+                    </span>
                     <br>
                     <span class="text-blue-900">{{ $espacio['days_left'] }}</span>
                 </td>
