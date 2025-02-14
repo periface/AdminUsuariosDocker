@@ -62,12 +62,28 @@
             </a>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Dashboard
+            </div>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="far fa-chart-bar"></i>
+                    <span>Panel de Seguimiento</span></a>
+            </li>
 
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Seguimiento
+            </div>
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('evaluacion.index') }}">
                     <i class="far fa-chart-bar"></i>
-                    <span>Monitor de Seguimiento</span></a>
+                    <span>Evaluaciones</span></a>
             </li>
 
             <!-- Divider -->
