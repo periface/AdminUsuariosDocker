@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Type\Decimal;
 
 use function Illuminate\Log\log;
 
@@ -87,7 +88,7 @@ class RegistrosController extends BaseController
             foreach ($evaluacion_results as $espacio) {
                 $espacio["days_left"] = $this->get_days_left($espacio["fecha"]);
                 $espacio["requiere_anexo"] = $indicador["requiere_anexo"];
-                $espacio["value"] = Indicador::get_value(intval($espacio["resultado"]), $unidad_medida);
+                $espacio["value"] = Indicador::get_value(floatval($espacio["resultado"]), $unidad_medida);
             }
             return view('registros.table_rows', [
                 'frecuencia_medicion' => $frecuencia_medicion,

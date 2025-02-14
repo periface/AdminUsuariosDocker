@@ -31,7 +31,7 @@ const UNIDADES = [
     },
     {
         nombre: 'días',
-        simbolo: 'días',
+        simbolo: '',
         oracion: 'días',
         friendly: 'Días',
         oracion_corta: 'días',

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Ramsey\Uuid\Type\Decimal;
 
 class Indicador extends Model
 {
@@ -55,7 +55,7 @@ class Indicador extends Model
         return $this->hasMany(VariableValue::class, 'indicadorId');
     }
 
-    public static function get_value(int $value, string $unidad_medida)
+    public static function get_value(float $value, string $unidad_medida)
     {
         $prefix = self::get_prefix($unidad_medida);
         $suffix = self::get_suffix($unidad_medida);

@@ -11,7 +11,7 @@
 @endsection
 
 @section('title')
-    <h6 class="m-0 font-weight-bold">MONITOREO DE SEGUIMIENTO</h6>
+    <h6 class="m-0 font-weight-bold">EVALUACION DE INDICADORES</h6>
 @endsection
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -37,9 +37,9 @@
         <div class="card-header py3">
             <div class="flex align-middle items-center">
 
-                <h6 class="m-0 font-weight-bold mr-2">MONITOREOS INICIADOS</h6>
+                <h6 class="m-0 font-weight-bold mr-2">EVALUACIONES INICIADAS</h6>
                 <button class="btn btn-sm btn-primary evaluacionModalBtn ">
-                    Monitorear Indicador
+                    Evaluar Indicador
                 </button>
             </div>
         </div>
@@ -56,7 +56,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="evaluacionModalLabel">Iniciar Monitoreo</h1>
+                    <h1 class="modal-title fs-5" id="evaluacionModalLabel">Iniciar Evaluación</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

@@ -30,7 +30,7 @@ return new class extends Migration
         Schema::create("evaluacion_result", function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("evaluacionId");
-            $table->unsignedBigInteger("resultado");
+            $table->decimal("resultado");
             $table->string("status")->default("capturado"); // capturado, aprobado, rechazado
             $table->unsignedBigInteger("aprobadoPorId")->nullable();
             $table->date("fecha");
