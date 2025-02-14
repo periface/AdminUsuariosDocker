@@ -21,75 +21,81 @@
 
     @vite(['node_modules/bs-stepper/dist/css/bs-stepper.min.css'])
 @endsection
+
+@section('title')
+    <h6 class="m-0 font-weight-bold">FICHA DE EVALUACIÓN</h6>
+@endsection
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <input type="hidden" id="areaId" value="{{ $area['id'] }}">
     <input type="hidden" id="indicadorId" value="{{ $indicador['id'] }}">
     <input type="hidden" id="evaluacionId" value="{{ $evaluacion['id'] }}">
 
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar bg-body-tertiary bg-inst">
-                <div class="col-12">
-                    <div class="container-fluid">
-                        <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | Ficha de Evaluación:
-                            <span class="font-bold">{{ $area['nombre'] }}</span> con
-                            <span class="font-bold">{{ $indicador['nombre'] }}</span>
-                        </span>
+    <div class="card shadow mb-4">
+        <div class="card-header py3">
+            <div class="flex align-middle items-center">
+                <span class="navbar-text text-bold ">
+                    Ficha de Evaluación:
+                    <span class="font-bold">{{ $area['nombre'] }}</span> con
+                    <span class="font-bold">{{ $indicador['nombre'] }}</span>
+                </span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="grid grid-cols-3">
+
+
+                <div class="p-3">
+                    <h6><span class="font-bold">Area: </span>{{ $area['nombre'] }}</h6>
+                    @if ($area['responsable'] != null)
+                        <p class="m-0"><span class="font-bold">Responsable: </span>{{ $area['responsable'] }}</p>
+                    @else
+                        <p class="m-0"><span class="font-bold">Responsable:</span> No asignado</p>
+                    @endif
+                    <p><span class="font-bold">Siglas:</span> {{ $area['siglas'] }}</p>
+                </div>
+
+                <div class="p-3">
+                    <h6><span class="font-bold">Indicador: </span>{{ $indicador['nombre'] }}</h6>
+                    <p><span class="font-bold">Descripción:</span> {{ $indicador['descripcion'] }}</p>
+                </div>
+
+                <div class="grid grid-cols-1 p-3">
+
+
+                    <div class="text-center">
+                        <p><span class="font-bold text-center">De:</span> {{ $evaluacion['fecha_inicio'] }} a
+                            {{ $evaluacion['fecha_fin'] }}
+                        </p>
                     </div>
                 </div>
-            </nav>
+            </div>
         </div>
     </div>
 
-    <div class="row mt-3 bg-white rounded-md shadow-md">
+    <div class="grid grid-cols-3 mb-4">
 
-        <div class="col-4">
-            <div class="grid grid-cols-1 p-3">
-                <div class="grid grid-cols-1">
-                    <div id="status" class="w-full">
-                    </div>
-                    <div id="total" class="w-full">
-                    </div>
-                </div>
-                <hr>
-                <div>
-                    <p><span class="font-bold">De:</span> {{ $evaluacion['fecha_inicio'] }} a {{ $evaluacion['fecha_fin'] }}
-                    </p>
-                </div>
+        <div class="p-1 w-full">
+            <div id="status" class="">
             </div>
         </div>
-        <div class="col-4">
-            <div class="p-3">
-                <h1><span class="font-bold">Area: </span>{{ $area['nombre'] }}</h1>
-                @if ($area['responsable'] != null)
-                    <p><span class="font-bold">Responsable: </span>{{ $area['responsable'] }}</p>
-                @else
-                    <p><span class="font-bold">Responsable:</span> No asignado</p>
-                @endif
-                <p><span class="font-bold">Siglas:</span> {{ $area['siglas'] }}</p>
+        <div class="p-1 w-full">
+            <div id="total" class="">
             </div>
         </div>
-
-        <div class="col-4">
-            <div class="p-3">
-                <h1><span class="font-bold">Indicador: </span>{{ $indicador['nombre'] }}</h1>
-                <p><span class="font-bold">Descripción:</span> {{ $indicador['descripcion'] }}</p>
-            </div>
-        </div>
-
-
     </div>
-    <div class="grid grid-cols-[30%_70%] mt-3">
-        <div class="grid grid-cols-1">
 
-            <canvas id="donut-chart">
-            </canvas>
-        </div>
-        <div>
-            <canvas id="line-chart">
-            </canvas>
+    <div class="card shadow mb-4">
+        <div class="grid grid-cols-[70%_30%] mt-3">
+            <div>
+                <canvas id="line-chart">
+                </canvas>
+            </div>
+            <div class="grid grid-cols-1">
+
+                <canvas id="donut-chart">
+                </canvas>
+            </div>
         </div>
     </div>
     <!-- Contenedor para los toasts -->

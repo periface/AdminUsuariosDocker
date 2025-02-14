@@ -10,13 +10,9 @@ async function delete_indicador(id, state) {
             }
         });
         const json_response = await response.json();
-        return {
-            error: null,
-            data: json_response
-        };
+        return json_response;
     }
     catch (error) {
-        console.error(error);
         return {
             error: error,
             data: null
@@ -56,6 +52,7 @@ async function get_dimension_by_name(name, state) {
 }
 async function get_rows(state) {
 
+    console.log(state);
     try {
         toggle_loading(true);
         const response = await fetch(state.WEB_URL + '/get_table_rows/' + state.dimensionId, {
@@ -67,6 +64,7 @@ async function get_rows(state) {
                 "Content-Type": "application/json",
                 "Authorization": 'Bearer ' + state.bearertoken,
             },
+            body: JSON.stringify(state.table_req),
             credentials: 'same-origin'
         });
         const html_rows = try_parse_html(await response.text());

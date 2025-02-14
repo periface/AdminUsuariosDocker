@@ -8,145 +8,140 @@
         }
     </style>
 @endsection
+@section('title')
+    <h6 class="m-0 font-weight-bold">
+        Monitoreando {{ $indicador['nombre'] }}
+    </h6>
+@endsection
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <input type="hidden" id="evaluacionId" value="{{ $evaluacionId }}">
-    <div class="grid grid-cols-1">
-
-        <div class="row">
-            {{-- <div class="col-12">
-                <nav class="navbar bg-body-tertiary bg-inst">
-                    <div class="col-12">
-                        <div class="container-fluid">
-                            <span class="navbar-text text-bold text-white">
-                                <i class="fa-solid fa-users-gear"></i> | REGISTROS DE {{ strtoupper($indicador['nombre']) }}
-                            </span>
-                        </div>
-                    </div>
-                </nav>
-            </div> --}}
-            <div class="card shadow mb-4">
+    <div class="grid grid-cols-[30%_70%]">
+        <div class="p-2">
+            <div class="card shadow mb-4 p-0">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold">
-                        <i class="fa-solid fa-users-gear"></i> | REGISTROS DE {{ strtoupper($indicador['nombre']) }}
-                    </h6>
+                    <p class="m-0 text-md text-red-950 font-bold">
+                        <span>
+                            Detalles del Indicador
+                        </span>
+                    </p>
                 </div>
                 <div class="card-body">
-                    {{-- <div class="col-12"> --}}
-                        <div class="row">
-                            <div class="col-3">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="bg-white rounded-md shadow-sm p-3">
-        
-                                            <span class="badge bg-pink-950 rounded-none">
-                                                <i class="fa-solid fa-info"></i> | Área
-                                            </span>
-                                            <p class="m-0 text-sm font-bold">
-                                                <span>
-                                                    {{ $area['nombre'] }}
-                                                </span>
-                                            </p>
-                                            <span class="badge bg-pink-950 rounded-none text-md">
-                                                <i class="fa-solid fa-info"></i> | Indicador
-                                            </span>
-                                            <p class="m-0 text-sm font-bold" title="{{ $indicador['descripcion'] }}">
-                                                <span>
-                                                    {{ $indicador['nombre'] }}
-                                                </span>
-                                            </p>
-        
-                                            <br>
-                                            <hr>
-                                            <div class="grid grid-cols-2 mt-2 text-center items-center">
-                                                <div id="status">
-                                                </div>
-                                               <div id="total">
-                                                </div>
-                                            </div>
-                                            <div class="grid grid-cols-1 mt-2">
-        
-                                                <div class="w-full">
-                                                    <span class="text-xs">
-                                                        {{ $indicador['metodo_calculo'] }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <hr>
-                                            <br>
-                                            <canvas id="donut-chart" class="w-full h-auto">
-                                            </canvas>
-                                        </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="bg-white rounded-md shadow-sm p-3">
+                                <div class="grid grid-cols-1">
+                                    <div>
+
+                                        <p class="text-center font-bold m-0">Area objetivo: </p>
+                                        <p class="">
+                                            {{ $area['nombre'] }}
+                                        </p>
                                     </div>
-                                    <div class="col-12 p-10">
+                                    <hr>
+                                    <div class="w-full">
+                                        <p class="text-center m-0 font-bold"> Método de Cálculo</p>
+                                        <p>
+
+                                            <span class="text-xs text-pink-950 font-bold">
+                                                {{ $indicador['nombre'] }}= </span>
+                                            <span class="text-xs text-blue-950">
+                                                {{ $indicador['metodo_calculo'] }}
+                                            </span>
+                                        </p>
                                     </div>
                                 </div>
+                                <div class="hidden grid grid-cols-2 mt-4 text-center items-center">
+                                    <div id="status">
+                                    </div>
+                                    <div id="total">
+                                    </div>
+                                </div>
+                                <canvas id="donut-chart" class="w-full h-auto">
+                                </canvas>
                             </div>
-                            <div id="table-container" class="col-9 bg-white shadow-sm">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="p-2">
+            <div class="card shadow mb-4 p-0">
+
+                <div class="card-header py-3">
+                    <p class="m-0 text-md text-red-950 font-bold">
+                        <span>
+                            Registros
+                        </span>
+                    </p>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-cols-1">
+                        <div id="table-container">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade modal-lg" id="anexoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="anexoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="anexoModalLabel">Medio de Verificación</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="anexoForm">
+                            <div id="anexoFields">
                             </div>
-                        </div>
-                    {{-- </div> --}}
+                            <div class="modal-footer mt-4">
+                                <hr>
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
             </div>
-            
         </div>
-    </div>
+        <!-- Modal -->
+        <div class="modal fade" id="registroModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="registroModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="registroModalLabel">Capturar Registro</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="registroForm">
+                            <div id="registroFields">
+                            </div>
+                            <div class="modal-footer mt-4">
+                                <hr>
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary btn-sm"
+                                    id="js-guardar-indicador">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
 
-    <div class="modal fade modal-lg" id="anexoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="anexoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="anexoModalLabel">Medio de Verificación</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="anexoForm">
-                        <div id="anexoFields">
-                        </div>
-                        <div class="modal-footer mt-4">
-                            <hr>
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
-
             </div>
         </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="registroModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="registroModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="registroModalLabel">Capturar Registro</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="registroForm">
-                        <div id="registroFields">
-                        </div>
-                        <div class="modal-footer mt-4">
-                            <hr>
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary btn-sm" id="js-guardar-indicador">Guardar</button>
-                        </div>
-                    </form>
-                </div>
+        <!-- /.modal -->
 
-            </div>
+        <!-- Contenedor para los toasts -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <!-- Aquí se inyectarán los toasts dinámicamente -->
         </div>
-    </div>
-    <!-- /.modal -->
-
-    <!-- Contenedor para los toasts -->
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <!-- Aquí se inyectarán los toasts dinámicamente -->
-    </div>
-@endsection
-@section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @vite(['resources/js/registros/index.js'])
-@endsection
+    @endsection
+    @section('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @vite(['resources/js/registros/index.js'])
+    @endsection

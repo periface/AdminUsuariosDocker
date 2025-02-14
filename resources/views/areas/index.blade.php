@@ -22,7 +22,7 @@
         </div>
     </div> --}}
     <div class="row">
-        
+
         <div class="col-12 mt-4">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between py-3">
@@ -95,7 +95,7 @@
                     </table>
                 </div>
             </div>
-            
+
             {{-- <table class="table table-striped table-sm mt-2">
                 <thead>
                     <tr>

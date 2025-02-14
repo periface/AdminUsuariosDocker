@@ -14,41 +14,56 @@
     <div class="w-full col-span-2 p-2 config" id="evaluacion_config">
         <div class="grid grid-cols-3">
 
-            <div class="mt-2 w-[90%]">
-
-                <label class="form-label" for="periodicidad">Periodicidad</label>
-                @include('partials.periodos_select', [
-                    'id' => 'periodicidad',
-                    'name' => 'frecuencia_medicion',
-                    'selected' => '',
-                ])
+            <div class="mt-2 w-full">
+                <div class="p-2">
+                    <label class="form-label" for="periodicidad">Periodicidad</label>
+                    @include('partials.periodos_select', [
+                        'id' => 'periodicidad',
+                        'name' => 'frecuencia_medicion',
+                        'selected' => '',
+                    ])
+                </div>
             </div>
-            <div class="mt-2 w-[80%]">
-                <label class="form-label" for="fecha_inicio">Inicio del Monitoreo</label>
-                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio"
-                    placeholder="Fecha de Inicio" />
+            <div class="mt-2 w-full">
+                <div class="p-2">
+                    <label class="form-label" for="fecha_inicio">Inicio del Monitoreo</label>
+                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio"
+                        placeholder="Fecha de Inicio" />
+                </div>
             </div>
-            <div class="mt-2 w-[80%]">
-                <label for="fecha_fin" class="form-label">Termino</label>
-                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" placeholder="Fecha de Fin/">
+            <div class="mt-2 w-full">
+                <div class="p-2">
+                    <label for="fecha_fin" class="form-label">Termino</label>
+                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin"
+                        placeholder="Fecha de Fin"/>
+                </div>
             </div>
         </div>
         <div id="custom_date_error">
         </div>
         <div class="mt-2">
-            <label for="meta" class="form-label">Meta Esperada</label><br>
             @if ($indicador['unidad_medida'] == 'porcentaje')
-                <div class="grid grid-cols-1">
+                <div class="grid grid-cols-1 justify-center justify-items-center">
+                    <div>
 
-                    <label for="meta" class="form-label w-full">{{ $indicador['nombre'] }}</label>
-                    <div class="grid grid-cols-3">
-                        <span class="text-sm text-gray-500">0%</span>
-                        <input type="range" class="form-range" min="0" max="100" id="meta"
-                            name="meta">
-                        <span class="text-sm text-gray-500">100%</span>
+                        <label for="meta" class="form-label font-bold">Meta Esperada</label><br>
+                    </div>
+                    <div class="w-1/2">
+
+                        <label for="meta" class="form-label w-full">{{ $indicador['nombre'] }}</label>
+                        <div class="flex">
+                            <span class="text-sm text-red-950 font-bold">0%</span>
+                            <input type="range" class="form-range ml-1 mr-1" value="50" min="0"
+                                max="100" id="meta" name="meta">
+                            <span class="text-sm text-red-950 font-bold">100%</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-lg text-red-950 font-bold" id="total">50%</span>
+                        </div>
                     </div>
                 </div>
             @else
+                <label for="meta" class="form-label">Meta Esperada</label>
                 <input type="number" class="form-control" id="meta" name="meta" placeholder="100"
                     value="100" />
             @endif

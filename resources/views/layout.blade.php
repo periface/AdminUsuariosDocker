@@ -10,29 +10,26 @@
     <meta name="author" content="">
 
     <title>Sistema de Indicadores</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
-        rel="stylesheet" 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    
-        <!-- Custom fonts for this template-->
+
+    <!-- Custom fonts for this template-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&display=swap" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    @vite(['resources/css/app.css','resources/css/sb-admin-2.min.css',
-            'resources/fontawesome-free/css/all.min.css'])
-   <style>
-        body 
-        {
+    @vite(['resources/css/app.css', 'resources/css/sb-admin-2.min.css', 'resources/fontawesome-free/css/all.min.css'])
+    <style>
+        body {
             font-family: "Encode Sans", serif;
             font-optical-sizing: auto;
             font-weight: <weight>;
             font-style: normal;
             font-variation-settings:
-            "wdth" 100;
+                "wdth" 100;
         }
-   </style>
+    </style>
 </head>
 
 <body id="page-top">
@@ -43,7 +40,8 @@
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-dark accordion side-menu" id="accordionSidebar">
             <div class="bgLogoInst">
-                <img src="https://www.tamaulipas.gob.mx/wp-content/uploads/2022/10/logoTamaulipas2022.png" class="img-fluid logoInst">
+                <img src="https://www.tamaulipas.gob.mx/wp-content/uploads/2022/10/logoTamaulipas2022.png"
+                    class="img-fluid logoInst">
             </div>
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -56,7 +54,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{ route('evaluacion.index') }}">
                     <i class="far fa-chart-bar"></i>
                     <span>Monitor de Seguimiento</span></a>
             </li>
@@ -91,8 +89,8 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('areas')}}" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="{{ route('areas') }}" data-toggle="collapse"
+                    data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-sitemap"></i>
                     <span>Áreas</span>
                 </a>
@@ -140,7 +138,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            
+
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -237,7 +235,8 @@
                                         Ocurrió un error con la evaluación del periodo 3, favor de revisar.
                                     </div>
                                 </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Ir a notificaciones</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Ir a
+                                    notificaciones</a>
                             </div>
                         </li>
                         <div class="topbar-divider d-none d-sm-block"></div>
@@ -262,7 +261,8 @@
                                     Configuraciones
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cerrar Sesión
                                 </a>
@@ -284,8 +284,8 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white text-center" 
-            style="position: absolute; bottom: 0;text-align: center;
+            <footer class="sticky-footer bg-white text-center"
+                style="position: absolute; bottom: 0;text-align: center;
             justify-content: center !important; align-items: center; !important">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -327,8 +327,8 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

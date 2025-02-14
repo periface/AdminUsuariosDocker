@@ -263,7 +263,12 @@ label.error {
 .card-body {
     padding: unset !important;
 }
-
+.form-switch {
+    padding-left: 2.5em!important;
+}
 tbody {
     font-size: 15px !important;
 }
+
+
+

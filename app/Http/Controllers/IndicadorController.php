@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use App\Models\Dimension;
+use App\Models\Evaluacion;
 use App\Models\Indicador;
 use App\Models\Secretaria;
 use App\Models\Variable;
@@ -19,7 +20,8 @@ class IndicadorController extends BaseController
     // SI NO SE MIDE, CREAN ESQUEMAS
     public function index()
     {
-        return view('indicador.index');
+        $dimensiones = Dimension::all();
+        return view('indicadores.index', compact('dimensiones'));
     }
     public function dimension_indicadores(Request $request)
     {
@@ -186,6 +188,16 @@ class IndicadorController extends BaseController
     {
         try {
             $indicador = Indicador::find($request->id);
+            $evaluaciones = Evaluacion::where('indicadorId', $request->id)->get();
+
+            if (count($evaluaciones) > 0) {
+                return response()->json([
+                    'status' => 'error',
+                    'error' => 'No se puede eliminar el indicador porque tiene evaluaciones asociadas',
+                    'data' => null,
+                    'statusCode' => 422
+                ], 422);
+            }
             if (!$indicador) {
                 return response()->json([
                     'status' => 'error',
@@ -217,7 +229,7 @@ class IndicadorController extends BaseController
      * @param Request $request
      * @return \Illuminate\Contracts\View\View
      */
-    public function get_rows(Request $request, int $dimensionId)
+    public function get_rows(Request $request, $dimensionId)
     {
         $page = $request->input("page") ?? 1;
         $limit = $request->input("limit") ?? 10;
@@ -233,9 +245,9 @@ class IndicadorController extends BaseController
         try {
             if ($search !== '') {
                 $indicadores = Indicador::where('nombre', 'like', "%$search%")
+                    ->where('dimensionId', $dimensionId)
                     ->orWhere('descripcion', 'like', "%$search%")
                     ->orWhere('status', 'like', "%$search%")
-                    ->where('dimensionId', $dimensionId)
                     ->orderBy($sort, $order)
                     ->limit($limit)
                     ->offset($offset)
@@ -291,17 +303,18 @@ class IndicadorController extends BaseController
      */
     public function get_indicador_fields(Request $request)
     {
+        $dimensiones = Dimension::all();
         $id = $request->id;
         if (!$id) {
-            return view('indicadores.fields', ['indicador' => null, 'dimensionId' => $request->dimensionId]);
+            return view('indicadores.fields', ['indicador' => null, 'dimensionId' => $request->dimensionId, 'dimensiones' => $dimensiones]);
         }
         $set_formula = $request->set_formula;
         $dimensionId = $request->dimensionId;
         $indicador = Indicador::find($id);
         if ($set_formula) {
-            return view('indicadores.set_formula', ['indicador' => $indicador, 'dimensionId' => $dimensionId]);
+            return view('indicadores.set_formula', ['indicador' => $indicador, 'dimensionId' => $dimensionId, 'dimensiones' => $dimensiones]);
         }
-        return view('indicadores.fields', ['indicador' => $indicador, 'dimensionId' => $dimensionId]);
+        return view('indicadores.fields', ['indicador' => $indicador, 'dimensionId' => $dimensionId, 'dimensiones' => $dimensiones]);
     }
 
     # Helpers

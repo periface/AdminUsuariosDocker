@@ -8,13 +8,20 @@
         }
     </style>
 @endsection
+@section('title')
+    <h6 class="m-0 font-weight-bold">CATALOGOS: DIMENSIONES</h6>
+@endsection
 @section('content')
     <meta name="token" id="token" content="{{ csrf_token() }}">
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold">
-                <i class="fa-solid fa-users-gear"></i> | DIMENSIONES REGISTRADAS EN EL SISTEMA
-            </h6>
+        <div class="card-header py3">
+            <div class="flex align-middle items-center">
+
+                <h6 class="m-0 font-weight-bold mr-2">DIMENSIONES REGISTRADAS</h6>
+                <button class="btn btn-sm btn-primary dimensionModalBtn ">
+                    Crear Dimensión
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <div id="table-container">
@@ -22,8 +29,6 @@
             </div>
         </div>
     </div>
-
-    
     <!-- Modal -->
     <div class="modal fade" id="dimensionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="dimensionModalLabel" aria-hidden="true">

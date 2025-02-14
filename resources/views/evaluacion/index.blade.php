@@ -7,8 +7,11 @@
             font-size: 14px;
         }
     </style>
-
     @vite(['node_modules/bs-stepper/dist/css/bs-stepper.min.css'])
+@endsection
+
+@section('title')
+    <h6 class="m-0 font-weight-bold">MONITOREO DE SEGUIMIENTO</h6>
 @endsection
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,7 +21,7 @@
                 <div class="col-6">
                     <div class="container-fluid">
                         <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | MONITOREOS INICIADOS
+                            <i class="fa-solid fa-users-gear"></i> | MONITOREO DE INDICADORES
                         </span>
                     </div>
                 </div>
@@ -32,7 +35,13 @@
     </div> --}}
     <div class="card shadow mb-4">
         <div class="card-header py3">
-            <h6 class="m-0 font-weight-bold"><i class="fa-solid fa-users-gear"></i> | EVALUACIONES REGISTRADAS EN EL SISTEMA</h6>
+            <div class="flex align-middle items-center">
+
+                <h6 class="m-0 font-weight-bold mr-2">MONITOREOS INICIADOS</h6>
+                <button class="btn btn-sm btn-primary evaluacionModalBtn ">
+                    Monitorear Indicador
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <div id="table-container">
@@ -40,7 +49,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal -->
     <div class="modal fade" id="evaluacionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="evaluacionModalLabel" aria-hidden="true">

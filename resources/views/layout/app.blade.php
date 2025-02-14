@@ -17,29 +17,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&display=swap" rel="stylesheet">
 
-     <!-- Frameworks -->
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
-         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
-         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Frameworks -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Icons -->
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"> --}}
 
     <!-- Custom styles for this template-->
-    @vite(['resources/css/app.css','resources/css/sb-admin-2.min.css',
-            'resources/fontawesome-free/css/all.min.css'])
-   <style>
-        body
-        {
+    @vite(['resources/css/app.css', 'resources/css/sb-admin-2.min.css', 'resources/fontawesome-free/css/all.min.css'])
+    <style>
+        body {
             font-family: "Encode Sans", serif;
             font-optical-sizing: auto;
             font-weight: <weight>;
             font-style: normal;
             font-variation-settings:
-            "wdth" 100;
+                "wdth" 100;
         }
-   </style>
+    </style>
+
+    @yield('estilos')
+
 </head>
 
 <body id="page-top">
@@ -50,7 +51,8 @@
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-dark accordion side-menu" id="accordionSidebar">
             <div style="background-color: white;">
-                <img src="https://www.tamaulipas.gob.mx/wp-content/uploads/2022/10/logoTamaulipas2022.png" class="img-fluid logoInst">
+                <img src="https://www.tamaulipas.gob.mx/wp-content/uploads/2022/10/logoTamaulipas2022.png"
+                    class="img-fluid logoInst">
             </div>
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -63,32 +65,11 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{ route('evaluacion.index') }}">
                     <i class="far fa-chart-bar"></i>
                     <span>Monitor de Seguimiento</span></a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Seguimiento
-            </div>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link"  href="{{ route('evaluacion.index') }}">
-                    <i class="far fa-file-alt"></i>
-                    <span>Evaluaciones</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('dimension.index') }}">
-                    <i class="fas fa-cubes"></i>
-                    <span>Dimensiones</span></a>
-            </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -99,13 +80,27 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('areas') }}" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="{{ route('areas') }}" data-toggle="collapse"
+                    data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-sitemap"></i>
                     <span>Áreas</span>
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('dimension.index') }}" data-toggle="collapse"
+                    data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dimensiones</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('indicador.index') }}">
+                    <i class="fas fa-cubes"></i>
+                    <span>Indicadores</span></a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Heading -->
@@ -151,7 +146,7 @@
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column"  style="background-color: #f2f2f2">
+        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #f2f2f2">
 
             <!-- Main Content -->
             <div id="content">
@@ -166,94 +161,99 @@
                     @yield('title')
                     <!-- Topbar Navbar -->
                     @if (Auth::check())
-                    <ul class="navbar-nav ml-auto">
+                        <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw" style="color: gray; font-size: 20px"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-end shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header bg-institucional">
-                                    Notificaciones
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-check text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">Enero 12, 2025</div>
-                                        <span class="font-weight-bold">Evaluación aprobada</span>
-                                    </div>
+                            <!-- Nav Item - Alerts -->
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                                    data-bs-display="static" href="#" id="alertsDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bell fa-fw" style="color: gray; font-size: 20px"></i>
+                                    <!-- Counter - Alerts -->
+                                    <span class="badge badge-danger badge-counter">3+</span>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
+                                <!-- Dropdown - Alerts -->
+                                <div class="dropdown-list dropdown-menu dropdown-menu-end shadow animated--grow-in"
+                                    aria-labelledby="alertsDropdown">
+                                    <h6 class="dropdown-header bg-institucional">
+                                        Notificaciones
+                                    </h6>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-success">
+                                                <i class="fas fa-check text-white"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">Enero 27, 2025</div>
-                                        Observación en la evaluación correspondiente al periodo 4
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-danger">
-                                            <i class="fas fa-exclamation text-white"></i>
+                                        <div>
+                                            <div class="small text-gray-500">Enero 12, 2025</div>
+                                            <span class="font-weight-bold">Evaluación aprobada</span>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">Febrero 12, 2025</div>
-                                        Ocurrió un error con la evaluación del periodo 3, favor de revisar.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Ir a notificaciones</a>
-                            </div>
-                        </li>
-                        <div class="topbar-divider d-none d-sm-block"></div>
-                       
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-warning">
+                                                <i class="fas fa-exclamation-triangle text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="small text-gray-500">Enero 27, 2025</div>
+                                            Observación en la evaluación correspondiente al periodo 4
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-danger">
+                                                <i class="fas fa-exclamation text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="small text-gray-500">Febrero 12, 2025</div>
+                                            Ocurrió un error con la evaluación del periodo 3, favor de revisar.
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-center small text-gray-500" href="#">Ir a
+                                        notificaciones</a>
+                                </div>
+                            </li>
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
                             <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle"  data-bs-toggle="dropdown" data-bs-display="static"  href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->name }}</span>
-                                <img class="img-profile rounded-circle"
-                                    src="https://cdn-icons-png.flaticon.com/128/1144/1144709.png">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Mi Perfil
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                                    data-bs-display="static" href="#" id="userDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span
+                                        class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->name }}</span>
+                                    <img class="img-profile rounded-circle"
+                                        src="https://cdn-icons-png.flaticon.com/128/1144/1144709.png">
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuraciones
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Cerrar Sesión
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in"
+                                    aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Mi Perfil
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Configuraciones
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar Sesión
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
                     @endif
                 </nav>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                   @yield('content')
+                    @yield('content')
                 </div>
                 <!-- /.container-fluid -->
 
@@ -312,7 +312,7 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="btn btn-inst text-white">
-                           <small>Cerrar Sessión</small>
+                            <small>Cerrar Sessión</small>
                         </button>
                     </form>
                 </div>
@@ -321,15 +321,14 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-    @vite([
-    'resources/js/sb-admin-2.js'])
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
-    crossorigin="anonymous"></script>
+    @vite(['resources/js/sb-admin-2.js'])
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
@@ -340,7 +339,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
 
     @yield('scripts')
 </body>

@@ -28,14 +28,14 @@ const state = {
     sort: document.getElementsByClassName('sort'),
     table_default_state: {
         page: 1,
-        limit: 10,
+        limit: 5,
         sort: 'id',
         order: 'asc',
         search: ''
     },
     table_req: {
         page: 1,
-        limit: 10,
+        limit: 5,
         sort: 'id',
         order: 'asc',
         search: ''
@@ -426,7 +426,7 @@ function get_total_html(data) {
             icon = '';
             break;
     }
-    return `<span class="font-bold text-md">Total:</span><br> <span class="badge badge-${color} text-lg">
+    return `<span class="font-bold text-md">Total Actual:</span><br> <span class="badge badge-${color} text-lg">
         ${total}
         ${icon}
     </span>`;
@@ -448,7 +448,7 @@ function get_meta_html(data) {
             icon = '';
             break;
     }
-    return `<span class="font-bold text-md">Meta:</span><br> <span class="badge badge-success text-lg">
+    return `<span class="font-bold text-md">Meta esperada:</span><br> <span class="badge badge-success text-lg">
        ${meta}
         ${icon}
     </span>`;
