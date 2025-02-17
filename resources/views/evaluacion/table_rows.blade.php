@@ -9,7 +9,7 @@
                 Periodo
             </th>
             <th style="width: 40%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
-                Monitoreo
+                Evaluación
             </th>
             <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
                 Total Actual
@@ -39,7 +39,7 @@
                     </td>
                     @if($evaluacion->indicador)
 
-                    <td>Monitoreando
+                    <td>Evaluando el indicador
                         <span class="font-bold text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span> en
                         <span class="font-bold text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
                     </td>

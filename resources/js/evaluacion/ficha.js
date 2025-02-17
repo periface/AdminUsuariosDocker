@@ -1,7 +1,8 @@
 import { UNIDADES } from '../UNIDADES.js';
 import { get_stats } from './cruds.js';
-
+import zoomPlugin from 'chartjs-plugin-zoom';
 import { Chart, Interaction } from "chart.js/auto";
+Chart.register(zoomPlugin);
 const state = {
     API_URL: "/api/v1/evaluacion",
     WEB_URL: "/evaluacion",
@@ -139,7 +140,7 @@ function get_line_data(data) {
     });
     const labels = []
     const main_data_set = {
-        label: "Aprobados",
+        label: data.indicador.nombre,
         data: [],
         fill: false,
         backgroundColor: "rgba(78, 115, 223, 0.05)",
@@ -295,9 +296,30 @@ function line_chart(data) {
                 legend: {
                     position: 'top',
                 },
+                zoom: {
+                    limits:{
+                        x: {min: 1, max: 100},
+                        y: {min: 1, max: 100},
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                    },
+                    zoom: {
+
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy',
+                    }
+
+                },
                 title: {
                     display: true,
-                    text: "Registros de " + data.indicador.nombre
+                    text: "Evolución de los resultados de la evaluación",
                 }
             }
         },

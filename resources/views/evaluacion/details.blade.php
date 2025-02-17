@@ -4,7 +4,7 @@
     ">
     <div class="p-2">
         <div class="p-2 rounded-lg shadow-md">
-            <p class="m-0">Monitoreando <span class="font-bold text-pink-900">{{ $indicador['nombre'] }}</span> en
+            <p class="m-0">Evaluando <span class="font-bold text-pink-900">{{ $indicador['nombre'] }}</span> en
                 <span class="font-bold text-yellow-800">{{ $area['nombre'] }}</span>
             </p>
         </div>
