@@ -280,14 +280,14 @@ async function set_modal_event_listener() {
             }
             const espacio_obj = JSON.parse(espacio);
             espacio_obj.status = 'rechazado';
-            const json_response = await set_status(espacio_obj.id, 'aprobado', state);
+            const json_response = await set_status(espacio_obj.id, 'rechazado', state);
 
             $(state.modal).modal('hide');
             if (json_response.error) {
                 createToast('Registros', json_response.error, false);
             }
             else {
-                createToast('Registros', 'Registro validado con éxito', 'success');
+                createToast('Registros', 'Registro rechazado con éxito', 'success');
                 await start_datatable();
             }
         });

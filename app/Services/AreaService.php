@@ -91,7 +91,6 @@ class AreaService
         $indice = [];
         $area = Area::where('id', $areaId)
             ->get();
-        $evaluaciones = Evaluacion::where('areaId', $areaId)
-            ->get();
+        $evaluaciones = Evaluacion::where('areaId', $areaId)->andWhere('finalizado', 1)->get();
     }
 }
