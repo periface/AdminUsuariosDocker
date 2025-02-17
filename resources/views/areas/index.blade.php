@@ -29,11 +29,11 @@
                     <h6 class="m-0 font-weight-bold text-gray-800">
                         ÁREAS REGISTRADAS EN EL SISTEMA
                     </h6>
-                    <a href="#" class="btn bg-inst2 btn-icon-split btn-sm add-area">
-                        <span class="icon text-white">
+                    <a class="btn bg-inst2 btn-icon-split btn-sm">
+                        <span class="icon text-white add-area">
                             <i class="fa fa-plus"></i>
                         </span>
-                        <span class="text text-white">Agregar Área</span>
+                        <span class="text text-white add-area">Agregar Área</span>
                     </a>
                 </div>
                 <div class="card-body">

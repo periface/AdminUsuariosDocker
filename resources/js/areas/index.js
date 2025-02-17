@@ -239,6 +239,15 @@ const confirmDelete = (area) => {
     });
 }
 
+// Agregar
+document.addEventListener('click', (event) => {
+    console.log('event', event);
+    if (event.target.classList.contains('add-area')) {
+        event.preventDefault();
+        showFormArea();
+    }
+})
+
 // Editar
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('edit-area')) {
