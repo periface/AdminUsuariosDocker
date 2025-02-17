@@ -241,7 +241,7 @@
                                     <span
                                         class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->name }}</span>
                                     <img class="img-profile rounded-circle"
-                                        src="https://cdn-icons-png.flaticon.com/128/1144/1144709.png">
+                                        src="https://cdn-icons-png.flaticon.com/128/18913/18913740.png">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in"
