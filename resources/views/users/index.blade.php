@@ -11,7 +11,7 @@
             <span class="icon text-white">
                 <i class="fa fa-plus"></i>
             </span>
-            <span class="text text-white">Agregar Área</span>
+            <span class="text text-white">Agregar Usuario</span>
         </a>
     </div>
     <div class="card-body">
