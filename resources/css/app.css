@@ -145,6 +145,11 @@ canvas {
   jQuery Validate error
   */
 
+.error {
+    font-size: 14px !important;
+    /* Se agrega important por conflicto en clase sb-admin2 */
+}
+
 label.error {
     color: #c0392b;
 }
@@ -263,12 +268,11 @@ label.error {
 .card-body {
     padding: unset !important;
 }
+
 .form-switch {
-    padding-left: 2.5em!important;
+    padding-left: 2.5em !important;
 }
+
 tbody {
     font-size: 15px !important;
 }
-
-
-
