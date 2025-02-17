@@ -38,15 +38,15 @@
                     <td>{{ $indicador['id'] }}</td>
                     <td>{{ $indicador['nombre'] }}
                         @if ($indicador['sentido'] == 'ascendente')
-                            <span class="text-xs text-green-600">
+                            <span class="text-xs text-tam-rojo-fuerte font-semibold">
                                 [Ascendente]
                             </span>
                         @elseif ($indicador['sentido'] == 'descendente')
-                            <span class="text-xs text-blue-600">
+                            <span class="text-xs text-tam-dorado-fuerte font-semibold">
                                 [Descendente]
                             </span>
                         @else
-                            <span class="text-xs text-teal-600">
+                            <span class="text-xs text-teal-600 font-semibold">
                                 [Constante]
                             </span>
                         @endif

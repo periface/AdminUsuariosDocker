@@ -308,6 +308,7 @@ async function open_indicador_form_evt(modal_open_btn, load_set_formula_window =
             if (!is_number(status)) {
                 status === 'on' ? form_data.set('status', 1) : form_data.set('status', 0);
             }
+            form_data.append('clave', form_data.get('clave'));
             const requiere_anexo = form_data.get('requiere_anexo');
             requiere_anexo === 'on' ? form_data.set('requiere_anexo', 1) : form_data.set('requiere_anexo', 0);
             // agregamos los campos si hay un repl_result, es decir, si se ha evaluado la fórmula
@@ -323,8 +324,7 @@ async function open_indicador_form_evt(modal_open_btn, load_set_formula_window =
                 form_data.append('variables', JSON.stringify(variables));
             }
             const response_json = await post_indicador(form_data, state);
-            if (!response_json.error && response_json?.data.statusCode === 200) {
-
+            if (!response_json.error) {
                 state.indicador_view.modal('hide');
                 if (state.dimensionId) {
                     await start_datatable();

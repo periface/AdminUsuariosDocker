@@ -12,7 +12,7 @@
                 Evaluación
             </th>
             <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
-                Total Actual
+                Total Alcanzado
             </th>
 
             <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
@@ -34,14 +34,14 @@
         @else
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
-                    <td class="text-sm">
-                        {{ $evaluacion['fecha_inicio'] }} -> {{ $evaluacion['fecha_fin'] }}
+                    <td class="text-sm text-tam-rojo font-bold">
+                        {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
                     </td>
                     @if($evaluacion->indicador)
 
-                    <td>Evaluando el indicador
-                        <span class="font-bold text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span> en
-                        <span class="font-bold text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                    <td>Evaluando
+                        <span class="font-bold text-sm text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span> en
+                        <span class="font-bold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
                     </td>
                     @else
                     <td> Error: el indicador de esta evaluación no existe, por favor contacte al administrador del
@@ -69,28 +69,28 @@
 
                         <div class="progress-stacked">
 
-                            <div class="progress" role="progressbar" aria-label="Segment three"
+                            <div class="progress progress-sm" role="progressbar" aria-label="Segment three"
                                 title="{{ $evaluacion['results_aprobado'] }} Validados"
                                 aria-valuenow="{{ $evaluacion['aprobado'] }}" aria-valuemin="0"
                                 aria-valuemax="{{ $evaluacion['results'] }}"
                                 style="width: {{ $evaluacion['porcentaje_aprobados'] }}%">
                                 <div class="progress-bar bg-success"></div>
                             </div>
-                            <div class="progress" role="progressbar" aria-label="Segment two"
+                            <div class="progress progress-sm" role="progressbar" aria-label="Segment two"
                                 title="{{ $evaluacion['results_pendiente'] }} Pendientes"
                                 aria-valuenow="{{ $evaluacion['pendiente'] }}" aria-valuemin="0"
                                 aria-valuemax="{{ $evaluacion['results'] }}"
                                 style="width: {{ $evaluacion['porcentaje_pendientes'] }}%">
                                 <div class="progress-bar bg-warning"></div>
                             </div>
-                            <div class="progress" role="progressbar"
+                            <div class="progress progress-sm" role="progressbar"
                                 title="{{ $evaluacion['results_capturado'] }} Capturados" aria-label="Segment one"
                                 aria-valuenow="{{ $evaluacion['results_capturado'] }}" aria-valuemin="0"
                                 aria-valuemax="{{ $evaluacion['results'] }}"
                                 style="width: {{ $evaluacion['porcentaje_capturados'] }}%">
                                 <div class="progress-bar bg-info"></div>
                             </div>
-                            <div class="progress" role="progressbar" aria-label="Segment four"
+                            <div class="progress progress-sm" role="progressbar" aria-label="Segment four"
                                 title="{{ $evaluacion['results_rechazado'] }} Rechazados"
                                 aria-valuenow="{{ $evaluacion['rechazado'] }}" aria-valuemin="0"
                                 aria-valuemax="{{ $evaluacion['results'] }}"

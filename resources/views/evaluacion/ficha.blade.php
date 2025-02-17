@@ -63,9 +63,13 @@
                 <div class="grid grid-cols-1 p-3">
 
 
-                    <div class="text-center">
-                        <p><span class="font-bold text-center">De:</span> {{ $evaluacion['fecha_inicio'] }} a
-                            {{ $evaluacion['fecha_fin'] }}
+                    <div class="text-center text-2xl">
+                        <p>
+                            <span class="font-bold text-center text-tam-dorado-fuerte">Fecha de Inicio</span><br>
+                            <span class="font-bold text-tam-rojo-fuerte">{{ $evaluacion['fecha_inicio'] }}</span>
+                            <br>
+                            <span class="font-bold text-center text-tam-dorado-fuerte">Fecha de Termino</span><br>
+                            <span class="font-bold text-tam-rojo-fuerte">{{ $evaluacion['fecha_fin'] }}</span>
                         </p>
                     </div>
                 </div>

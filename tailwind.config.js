@@ -14,6 +14,12 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors:{
+                'tam-dorado': '#ddc9a3',
+                'tam-dorado-fuerte': '#bfa87e',
+                'tam-rojo': '#ab0033',
+                'tam-rojo-fuerte': '#8b0028',
+            }
         },
     },
     plugins: [],

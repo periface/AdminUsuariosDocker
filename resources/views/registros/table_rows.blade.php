@@ -17,7 +17,7 @@
             <tr>
                 <td>
 
-                    <span class="text-green-900 text-md font-bold">{{ $espacio['fecha'] }}</span>
+                    <span class="text-red-950 text-md font-bold">{{ $espacio['fecha'] }}</span>
                     <br>
                     <span class="text-2xl">
                     @include('partials.periodos_counter', [
