@@ -20,19 +20,30 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <div class="card shadow mb-4">
-        <div class="card-header py3">
-            <div class="flex align-middle items-center">
 
-                <h6 class="m-0 font-weight-bold mr-2">INDICADORES REGISTRADOS</h6>
-                <button disabled class="btn btn-sm btn-primary indicadorModalBtn mr-2">
-                    Crear Indicador
-                </button>
+        <div class="card-header d-flex py-3">
+            <h6 class="m-0 font-weight-bold w-full text-gray-800">
+                INDICADORES REGISTRADOS
+            </h6>
+            <div class="grid grid-cols-1 w-full justify-end justify-items-end">
+                <div>
 
-                <button id="subir" class="btn btn-sm btn-primary">
-                    Cargar Indicadores
-                </button>
+                    <a class="btn bg-inst2 btn-icon-split btn-sm">
+                        <span class="icon text-white indicadorModalBtn">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        <span class="text text-white indicadorModalBtn">Crear Indicador</span>
+                    </a>
 
-                <input type="file" id="file" class="d-none" accept=".csv">
+                    <a id="subir" class="btn btn-primary btn-icon-split btn-sm">
+                        <span class="icon text-white">
+                            <i class="fa fa-file-csv"></i>
+                        </span>
+                        <span class="text text-white">Cargar Indicadores</span>
+                    </a>
+
+                    <input type="file" id="file" class="d-none" accept=".csv">
+                </div>
             </div>
         </div>
 
@@ -80,9 +91,9 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="indicadorBatchModal" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="indicadorBatchModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="indicadorBatchModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="indicadorBatchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="indicadorBatchModalLabel">Carga de Indicadores</h1>

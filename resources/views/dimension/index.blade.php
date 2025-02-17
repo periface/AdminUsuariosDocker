@@ -14,14 +14,17 @@
 @section('content')
     <meta name="token" id="token" content="{{ csrf_token() }}">
     <div class="card shadow mb-4">
-        <div class="card-header py3">
-            <div class="flex align-middle items-center">
 
-                <h6 class="m-0 font-weight-bold mr-2">DIMENSIONES REGISTRADAS</h6>
-                <button class="btn btn-sm btn-primary dimensionModalBtn ">
-                    Crear Dimensión
-                </button>
-            </div>
+        <div class="card-header d-flex justify-content-between py-3">
+            <h6 class="m-0 font-weight-bold text-gray-800">
+                DIMENSIONES REGISTRADAS
+            </h6>
+            <a class="btn bg-inst2 btn-icon-split btn-sm">
+                <span class="icon text-white dimensionModalBtn">
+                    <i class="fa fa-plus"></i>
+                </span>
+                <span class="text text-white dimensionModalBtn">Crear Dimensión</span>
+            </a>
         </div>
         <div class="card-body">
             <div id="table-container">

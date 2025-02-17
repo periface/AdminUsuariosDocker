@@ -64,15 +64,28 @@ class IndicadorController extends BaseController
             $db_variable->save();
         }
     }
+    public function search_by_clave($clave)
+    {
+        $indicador = Indicador::where('clave', $clave)->first();
+        return $indicador;
+    }
     public function post(Request $request)
     {
         try {
-
             // Agregamos validación al request para mantener integridad en el información
             [$data, $indicador_found, $error] = $this->get_indicador_from_req($request);
             $variables = $request->variables;
             if (!$variables) {
                 $variables = "[]";
+            }
+            $indicador_by_clave = $this->search_by_clave($data["clave"]);
+            if ($indicador_by_clave) {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => null,
+                    'error' => 'Ya existe un indicador con la clave ' . $data["clave"],
+                    'statusCode' => 422
+                ], 422);
             }
             $variables = json_decode($variables);
             if ($error) {
@@ -329,6 +342,7 @@ class IndicadorController extends BaseController
         // Agregamos validación al request para mantener integridad en el información
 
         $validator = Validator::make($request->all(), [
+            'clave' => 'nullable',
             'nombre' => 'required|min:4',
             'descripcion' => 'required|min:4',
             'status' => 'required',

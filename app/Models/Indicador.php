@@ -10,6 +10,7 @@ class Indicador extends Model
 {
     use HasFactory;
     protected $table = 'indicador';
+    public $clave;
     public $nombre;
     public $descripcion;
     public $status;
@@ -26,6 +27,7 @@ class Indicador extends Model
     public $secretaria;
     public $categoria; //capital humano, capital estructural, capital relacional, capital tecnologico
     protected $fillable = [
+        'clave',
         'nombre',
         'descripcion',
         'unidad_medida',

@@ -19,6 +19,7 @@ class IndicadoresSeeder extends Seeder
         $dimensionEficiencia = \App\Models\Dimension::where('nombre', 'Eficiencia')->first();
         $secretaria = \App\Models\Secretaria::where('siglas', 'SA')->first();
         $indicador = \App\Models\Indicador::factory()->create([
+            'clave' => 'CO1',
             'nombre' => 'Expedientes de Compras con Observaciones',
             'descripcion' => 'Mide el porcentaje de expedientes de compras devueltos por la DGCyOP a la Dirección Administrativa por motivo de observaciones',
             'status' => true,
@@ -42,6 +43,7 @@ por la DGCyOP/ Expedientes de compra entregados a la DGCyOP) *100',
 
 
         $indicador2 = \App\Models\Indicador::factory()->create([
+            'clave' => 'CO2',
             'nombre' => 'Tiempo promedio de atención a observaciones
 de Expedientes de Compras ante la DGCyOP',
             'descripcion' => 'Mide el tiempo promedio que le toma a la dirección administrativa atender observaciones hechas por la DGCyOP a sus expedientes de compras.',

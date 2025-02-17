@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create("indicador", function (Blueprint $table) {
             $table->id();
+            $table->string("clave")->unique();
             $table->unsignedBigInteger("dimensionId");
             $table->string("nombre");
             $table->text("descripcion");
@@ -42,4 +43,3 @@ return new class extends Migration
         Schema::dropIfExists("indicador");
     }
 };
-
