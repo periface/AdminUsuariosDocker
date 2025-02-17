@@ -276,3 +276,8 @@ label.error {
 tbody {
     font-size: 15px !important;
 }
+
+
+        .progress-stacked {
+            height: .5rem!important;
+        }

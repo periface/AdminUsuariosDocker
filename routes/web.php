@@ -89,6 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('indicador')->name("indicador.")->group(function () {
         Route::get('/',  [IndicadorController::class, 'index'])->name('index');
+        Route::get('/details/{id}',  [IndicadorController::class, 'details'])->name('details');
         Route::post('/get_table_rows/{dimensionId}',  [IndicadorController::class, 'get_rows'])->name('get_table_rows');
         Route::get('/get_indicador_fields',  [IndicadorController::class, 'get_indicador_fields'])->name('get_indicador_fields');
     });

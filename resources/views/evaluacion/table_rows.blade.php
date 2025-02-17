@@ -37,16 +37,17 @@
                     <td class="text-sm text-tam-rojo font-bold">
                         {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
                     </td>
-                    @if($evaluacion->indicador)
-
-                    <td>Evaluando
-                        <span class="font-bold text-sm text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span> en
-                        <span class="font-bold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
-                    </td>
+                    @if ($evaluacion->indicador)
+                        <td>Evaluando
+                            <a href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}"><span
+                                    class="font-bold text-sm text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span></a>
+                            en
+                            <span class="font-bold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                        </td>
                     @else
-                    <td> Error: el indicador de esta evaluación no existe, por favor contacte al administrador del
-                        sistema.
-                    </td>
+                        <td> Error: el indicador de esta evaluación no existe, por favor contacte al administrador del
+                            sistema.
+                        </td>
                     @endif
                     <td class="font-bold">
                         @include('partials.evaluacion_total', [
@@ -104,8 +105,8 @@
                             <button type="button" class="btn btn-primary js-view-registros"
                                 data-id="{{ $evaluacion->id }}">Registros</button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary dropdown-toggle"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
 

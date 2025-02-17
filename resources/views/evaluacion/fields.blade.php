@@ -40,12 +40,12 @@
                             @endif
                             <optgroup label="{{ $dimension['nombre'] }}">
                                 @foreach ($dimension['indicadores'] as $indicador)
-                                    @if ($indicador['indicador_confirmado'] == 0)
-                                        <option disabled value="{{ $indicador->id }}" data-json="{{ $indicador }}">
-                                            {{ $indicador['nombre'] }} </option>
-                                    @else
+                                    @if ($indicador['indicador_confirmado'] != 0)
                                         <option value="{{ $indicador->id }}" data-json="{{ $indicador }}">
                                             {{ $indicador['nombre'] }} </option>
+                                    @else
+                                        <option value="0" disabled>
+                                            {{ $indicador['nombre'] }} (No confirmado) </option>
                                     @endif
                                 @endforeach
                             </optgroup>

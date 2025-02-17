@@ -37,7 +37,8 @@
                 <span class="navbar-text text-bold ">
                     Ficha de Evaluación:
                     <span class="font-bold">{{ $area['nombre'] }}</span> con
-                    <span class="font-bold">{{ $indicador['nombre'] }}</span>
+                    <a href="{{ route('indicador.details', $indicador->id) }}"><span class="font-bold">{{ $indicador['nombre'] }}</span>
+                    </a>
                 </span>
             </div>
         </div>
