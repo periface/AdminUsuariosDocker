@@ -78,7 +78,13 @@ class IndicadorController extends BaseController
             if (!$variables) {
                 $variables = "[]";
             }
-            $indicador_by_clave = $this->search_by_clave($data["clave"]);
+            $indicador_by_clave = null;
+            // Verificamos si ya existe un indicador con la clave
+            // Si la clave es __indicador__ no se valida porque es una clave reservada
+            // para los indicadores que se crean de forma manual
+            if ($data["clave"] != "__indicador__" && $indicador_found == null) {
+                $indicador_by_clave = $this->search_by_clave($data["clave"]);
+            }
             if ($indicador_by_clave) {
                 return response()->json([
                     'status' => 'error',

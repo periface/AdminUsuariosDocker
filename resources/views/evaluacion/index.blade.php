@@ -6,6 +6,10 @@
             font-weight: normal !important;
             font-size: 14px;
         }
+
+        .progress-stacked {
+            height: .5rem;
+        }
     </style>
     @vite(['node_modules/bs-stepper/dist/css/bs-stepper.min.css'])
 @endsection
@@ -15,24 +19,6 @@
 @endsection
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {{-- <div class="row">
-        <div class="col-12">
-            <nav class="navbar bg-body-tertiary bg-inst">
-                <div class="col-6">
-                    <div class="container-fluid">
-                        <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-users-gear"></i> | MONITOREO DE INDICADORES
-                        </span>
-                    </div>
-                </div>
-                <div class="col-6 d-flex justify-content-end pe-3 pt-2">
-                    <span class="mb-2 btn btn-sm evaluacionModalBtn btn-inst2">
-                        <i class="fa-regular fa-plus"></i> | Monitorear Indicador
-                    </span>
-                </div>
-            </nav>
-        </div>
-    </div> --}}
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between py-3">
             <h6 class="m-0 font-weight-bold text-gray-800">
@@ -72,7 +58,7 @@
 
                             <button type="button" id="js-step-back" class="btn btn-secondary btn-sm">Regresar</button>
                             <button type="button" id="js-step" disabled
-                                class="btn btn-primary btn-sm js-step">Siguiente</button>
+                                class="btn btn-primary bg-tam-rojo-fuerte btn-sm js-step">Siguiente</button>
 
                             <button type="submit" id="js-submit" disabled
                                 class="btn btn-primary btn-sm js-submit">Guardar</button>

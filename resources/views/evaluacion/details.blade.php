@@ -4,8 +4,8 @@
     ">
     <div class="p-2">
         <div class="p-2 rounded-lg shadow-md">
-            <p class="m-0">Evaluando <span class="font-bold text-pink-900">{{ $indicador['nombre'] }}</span> en
-                <span class="font-bold text-yellow-800">{{ $area['nombre'] }}</span>
+            <p class="m-0">Evaluando <span class="font-bold text-tam-rojo-fuerte">{{ $indicador['nombre'] }}</span> en
+                <span class="font-bold text-tam-dorado-fuerte">{{ $area['nombre'] }}</span>
             </p>
         </div>
     </div>
@@ -52,13 +52,13 @@
 
                         <label for="meta" class="form-label w-full">{{ $indicador['nombre'] }}</label>
                         <div class="flex">
-                            <span class="text-sm text-red-950 font-bold">0%</span>
+                            <span class="text-sm text-tam-rojo font-bold">0%</span>
                             <input type="range" class="form-range ml-1 mr-1" value="50" min="0"
                                 max="100" id="meta" name="meta">
-                            <span class="text-sm text-red-950 font-bold">100%</span>
+                            <span class="text-sm text-tam-rojo font-bold">100%</span>
                         </div>
                         <div class="text-center">
-                            <span class="text-lg text-red-950 font-bold" id="total">50%</span>
+                            <span class="text-lg text-tam-rojo font-bold" id="total">50%</span>
                         </div>
                     </div>
                 </div>

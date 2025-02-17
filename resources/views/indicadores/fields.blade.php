@@ -6,11 +6,13 @@
                 <input type="hidden" name="non_evaluable_formula" value="{{ $indicador['non_evaluable_formula'] }}">
                 <input type="hidden" id="indicador_confirmado" name="indicador_confirmado"
                     value="{{ $indicador['indicador_confirmado'] }}">
+                <input type="hidden" id="clave" name="clave" value="{{ $indicador['clave'] }}">
             @endif
             @if (!$indicador || !$indicador->id)
                 <input type="hidden" name="metodo_calculo" value="">
                 <input type="hidden" name="evaluable_formula" value="sin método de cálculo">
                 <input type="hidden" name="non_evaluable_formula" value="sin método de cálculo">
+                <input type="hidden" id="clave" name="clave" value="__indicador__">
             @endif
             <div class="mt-2">
                 <label for="dimension" class="form-label text-sm">Dimensión: </label>
