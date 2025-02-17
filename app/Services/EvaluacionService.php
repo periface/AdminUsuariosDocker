@@ -6,6 +6,7 @@ use App\Models\Evaluacion;
 use App\Models\Indicador;
 use App\Models\Area;
 use App\Models\EvaluacionResult;
+use App\Models\User;
 
 class EvaluacionService
 {
@@ -69,6 +70,10 @@ class EvaluacionService
         $evaluacion["sentido"] = $indicador["sentido"];
         // porcentaje total de evaluaciones aprobadas en relacion a la meta
         $evaluacion["indicador"] = $indicador;
+        $evaluacion["finalizado_por_user"] = null;
+        if ($evaluacion["finalizado_por"]) {
+            $evaluacion["finalizado_por_user"] = User::find($evaluacion["finalizado_por"]);
+        }
         return $evaluacion;
     }
     function get_evaluacion_stats(Evaluacion $evaluacion)
@@ -130,6 +135,11 @@ class EvaluacionService
         $evaluacion["sentido"] = $indicador["sentido"];
         // porcentaje total de evaluaciones aprobadas en relacion a la meta
         $evaluacion["indicador"] = $indicador;
+
+        $evaluacion["finalizado_por_user"] = null;
+        if ($evaluacion["finalizado_por"]) {
+            $evaluacion["finalizado_por_user"] = User::find($evaluacion["finalizado_por"]);
+        }
         return $evaluacion;
     }
 }

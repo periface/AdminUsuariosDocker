@@ -21,6 +21,9 @@ class Evaluacion extends Model
     public $non_evaluable_formula;
     public $formula_literal;
     public $descripcion;
+    public $finalizado;
+    public $finalizado_por;
+    public $finalizado_en;
     protected $table = 'evaluacion';
     protected $fillable = [
         'formula_literal',
@@ -34,6 +37,9 @@ class Evaluacion extends Model
         'evaluable_formula',
         'non_evaluable_formula',
         'descripcion',
+        'finalizado',
+        'finalizado_por',
+        'finalizado_en'
     ];
     public function indicador()
     {

@@ -119,6 +119,43 @@ class EvaluacionController extends BaseController
             return [null, null, $e->getMessage()];
         }
     }
+    public function cerrar_evaluacion($id)
+    {
+        try {
+            $evaluacion = Evaluacion::find($id);
+            if (!$evaluacion) {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => null,
+                    'error' => 'No se encontró el evaluacion',
+                    'statusCode' => 404
+                ], 404);
+            }
+            $toggle = !$evaluacion['finalizado'];
+            if ($toggle) {
+                $evaluacion->update(['finalizado' => $toggle, 'finalizado_por' => auth()->user()->id, 'finalizado_en' => now()]);
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $evaluacion,
+                    'statusCode' => 200
+                ], 200);
+            }
+            $evaluacion->update(['finalizado' => $toggle, 'finalizado_por' => null, 'finalizado_en' => null]);
+            return response()->json([
+                'status' => 'success',
+                'data' => $evaluacion,
+                'statusCode' => 200
+            ], 200);
+        } catch (\Throwable $e) {
+            log::error($e);
+            return response()->json([
+                'status' => 'error',
+                'data' => null,
+                'error' => $e->getMessage(),
+                'statusCode' => 500
+            ], 500);
+        }
+    }
     public function get(Request $request)
     {
         try {

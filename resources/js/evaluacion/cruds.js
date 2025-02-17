@@ -1,4 +1,29 @@
 import { toggle_loading } from '../utils/helpers.js';
+async function cerrar_evaluacion(id, state) {
+    try {
+        toggle_loading(true);
+        const response = await fetch(state.API_URL + '/cerrar/' + id, {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': state.xcsrftoken,
+                'Authorization': 'Bearer ' + state.bearertoken,
+            }
+        });
+        const json_response = await response.json();
+        toggle_loading(false);
+        return json_response;
+    }
+    catch (error) {
+        console.error(error);
+        return {
+            error: error,
+            data: null
+        }
+    }
+    finally {
+        toggle_loading(false);
+    }
+}
 async function delete_evaluacion(id, state) {
     try {
         toggle_loading(true);
@@ -181,5 +206,6 @@ export {
     get_rows,
     post_evaluacion,
     load_evaluacion_form,
-    get_stats
+    get_stats,
+    cerrar_evaluacion
 };

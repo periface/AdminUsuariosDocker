@@ -89,6 +89,7 @@ class RegistrosController extends BaseController
                 $espacio["days_left"] = $this->get_days_left($espacio["fecha"]);
                 $espacio["requiere_anexo"] = $indicador["requiere_anexo"];
                 $espacio["value"] = Indicador::get_value(floatval($espacio["resultado"]), $unidad_medida);
+                $espacio["finalizado"] = $evaluacion["finalizado"];
             }
             return view('registros.table_rows', [
                 'frecuencia_medicion' => $frecuencia_medicion,
@@ -153,7 +154,14 @@ class RegistrosController extends BaseController
     public function store_evaluacion_result() {}
     public function store_registros(Request $request)
     {
+
         $request_data = $request->all();
+
+        $evaluacionId = $request_data["evaluacionId"];
+        $evaluacion = Evaluacion::all()->find($evaluacionId);
+        if ($evaluacion["finalizado"]) {
+            return response()->json(["error" => "La evaluación ya ha sido finalizada"]);
+        }
         $registros = json_decode($request_data["registros"]);
         $user = Auth::user();
         $created = [];
@@ -178,11 +186,15 @@ class RegistrosController extends BaseController
         $evaluacion_result["fecha"] = $fecha;
         $evaluacion_result["status"] = "capturado";
         $evaluacion_result->save();
-        return json_encode($created);
+        response()->json($evaluacion_result);
     }
     public function set_status($id, $status)
     {
         $evaluacion_result = EvaluacionResult::all()->find($id);
+        $evaluacion = Evaluacion::all()->find($evaluacion_result["evaluacionId"]);
+        if ($evaluacion["finalizado"]) {
+            return response()->json(["error" => "La evaluación ya ha sido finalizada"]);
+        }
         $evaluacion_result["status"] = $status;
         $evaluacion_result->save();
         return json_encode($evaluacion_result);

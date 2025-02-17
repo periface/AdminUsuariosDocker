@@ -249,10 +249,16 @@ async function set_modal_event_listener() {
             }
             const espacio_obj = JSON.parse(espacio);
             espacio_obj.status = 'validado';
-            await set_status(espacio_obj.id, 'aprobado', state);
+            const json_response = await set_status(espacio_obj.id, 'aprobado', state);
+
             $(state.modal).modal('hide');
-            const toast = createToast('Registros', 'Registro validado con éxito', 'success');
-            await start_datatable();
+            if (json_response.error) {
+                createToast('Registros', json_response.error, false);
+            }
+            else {
+                createToast('Registros', 'Registro validado con éxito', 'success');
+                await start_datatable();
+            }
         });
 
     }
@@ -274,10 +280,16 @@ async function set_modal_event_listener() {
             }
             const espacio_obj = JSON.parse(espacio);
             espacio_obj.status = 'rechazado';
-            const toast = createToast('Registros', 'Registro rechazado con éxito', 'success');
-            await set_status(espacio_obj.id, 'rechazado', state);
+            const json_response = await set_status(espacio_obj.id, 'aprobado', state);
+
             $(state.modal).modal('hide');
-            await start_datatable();
+            if (json_response.error) {
+                createToast('Registros', json_response.error, false);
+            }
+            else {
+                createToast('Registros', 'Registro validado con éxito', 'success');
+                await start_datatable();
+            }
         });
     }
     for await (const btn of state.registrar_btn) {
@@ -306,17 +318,13 @@ async function set_modal_event_listener() {
     }
 }
 async function store_values(form_data) {
-    for (let key of form_data.keys()) {
-        console.log(key, form_data.get(key));
-    }
     const response = await post_registros(form_data, state);
-    console.log(response);
     if (response.error) {
         console.error(response.error);
-        const toast = createToast('Registros', 'Error al guardar los registros', 'error');
+        createToast('Registros', response.error, false);
         return;
     }
-    const toast = createToast('Registros', 'Registros guardados con éxito', 'success');
+    createToast('Registros', 'Registros guardados con éxito', 'success');
 
 }
 async function set_after_modal_load_evts() {

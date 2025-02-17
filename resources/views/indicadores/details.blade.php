@@ -100,6 +100,10 @@
                                 <tr>
                                     <td class="text-sm text-tam-rojo font-bold">
                                         {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
+                                        @if ($evaluacion['finalizado'])
+                                            <span class="badge bg-tam-dorado text-tam-rojo">Evaluación Cerrada el
+                                                {{ $evaluacion['finalizado_en'] }}</span>
+                                        @endif
                                     </td>
                                     @if ($evaluacion->indicador)
                                         <td>

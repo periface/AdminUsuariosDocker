@@ -1,3 +1,6 @@
+@if ($espacio['finalizado'])
+    <span class="text-tam-rojo-fuerte font-bold">Finalizada</span>
+@else
 <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
     @if (new DateTime($espacio['fecha']) == new DateTime('today'))
         @if ($espacio['status'] == 'capturado')
@@ -41,13 +44,12 @@
         <ul class="dropdown-menu">
 
             @if (Auth::user()->hasRole('ADM'))
-                <li><a class="dropdown-item js-validar cursor-pointer"  data-id="{{ $espacio['id'] }}"
+                <li><a class="dropdown-item js-validar cursor-pointer" data-id="{{ $espacio['id'] }}"
                         data-espacio="{{ json_encode($espacio) }}">Validar</a>
                 </li>
-                <li><a class="dropdown-item js-rechazar cursor-pointer"  data-id="{{ $espacio['id'] }}"
+                <li><a class="dropdown-item js-rechazar cursor-pointer" data-id="{{ $espacio['id'] }}"
                         data-espacio="{{ json_encode($espacio) }}">Rechazar</a>
                 </li>
-
             @endif
 
             @if ($espacio['requiere_anexo'] == 1)
@@ -58,3 +60,4 @@
         </ul>
     </div>
 </div>
+@endif

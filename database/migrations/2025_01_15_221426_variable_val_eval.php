@@ -25,6 +25,12 @@ return new class extends Migration
             $table->string("non_evaluable_formula");
             $table->string("formula_literal");
             $table->string("descripcion");
+            $table->boolean("finalizado")->default(false);
+            $table->unsignedBigInteger("finalizado_por")->nullable();
+            $table->date("finalizado_en")->nullable();
+            $table->foreign("areaId")->references("id")->on("area")->onDelete("cascade");
+            $table->foreign("indicadorId")->references("id")->on("indicador")->onDelete("cascade");
+            $table->foreign("finalizado_por")->references("id")->on("users")->onDelete("cascade");
             $table->timestamps();
         });
         Schema::create("evaluacion_result", function (Blueprint $table) {
