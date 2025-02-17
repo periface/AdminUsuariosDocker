@@ -160,7 +160,13 @@ class RegistrosController extends BaseController
         $evaluacionId = $request_data["evaluacionId"];
         $evaluacion = Evaluacion::all()->find($evaluacionId);
         if ($evaluacion["finalizado"]) {
-            return response()->json(["error" => "La evaluación ya ha sido finalizada"]);
+
+            return response()->json([
+                'status' => 'error',
+                'data' => null,
+                'statusCode' => 400,
+                'error' => 'La evaluación ya ha sido finalizada'
+            ], 400);
         }
         $registros = json_decode($request_data["registros"]);
         $user = Auth::user();
@@ -186,7 +192,12 @@ class RegistrosController extends BaseController
         $evaluacion_result["fecha"] = $fecha;
         $evaluacion_result["status"] = "capturado";
         $evaluacion_result->save();
-        response()->json($evaluacion_result);
+        return response()->json([
+            'status' => 'success',
+            'data' => $created,
+            'statusCode' => 200,
+            'error' => null
+        ], 200);
     }
     public function set_status($id, $status)
     {
