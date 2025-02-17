@@ -34,14 +34,16 @@
         </div>
     </div> --}}
     <div class="card shadow mb-4">
-        <div class="card-header py3">
-            <div class="flex align-middle items-center">
-
-                <h6 class="m-0 font-weight-bold mr-2">EVALUACIONES INICIADAS</h6>
-                <button class="btn btn-sm btn-primary evaluacionModalBtn ">
-                    Evaluar Indicador
-                </button>
-            </div>
+        <div class="card-header d-flex justify-content-between py-3">
+            <h6 class="m-0 font-weight-bold text-gray-800">
+                EVALUACIONES INICIADAS
+            </h6>
+            <a class="btn bg-inst2 btn-icon-split btn-sm">
+                <span class="icon text-white evaluacionModalBtn">
+                    <i class="fa fa-plus"></i>
+                </span>
+                <span class="text text-white evaluacionModalBtn">Evaluar Indicador</span>
+            </a>
         </div>
         <div class="card-body">
             <div id="table-container">

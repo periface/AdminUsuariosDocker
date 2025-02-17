@@ -527,7 +527,8 @@ async function bind_upload_file() {
     });
     state.fileInput.addEventListener('change', async function() {
         const file = this.files[0];
-        const data = await parse_json(file);
+        let data = await parse_json(file);
+        data = data.filter(row => row["Nombre"] !== '');
         const dimensiones = group_dimensiones(data);
         const indicadores_db = make_indicadores_db(dimensiones);
         for (let dimension in indicadores_db) {
@@ -542,6 +543,30 @@ async function bind_upload_file() {
         set_indicadores_form_evt(indicadores_db);
     });
 }
+function validate_indicador(indicador) {
+    const required_fields = ['nombre',
+        'descripcion',
+        'metodo_calculo',
+        'medio_verificacion',
+        'unidad_medida',
+        'dimension',
+        'sentido',
+        'categoria'
+    ];
+    for (let field of required_fields) {
+        console.log(field);
+        if (!indicador[field]) {
+            return {
+                data: null,
+                error: `El campo ${field} es requerido`.toUpperCase()
+            }
+        }
+    }
+    return {
+        data: indicador,
+        error: null
+    }
+}
 function set_indicadores_form_evt(indicadores_db) {
     state.indicadores_batch_form.onsubmit = async (e) => {
         e.preventDefault();
@@ -554,15 +579,26 @@ function set_indicadores_form_evt(indicadores_db) {
             estado.innerHTML = badgeProcessing;
             const dimension_response = await get_dimension_by_name(indicador.dimension, state);
             if (dimension_response.error) {
-                estado.innerHTML = badgeError;
+                estado.innerHTML = badgeError + ' <br>' + dimension_response.error;
+                i++;
                 continue;
             }
             if (dimension_response.data.length === 0) {
-                estado.innerHTML = badgeError;
+                estado.innerHTML = badgeError + ' <br> No se encontró la dimensión';
+                i++;
                 continue;
             }
             const dimensionId = dimension_response.data[0].id;
+
+            const validate_response = validate_indicador(indicador);
+            if (validate_response.error) {
+                estado.innerHTML = badgeError + ' <br>' + validate_response.error;
+
+                i++;
+                continue;
+            }
             const form_data = new FormData();
+            form_data.append('clave', indicador.clave);
             form_data.append('nombre', indicador.nombre);
             form_data.append('descripcion', indicador.descripcion);
             form_data.append('status', indicador.status);
@@ -576,15 +612,15 @@ function set_indicadores_form_evt(indicadores_db) {
             form_data.append('requiere_anexo', indicador.requiere_anexo);
             form_data.append('medio_verificacion', indicador.medio_verificacion);
             form_data.append('categoria', indicador.categoria);
+
             const response_json = await post_indicador(form_data, state);
-            if (!response_json.error && response_json?.data.statusCode === 200) {
+            if (!response_json.error) {
                 estado.innerHTML = badgeProcessed;
                 indicador.error = null;
             } else {
                 indicador.error = response_json.error;
-                estado.innerHTML = badgeError;
+                estado.innerHTML = badgeError + ' <br>' + response_json.error;
             }
-
             i++;
         }
     }
@@ -596,6 +632,10 @@ function render_indicadores_db(indicadores_db) {
 <table class="table" id="indicadoresTable">
     <thead class="small">
         <tr class="w-full">
+
+            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+                Clave
+            </th>
             <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Estado
             </th>
@@ -611,7 +651,7 @@ function render_indicadores_db(indicadores_db) {
             </th>
 
             <th style="width: 30%" data-sort="metodo_calculo" data-order="asc" class="sort cursor-pointer">
-                Ejemplo de sustitución de variables
+                Ejemplo
             </th>
 
     </thead>
@@ -619,6 +659,7 @@ function render_indicadores_db(indicadores_db) {
         ${indicadores_db.map((indicador, index) => {
         return `
             <tr>
+                <td class="text-xs">${indicador.clave}</td>
                 <td class="text-xs js-estados-${index}">
                 <span class="badge bg-primary text-xs">En espera</span>
             </td>
@@ -700,6 +741,7 @@ function group_dimensiones(data) {
 
         if (dimensiones[row["Dimensión"]] !== undefined) {
             dimensiones[row["Dimensión"]].indicadores.push({
+                clave: row["Clave"],
                 categoria: row["Categoría"],
                 descripcion: row["Descripción General"],
                 status: row["Estado"] === 'Aprobado' ? 1 : 0,
@@ -718,6 +760,7 @@ function group_dimensiones(data) {
         else {
             dimensiones[row["Dimensión"]] = {
                 indicadores: [{
+                    clave: row["Clave"],
                     categoria: row["Categoría"],
                     descripcion: row["Descripción General"],
                     status: row["Estado"] === 'Aprobado' ? 1 : 0,

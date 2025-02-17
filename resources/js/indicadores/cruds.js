@@ -93,10 +93,7 @@ async function post_indicador(form_data, state) {
             }
         });
         const json_response = await response.json();
-        return {
-            error: null,
-            data: json_response
-        };
+        return json_response;
     }
     catch (error) {
         console.error(error);
