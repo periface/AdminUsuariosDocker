@@ -11,8 +11,6 @@ use App\Models\EvaluacionResult;
 use App\Models\Indicador;
 use Illuminate\Support\Facades\Log;
 
-use function Illuminate\Log\log;
-
 class DimensionData
 {
     public $id;
@@ -173,7 +171,7 @@ class AreaService
                 $dimensionData->nombre = $dimension["nombre"];
                 $dimensionData->value = $evaluacion_value;
                 $dimensionesResult[$dimension->id] = $dimensionData;
-                $dimensionesResult[$dimension->id]->divideBy = 1;
+                $dimensionesResult[$dimension->id]->divideBy = $divideBy;
                 $divideBy++;
             } else {
                 $dimensionesResult[$dimension->id]->value += $evaluacion_value;
