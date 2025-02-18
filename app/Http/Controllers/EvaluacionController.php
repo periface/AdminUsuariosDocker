@@ -9,12 +9,11 @@ use App\Models\Indicador;
 use App\Models\Evaluacion;
 use App\Models\Secretaria;
 use Illuminate\Http\Request;
-use App\Models\VariableValue;
 use App\Services\RoleService;
 use App\Models\EvaluacionResult;
+use App\Models\VariableValue;
 use App\Services\EvaluacionService;
 
-use function Illuminate\Log\log;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,7 +49,7 @@ class EvaluacionController extends BaseController
     {
         try {
             // Agregamos validación al request para mantener integridad en el información
-            [$data, $evaluacion_found, $error] = $this->get_evaluacion_from_req($request);
+            [$data, $_, $error] = $this->get_evaluacion_from_req($request);
             if ($error) {
                 return response()->json([
                     'status' => 'error',
@@ -62,18 +61,10 @@ class EvaluacionController extends BaseController
             $fechas_captura = json_decode($data['fechas_captura']);
             $user = (Auth::user()); //Obtenemos el usuario autenticado
             $secretaria = $this->resolve_secretaria_by_areaId($user['areaId']);
-            if ($evaluacion_found) {
-                $evaluacion_found->update($data);
-                return response()->json([
-                    'status' => 'success',
-                    'data' => $evaluacion_found->id,
-                    'statusCode' => 200
-                ], 200);
-            }
             $data['secretariaId'] = $secretaria["id"]; //Agregamos el id de la secretaria al request
             $data['secretaria'] = $secretaria["nombre"];
             $data['usuarioId'] = $user->id; //Agregamos el id del usuario al request
-            $id = Evaluacion::create($data)->id;
+            $id = Evaluacion::create($data)->id; //Guardamos el evaluacion en la base de datos
             [$variablesId, $evaluacionesId, $error] = $this->create_variables($data, $fechas_captura, $id, $user);
             if ($error) {
                 Evaluacion::find($id)->delete();
@@ -439,6 +430,7 @@ class EvaluacionController extends BaseController
         $indicador_id,
         $user_id,
     ) {
+
         $variables_valor = [];
         $evaluation_results = [];
         $variables = Indicador::find($indicador_id)->variables;
@@ -453,12 +445,11 @@ class EvaluacionController extends BaseController
                 'aprobadoPorId' => null
             ];
 
-            \App\Models\EvaluacionResult::insert($evaluacion_result);
-            $lastInsertedId = \App\Models\EvaluacionResult::latest()->first();
+            $eval_result = EvaluacionResult::create($evaluacion_result);
             $evaluation_results[] = $evaluacion_result;
             foreach ($variables as $variable) {
                 $variable_valor = [
-                    'evaluacionResultId' => $lastInsertedId->id,
+                    'evaluacionResultId' => $eval_result["id"],
                     'fecha' => $fecha->fecha_captura,
                     'valor' => 0,
                     'meta_esperada' => floatval($fecha->meta),
@@ -467,11 +458,30 @@ class EvaluacionController extends BaseController
                     'usuarioId' => $user_id,
                     'status' => 'pendiente',
                 ];
-                $db_variable = \App\Models\VariableValue::insert($variable_valor);
+                $db_variable = VariableValue::create($variable_valor);
                 $variables_valor[] = $db_variable;
             }
         }
         return [$variables_valor, $evaluation_results];
+    }
+    public function insert_variable_valor($variables, $evaluacion_id, $user_id)
+    {
+        $variables_valor = [];
+        foreach ($variables as $variable) {
+            $variable_valor = [
+                'valor' => $variable["valor"],
+                'meta_esperada' => $variable["meta_esperada"],
+                'fecha' => $variable["fecha"],
+                'status' => 'pendiente',
+                'evaluacionId' => $evaluacion_id,
+                'variableId' => $variable["variableId"],
+                'usuarioId' => $user_id,
+            ];
+            $db_variable = VariableValue::create($variable_valor);
+            $variables_valor[] = $db_variable;
+        }
+        return $variables_valor;
+
     }
     public function ficha($id)
     {
