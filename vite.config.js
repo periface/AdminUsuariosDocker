@@ -11,10 +11,10 @@ export default defineConfig({
                 'resources/jquery-easing/jquery.easing.min.js',
 
                 'resources/js/app.js',
-                'resources/js/usuarios/index.js',
-                'resources/js/auth/permissions/permisos.js',
+                // 'resources/js/usuarios/index.js',
+                // 'resources/js/auth/permissions/permisos.js',
                 'resources/js/evaluaciones/evaluaciones.js',
-                'resources/js/areas/index.js',
+                // 'resources/js/areas/index.js',
                 'resources/js/dimensiones/index.js',
                 'resources/js/dataviz/index.js',
             ],

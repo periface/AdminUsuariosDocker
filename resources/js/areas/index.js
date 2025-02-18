@@ -178,7 +178,7 @@ const showFormArea = async () => {
     const responseText = await response.text();
 
     console.log(responseText);
-    openModal(responseText, 'Agregar Nueva Área');
+    openModal(responseText, 'Agregar Área');
     let registerArea = document.getElementById('addArea');
 
     addArea(registerArea);

@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\User;
-
-use App\DTO\Users\UserDTO;
 use App\Models\Area;
+
+use App\Models\User;
+use App\Models\UserArea;
+use App\DTO\Users\UserDTO;
 use App\Models\Secretaria;
 
 class UserService
@@ -86,5 +87,15 @@ class UserService
 
         return $userDtoList;
         
+    }
+
+    public function deleteUserArea(User $user){
+        $userAreas = UserArea::where('userId', $user->id)
+                            ->get();
+        if(count($userAreas) > 0){
+           foreach ($userAreas as $userArea) {
+                UserArea::where('userId', $user->id)->delete();
+           }
+        }
     }
 }

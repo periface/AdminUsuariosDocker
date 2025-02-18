@@ -1,4 +1,4 @@
-<form id="addUser">
+<form id="userForm">
     @csrf
     <div class="row mt-2">
         <div class="col">

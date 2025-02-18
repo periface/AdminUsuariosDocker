@@ -233,6 +233,9 @@ class UserController extends Controller
                     break;
             }
 
+            // Has user-area
+            $this->userService->deleteUserArea($user);
+
             $user->delete();
 
             return response()->json([

@@ -26,28 +26,7 @@ class UserController extends Controller
 
     public function index()
     {
-
-        $user = auth()->user();
-        $role = $user->getRoleNames();
-
-        switch ($role[0]) {
-            case 'SPA':
-                $users = $this->userService->getUsersByArea($user);
-                break;
-            
-            default:
-                $users = $this->userService->getAllUsers();
-                break;
-        }
-
-        foreach ($users as $user) {
-            // $user->areaName = Area::where('id', $user->areaId)->first()->nombre;
-            $role = $this->roleService->getUserRoles($user);
-            if (!empty($role)) {
-                $user->rol = $role[0]->alias;
-            }
-        }
-        return view('users.index', compact('users'));
+        return view('users.index');
     }
 
     public function add(Request $request)
@@ -96,5 +75,31 @@ class UserController extends Controller
         $ruta = 'login';
 
         return view('users.activate', compact('message', 'ruta'));
+    }
+
+    public function fetchUsers(){
+
+        $user = auth()->user();
+        $role = $user->getRoleNames();
+
+        switch ($role[0]) {
+            case 'SPA':
+                $users = $this->userService->getUsersByArea($user);
+                break;
+            
+            default:
+                $users = $this->userService->getAllUsers();
+                break;
+        }
+
+        foreach ($users as $user) {
+            // $user->areaName = Area::where('id', $user->areaId)->first()->nombre;
+            $role = $this->roleService->getUserRoles($user);
+            if (!empty($role)) {
+                $user->rol = $role[0]->alias;
+            }
+        }
+        return view('users.table', compact('users'));
+
     }
 }

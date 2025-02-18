@@ -155,10 +155,10 @@
         storeToken();
     </script>
     @vite([
-        'resources/js/utils/pageLoader.js',
-        'resources/js/usuarios/index.js',
-        'resources/js/auth/permissions/permisos.js',
-        'resources/js/areas/index.js',
-        'resources/js/dataviz/index.js'
+        // 'resources/js/utils/pageLoader.js',
+        // 'resources/js/usuarios/index.js',
+        // 'resources/js/auth/permissions/permisos.js',
+        // 'resources/js/areas/index.js',
+        // 'resources/js/dataviz/index.js'
     ])
 @endsection

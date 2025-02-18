@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/users/create',                                  [UserController::class, 'add']);
         Route::get('/users/{user}/edit',                             [UserController::class, 'edit']);
         Route::get('/users/{user}/roles-permissions',                [UserController::class, 'userRolesAndPermissions']);
+        Route::get('/users/fetchUsers',                              [UserController::class, 'fetchUsers']);
 
         // Roles
         Route::get('/roles',                                         [RoleController::class, 'index'])->name('roles');

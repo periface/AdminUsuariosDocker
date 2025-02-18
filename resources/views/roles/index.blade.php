@@ -14,7 +14,7 @@
     </div>
     <div class="card-body">
         <table class="table table-striped table-sm mt-2"> 
-            <thead>
+            <thead class="small">
                 <tr>
                     <th class="w-1/12">#</th>
                     <th class="text-center w-1/5">Rol</th>
