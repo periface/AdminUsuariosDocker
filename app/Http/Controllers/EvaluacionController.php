@@ -49,7 +49,7 @@ class EvaluacionController extends BaseController
     {
         try {
             // Agregamos validación al request para mantener integridad en el información
-            [$data, $_, $error] = $this->get_evaluacion_from_req($request);
+            [$data, $_, $error] = $this->get_form_body($request);
             if ($error) {
                 return response()->json([
                     'status' => 'error',
@@ -60,14 +60,13 @@ class EvaluacionController extends BaseController
             }
             $fechas_captura = json_decode($data['fechas_captura']);
             $user = (Auth::user()); //Obtenemos el usuario autenticado
-            $secretaria = $this->resolve_secretaria_by_areaId($user['areaId']);
+            $secretaria = $this->evaluacionService->get_by_area($user['areaId']);
             $data['secretariaId'] = $secretaria["id"]; //Agregamos el id de la secretaria al request
             $data['secretaria'] = $secretaria["nombre"];
             $data['usuarioId'] = $user->id; //Agregamos el id del usuario al request
             $id = Evaluacion::create($data)->id; //Guardamos el evaluacion en la base de datos
-            [$variablesId, $evaluacionesId, $error] = $this->create_variables($data, $fechas_captura, $id, $user);
+            [$variablesId, $evaluacionesId, $error] = $this->make_eval_results($data, $fechas_captura, $id, $user);
             if ($error) {
-                Evaluacion::find($id)->delete();
                 return response()->json([
                     'status' => 'error',
                     'data' => null,
@@ -95,10 +94,10 @@ class EvaluacionController extends BaseController
             ], 500);
         }
     }
-    private function create_variables($data, $fechas_captura, $id, $user)
+    private function make_eval_results($data, $fechas_captura, $id, $user)
     {
         try {
-            [$variables_valor, $evaluation_results] = $this->create_capture_dates(
+            [$variables_valor, $evaluation_results] = $this->evaluacionService->create_capture_dates(
                 $fechas_captura,
                 $id,
                 $data["indicadorId"],
@@ -186,7 +185,7 @@ class EvaluacionController extends BaseController
     public function put(Request $request)
     {
 
-        [$data, $evaluacion, $error] = $this->get_evaluacion_from_req($request);
+        [$data, $evaluacion, $error] = $this->get_form_body($request);
         if ($error) {
             return response()->json([
                 'status' => 'error',
@@ -348,7 +347,7 @@ class EvaluacionController extends BaseController
      * @param Request $request
      * @return array [array|null, Evaluacion|null, string|null]
      */
-    protected function get_evaluacion_from_req(Request $request)
+    protected function get_form_body(Request $request)
     {
         // Agregamos validación al request para mantener integridad en el información
 
@@ -387,6 +386,14 @@ class EvaluacionController extends BaseController
         try {
             $areaId = $request->areaId;
             $indicadorId = $request->indicadorId;
+            if (!$areaId || !$indicadorId) {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => null,
+                    'error' => 'No se encontró el área o el indicador',
+                    'statusCode' => 404
+                ], 404);
+            }
             $area = Area::find($areaId);
             // get variables by indicadorId
             $indicador = Indicador::all()->find($indicadorId);
@@ -414,56 +421,7 @@ class EvaluacionController extends BaseController
         }
     }
 
-    private function resolve_secretaria_by_areaId($areaId)
-    {
-        $area = Area::find($areaId);
-        $secretaria = Secretaria::find($area["secretariaId"]);
-        if (!$secretaria) {
-            throw new \Exception('No se encontró la secretaria');
-        }
-        return $secretaria;
-    }
 
-    public static function create_capture_dates(
-        $fechas_captura,
-        $evaluacion_id,
-        $indicador_id,
-        $user_id,
-    ) {
-
-        $variables_valor = [];
-        $evaluation_results = [];
-        $variables = Indicador::find($indicador_id)->variables;
-
-        foreach ($fechas_captura as $fecha) {
-            $evaluacion_result = [
-                'id' => null,
-                'evaluacionId' => $evaluacion_id,
-                'resultado' => 0,
-                'status' => 'pendiente',
-                'fecha' => $fecha->fecha_captura,
-                'aprobadoPorId' => null
-            ];
-
-            $eval_result = EvaluacionResult::create($evaluacion_result);
-            $evaluation_results[] = $evaluacion_result;
-            foreach ($variables as $variable) {
-                $variable_valor = [
-                    'evaluacionResultId' => $eval_result["id"],
-                    'fecha' => $fecha->fecha_captura,
-                    'valor' => 0,
-                    'meta_esperada' => floatval($fecha->meta),
-                    'evaluacionId' => $evaluacion_id,
-                    'variableId' => $variable->id,
-                    'usuarioId' => $user_id,
-                    'status' => 'pendiente',
-                ];
-                $db_variable = VariableValue::create($variable_valor);
-                $variables_valor[] = $db_variable;
-            }
-        }
-        return [$variables_valor, $evaluation_results];
-    }
     public function insert_variable_valor($variables, $evaluacion_id, $user_id)
     {
         $variables_valor = [];
@@ -481,7 +439,6 @@ class EvaluacionController extends BaseController
             $variables_valor[] = $db_variable;
         }
         return $variables_valor;
-
     }
     public function ficha($id)
     {
