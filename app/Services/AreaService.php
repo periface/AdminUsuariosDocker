@@ -170,6 +170,12 @@ class AreaService
         foreach ($areas as $area) {
             $evaluaciones = self::getEvaluacionesFinalizadas($area, $incluirTodasEvaluaciones);
             $dimensionInfo = self::getDimensionInfo($evaluaciones, $incluirTodasDimensiones);
+            if (count($evaluaciones) == 0) {
+                continue;
+            }
+            if (count($dimensionInfo) == 0) {
+                continue;
+            }
             $indicePAreaViewModel = new IndicePAreaViewModel();
             $indicePAreaViewModel->areaId = $area["id"];
             $indicePAreaViewModel->areaNombre = $area["nombre"];
@@ -181,7 +187,7 @@ class AreaService
     }
     private static function getEvaluacionesFinalizadas($area, $incluirTodos = false)
     {
-        if ($incluirTodos) {
+        if ($incluirTodos == "true") {
             $evaluaciones = Evaluacion::where('areaId', "=", $area->id)
                 ->get();
             return $evaluaciones;
