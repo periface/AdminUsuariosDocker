@@ -109,16 +109,34 @@ class AreaService
         if ($suma_porcentaje == 0) {
             return 0;
         }
-        $promedio = $suma_porcentaje / $resultados_count;
+        $promedio_resultados = $suma_porcentaje / $resultados_count;
+
         if ($sentido == "ascendente") {
-            if ($promedio >= $meta) {
+            if ($promedio_resultados >= $meta) {
+                // Si el promedio de los resultados
+                // es mayor o igual a la meta,
+                // el desempeño es 100
                 return 100;
             }
-            $desempeño = max(0, ($promedio / $meta) * 100);
+            // Si el promedio de los resultados es menor a la meta
+            // se calcula el desempeño en base a la siguiente fórmula
+            // (promedio_resultados / meta) * 100
+            // Si el resultado es menor a 0, se asigna 0
+            // Si el resultado es mayor a 100, se asigna 100
+            // Si el resultado está entre 0 y 100, se asigna el resultado
+            // como el desempeño
+            $desempeño = max(0, ($promedio_resultados / $meta) * 100);
             return $desempeño;
         }
-        $diff =  $promedio - $meta;
         if ($sentido == "descendente") {
+            // Si el sentido es descendente
+            // se calcula la diferencia entre
+            // el promedio de los resultados
+            // y la meta
+            $diff =  $promedio_resultados - $meta;
+            // Si el promedio de los resultados
+            // es menor o igual a la meta,
+            // el desempeño es 100
             if ($diff <= 0) {
                 return 100;
             }
@@ -127,7 +145,7 @@ class AreaService
         }
 
         if ($sentido == "constante") {
-            $error = abs($promedio - $meta);
+            $error = abs($promedio_resultados - $meta);
             $desempeño = max(0, 100 - (($error / $meta) * 100));
             return $desempeño;
         }
