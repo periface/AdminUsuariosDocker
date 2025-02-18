@@ -1,4 +1,4 @@
-import { delete_evaluacion, get_rows, load_evaluacion_form, post_evaluacion, load_evaluacion_config } from './cruds.js';
+import { delete_evaluacion, get_rows, cerrar_evaluacion, load_evaluacion_form, post_evaluacion, load_evaluacion_config } from './cruds.js';
 import { debounce, createToast, show_confirm_action, toggle_loading } from '../utils/helpers.js';
 import { check_date_validity_range, calcula_fechas_captura } from './helpers.js';
 
@@ -55,7 +55,7 @@ const state = {
     step_btn: document.getElementById('js-step'),
     step_back_btn: document.getElementById('js-step-back'),
     btn_submit: document.getElementById('js-submit'),
-
+    btn_cerrar_evaluacion: document.getElementsByClassName('js-cerrar-evaluacion'),
     view_registros_btn: document.getElementsByClassName('js-view-registros'),
     restart_popovers: () => {
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
@@ -425,6 +425,10 @@ async function open_evaluacion_form_evt(modal_open_btn) {
                 return;
             }
             let form_data = new FormData(state.evaluacion_form);
+
+            form_data.append('finalizado', false);
+            form_data.append('finalizado_por', null);
+            form_data.append('finalizado_en', null);
             const unidad = UNIDADES.find((unidad) => unidad.nombre === state.indicador["unidad_medida"]);
             if (!unidad) {
                 createToast('Administración de Evaluaciones',
@@ -602,6 +606,28 @@ async function set_modal_trigger_evts() {
     }
     for (let delete_button of state.delete_evaluacion_button) {
         delete_evaluacion_evt(delete_button);
+    }
+    for (let cerrar_btn of state.btn_cerrar_evaluacion) {
+        cerrar_btn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            const cerrar_evaluacion_confirmed = await show_confirm_action();
+            if (cerrar_evaluacion_confirmed) {
+                const response_json = await cerrar_evaluacion(id, state);
+                if (!response_json.error) {
+                    createToast('Administración de Evaluaciones',
+                        response_json.data.finalizado ?
+                        `Se cerró correctamente la evaluación.` :
+                        `Se abrió correctamente la evaluación.`,
+                        true);
+                    await start_datatable();
+                } else {
+                    createToast('Administración de Evaluaciones',
+                        `Ocurrió un error al cerrar la evaluación.`,
+                        false);
+                }
+            }
+        });
     }
     state.rows_events_set = true;
 }

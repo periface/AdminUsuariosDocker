@@ -9,10 +9,11 @@ use App\Models\Indicador;
 use App\Models\Evaluacion;
 use App\Models\Secretaria;
 use Illuminate\Http\Request;
-use App\Models\VariableValue;
 use App\Services\RoleService;
 use App\Models\EvaluacionResult;
-use function Illuminate\Log\log;
+use App\Models\VariableValue;
+use App\Services\EvaluacionService;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,20 +25,31 @@ class EvaluacionController extends BaseController
 
     protected $roleService;
 
-    public function __construct(RoleService $roleService)
-    {
+    protected $evaluacionService;
 
+    public function __construct(RoleService $roleService, EvaluacionService $evaluacionService)
+    {
+        $this->evaluacionService = $evaluacionService;
         $this->roleService = $roleService;
     }
     public function index()
     {
         return view('evaluacion.index');
     }
+
+    public function get_evaluacion_stats_req($id)
+    {
+        return $this->evaluacionService->get_evaluacion_stats_req($id);
+    }
+    public function get_evaluacion_stats($evaluacion)
+    {
+        return $this->evaluacionService->get_evaluacion_stats($evaluacion);
+    }
     public function post(Request $request)
     {
         try {
             // Agregamos validación al request para mantener integridad en el información
-            [$data, $evaluacion_found, $error] = $this->get_evaluacion_from_req($request);
+            [$data, $_, $error] = $this->get_form_body($request);
             if ($error) {
                 return response()->json([
                     'status' => 'error',
@@ -48,22 +60,13 @@ class EvaluacionController extends BaseController
             }
             $fechas_captura = json_decode($data['fechas_captura']);
             $user = (Auth::user()); //Obtenemos el usuario autenticado
-            $secretaria = $this->resolve_secretaria_by_areaId($user['areaId']);
-            if ($evaluacion_found) {
-                $evaluacion_found->update($data);
-                return response()->json([
-                    'status' => 'success',
-                    'data' => $evaluacion_found->id,
-                    'statusCode' => 200
-                ], 200);
-            }
+            $secretaria = $this->evaluacionService->get_by_area($user['areaId']);
             $data['secretariaId'] = $secretaria["id"]; //Agregamos el id de la secretaria al request
             $data['secretaria'] = $secretaria["nombre"];
             $data['usuarioId'] = $user->id; //Agregamos el id del usuario al request
-            $id = Evaluacion::create($data)->id;
-            [$variablesId, $evaluacionesId, $error] = $this->create_variables($data, $fechas_captura, $id, $user);
+            $id = Evaluacion::create($data)->id; //Guardamos el evaluacion en la base de datos
+            [$variablesId, $evaluacionesId, $error] = $this->make_eval_results($data, $fechas_captura, $id, $user);
             if ($error) {
-                Evaluacion::find($id)->delete();
                 return response()->json([
                     'status' => 'error',
                     'data' => null,
@@ -91,10 +94,10 @@ class EvaluacionController extends BaseController
             ], 500);
         }
     }
-    private function create_variables($data, $fechas_captura, $id, $user)
+    private function make_eval_results($data, $fechas_captura, $id, $user)
     {
         try {
-            [$variables_valor, $evaluation_results] = $this->create_capture_dates(
+            [$variables_valor, $evaluation_results] = $this->evaluacionService->create_capture_dates(
                 $fechas_captura,
                 $id,
                 $data["indicadorId"],
@@ -104,6 +107,43 @@ class EvaluacionController extends BaseController
         } catch (\Throwable $e) {
             log::error($e);
             return [null, null, $e->getMessage()];
+        }
+    }
+    public function cerrar_evaluacion($id)
+    {
+        try {
+            $evaluacion = Evaluacion::find($id);
+            if (!$evaluacion) {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => null,
+                    'error' => 'No se encontró el evaluacion',
+                    'statusCode' => 404
+                ], 404);
+            }
+            $toggle = !$evaluacion['finalizado'];
+            if ($toggle) {
+                $evaluacion->update(['finalizado' => $toggle, 'finalizado_por' => auth()->user()->id, 'finalizado_en' => now()]);
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $evaluacion,
+                    'statusCode' => 200
+                ], 200);
+            }
+            $evaluacion->update(['finalizado' => $toggle, 'finalizado_por' => null, 'finalizado_en' => null]);
+            return response()->json([
+                'status' => 'success',
+                'data' => $evaluacion,
+                'statusCode' => 200
+            ], 200);
+        } catch (\Throwable $e) {
+            log::error($e);
+            return response()->json([
+                'status' => 'error',
+                'data' => null,
+                'error' => $e->getMessage(),
+                'statusCode' => 500
+            ], 500);
         }
     }
     public function get(Request $request)
@@ -145,7 +185,7 @@ class EvaluacionController extends BaseController
     public function put(Request $request)
     {
 
-        [$data, $evaluacion, $error] = $this->get_evaluacion_from_req($request);
+        [$data, $evaluacion, $error] = $this->get_form_body($request);
         if ($error) {
             return response()->json([
                 'status' => 'error',
@@ -277,131 +317,6 @@ class EvaluacionController extends BaseController
             'search' => $search
         ]);
     }
-    function get_evaluacion_stats_req($id)
-    {
-        $evaluacion = Evaluacion::find($id);
-        $evaluacion["area"] = Area::find($evaluacion["areaId"]);
-
-        $evaluacion["evaluation_results"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)->get();
-        $evaluacion["results"] = count($evaluacion["evaluation_results"]);
-
-        $evaluacion["results_capturado"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->where('status', 'capturado')
-            ->count();
-        $porcentaje_capturados = 0;
-        if ($evaluacion["results"] > 0 && $evaluacion["results_capturado"] > 0) {
-            $porcentaje_capturados = $evaluacion["results_capturado"] / $evaluacion["results"] * 100;
-        }
-        $evaluacion["porcentaje_capturados"] = $porcentaje_capturados;
-        $aprobados_count = 0;
-        $aprobados = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->where('status', 'aprobado')->get();
-
-        $suma_porcentaje_aprobados = 0;
-        foreach ($aprobados as $aprobado) {
-            $aprobados_count++;
-            $suma_porcentaje_aprobados += $aprobado["resultado"];
-        }
-
-        $indicador = Indicador::find($evaluacion["indicadorId"]);
-        $evaluacion["results_aprobado"] = $aprobados_count;
-        $evaluacion["total"] = 0;
-        $evaluacion["totalValue"] = 0;
-        $porcentaje_aprobados = 0;
-        if ($evaluacion["results"] > 0 && $evaluacion["results_aprobado"] > 0) {
-            $porcentaje_aprobados = $evaluacion["results_aprobado"] / $evaluacion["results"] * 100;
-            $total =  strval($suma_porcentaje_aprobados / $aprobados_count);
-            $evaluacion["totalValue"] = $total;
-            $evaluacion["total"] = Indicador::get_value($total, $indicador["unidad_medida"]);
-        }
-        $evaluacion["porcentaje_aprobados"] = $porcentaje_aprobados;
-        $evaluacion["results_rechazado"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->where('status', 'rechazado')
-            ->count();
-        $porcentaje_rechazados = 0;
-        if ($evaluacion["results"] > 0 && $evaluacion["results_rechazado"] > 0) {
-            $porcentaje_rechazados = $evaluacion["results_rechazado"] / $evaluacion["results"] * 100;
-        }
-        $evaluacion["porcentaje_rechazados"] = $porcentaje_rechazados;
-        $evaluacion["results_pendiente"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->where('status', 'pendiente')
-            ->count();
-        $porcentaje_pendientes = 0;
-        if ($evaluacion["results"] > 0 && $evaluacion["results_pendiente"] > 0) {
-            $porcentaje_pendientes = $evaluacion["results_pendiente"] / $evaluacion["results"] * 100;
-        }
-        $evaluacion["porcentaje_pendientes"] = $porcentaje_pendientes;
-        $evaluacion["metaValue"] = $evaluacion["meta"];
-        $evaluacion["meta"] = Indicador::get_value($evaluacion["meta"], $indicador["unidad_medida"]);
-        $evaluacion["sentido"] = $indicador["sentido"];
-        // porcentaje total de evaluaciones aprobadas en relacion a la meta
-        $evaluacion["indicador"] = $indicador;
-        return $evaluacion;
-    }
-    function get_evaluacion_stats(Evaluacion $evaluacion)
-    {
-
-        $evaluacion["area"] = Area::find($evaluacion["areaId"]);
-        $evaluacion["results"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)->count();
-
-        $evaluacion["results_capturado"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->where('status', 'capturado')
-            ->count();
-        $porcentaje_capturados = 0;
-        if ($evaluacion["results"] > 0 && $evaluacion["results_capturado"] > 0) {
-            $porcentaje_capturados = $evaluacion["results_capturado"] / $evaluacion["results"] * 100;
-        }
-        $evaluacion["porcentaje_capturados"] = $porcentaje_capturados;
-        $aprobados_count = 0;
-        $aprobados = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->where('status', 'aprobado')->get();
-
-        $suma_porcentaje_aprobados = 0;
-        foreach ($aprobados as $aprobado) {
-            $aprobados_count++;
-            log::info($aprobado["resultado"]);
-            $suma_porcentaje_aprobados += $aprobado["resultado"];
-        }
-
-        $indicador = Indicador::find($evaluacion["indicadorId"]);
-        if (!$indicador) {
-            return $evaluacion;
-        }
-        $evaluacion["results_aprobado"] = $aprobados_count;
-        $evaluacion["total"] = 0;
-        $evaluacion["totalValue"] = 0;
-        $porcentaje_aprobados = 0;
-        if ($evaluacion["results"] > 0 && $evaluacion["results_aprobado"] > 0) {
-            $porcentaje_aprobados = $evaluacion["results_aprobado"] / $evaluacion["results"] * 100;
-            $total =  strval($suma_porcentaje_aprobados / $aprobados_count);
-            $evaluacion["totalValue"] = $total;
-            $evaluacion["total"] = Indicador::get_value($total, $indicador["unidad_medida"]);
-        }
-        $evaluacion["porcentaje_aprobados"] = $porcentaje_aprobados;
-        $evaluacion["results_rechazado"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->where('status', 'rechazado')
-            ->count();
-        $porcentaje_rechazados = 0;
-        if ($evaluacion["results"] > 0 && $evaluacion["results_rechazado"] > 0) {
-            $porcentaje_rechazados = $evaluacion["results_rechazado"] / $evaluacion["results"] * 100;
-        }
-        $evaluacion["porcentaje_rechazados"] = $porcentaje_rechazados;
-        $evaluacion["results_pendiente"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->where('status', 'pendiente')
-            ->count();
-        $porcentaje_pendientes = 0;
-        if ($evaluacion["results"] > 0 && $evaluacion["results_pendiente"] > 0) {
-            $porcentaje_pendientes = $evaluacion["results_pendiente"] / $evaluacion["results"] * 100;
-        }
-        $evaluacion["porcentaje_pendientes"] = $porcentaje_pendientes;
-        $evaluacion["metaValue"] = $evaluacion["meta"];
-        $evaluacion["meta"] = Indicador::get_value($evaluacion["meta"], $indicador["unidad_medida"]);
-        $evaluacion["sentido"] = $indicador["sentido"];
-        // porcentaje total de evaluaciones aprobadas en relacion a la meta
-        $evaluacion["indicador"] = $indicador;
-        Log::info($evaluacion);
-        return $evaluacion;
-    }
 
     /**
      * Función para obtener los campos de una evaluacion
@@ -432,7 +347,7 @@ class EvaluacionController extends BaseController
      * @param Request $request
      * @return array [array|null, Evaluacion|null, string|null]
      */
-    protected function get_evaluacion_from_req(Request $request)
+    protected function get_form_body(Request $request)
     {
         // Agregamos validación al request para mantener integridad en el información
 
@@ -471,6 +386,14 @@ class EvaluacionController extends BaseController
         try {
             $areaId = $request->areaId;
             $indicadorId = $request->indicadorId;
+            if (!$areaId || !$indicadorId) {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => null,
+                    'error' => 'No se encontró el área o el indicador',
+                    'statusCode' => 404
+                ], 404);
+            }
             $area = Area::find($areaId);
             // get variables by indicadorId
             $indicador = Indicador::all()->find($indicadorId);
@@ -498,55 +421,24 @@ class EvaluacionController extends BaseController
         }
     }
 
-    private function resolve_secretaria_by_areaId($areaId)
+
+    public function insert_variable_valor($variables, $evaluacion_id, $user_id)
     {
-        $area = Area::find($areaId);
-        $secretaria = Secretaria::find($area["secretariaId"]);
-        if (!$secretaria) {
-            throw new \Exception('No se encontró la secretaria');
-        }
-        return $secretaria;
-    }
-
-    public static function create_capture_dates(
-        $fechas_captura,
-        $evaluacion_id,
-        $indicador_id,
-        $user_id,
-    ) {
         $variables_valor = [];
-        $evaluation_results = [];
-        $variables = Indicador::find($indicador_id)->variables;
-
-        foreach ($fechas_captura as $fecha) {
-            $evaluacion_result = [
-                'id' => null,
-                'evaluacionId' => $evaluacion_id,
-                'resultado' => 0,
+        foreach ($variables as $variable) {
+            $variable_valor = [
+                'valor' => $variable["valor"],
+                'meta_esperada' => $variable["meta_esperada"],
+                'fecha' => $variable["fecha"],
                 'status' => 'pendiente',
-                'fecha' => $fecha->fecha_captura,
-                'aprobadoPorId' => null
+                'evaluacionId' => $evaluacion_id,
+                'variableId' => $variable["variableId"],
+                'usuarioId' => $user_id,
             ];
-
-            \App\Models\EvaluacionResult::insert($evaluacion_result);
-            $lastInsertedId = \App\Models\EvaluacionResult::latest()->first();
-            $evaluation_results[] = $evaluacion_result;
-            foreach ($variables as $variable) {
-                $variable_valor = [
-                    'evaluacionResultId' => $lastInsertedId->id,
-                    'fecha' => $fecha->fecha_captura,
-                    'valor' => 0,
-                    'meta_esperada' => floatval($fecha->meta),
-                    'evaluacionId' => $evaluacion_id,
-                    'variableId' => $variable->id,
-                    'usuarioId' => $user_id,
-                    'status' => 'pendiente',
-                ];
-                $db_variable = \App\Models\VariableValue::insert($variable_valor);
-                $variables_valor[] = $db_variable;
-            }
+            $db_variable = VariableValue::create($variable_valor);
+            $variables_valor[] = $db_variable;
         }
-        return [$variables_valor, $evaluation_results];
+        return $variables_valor;
     }
     public function ficha($id)
     {

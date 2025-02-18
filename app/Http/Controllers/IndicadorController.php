@@ -8,6 +8,7 @@ use App\Models\Evaluacion;
 use App\Models\Indicador;
 use App\Models\Secretaria;
 use App\Models\Variable;
+use App\Services\EvaluacionService;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,12 +17,30 @@ use Illuminate\Support\Facades\Log;
 
 class IndicadorController extends BaseController
 {
-
+    public $evaluacionService;
     // SI NO SE MIDE, CREAN ESQUEMAS
+    public function __construct(EvaluacionService $evaluacionService)
+    {
+        $this->evaluacionService = $evaluacionService;
+    }
     public function index()
     {
         $dimensiones = Dimension::all();
         return view('indicadores.index', compact('dimensiones'));
+    }
+    public function details($id)
+    {
+        $indicador = Indicador::find($id);
+        if (!$indicador) {
+            return redirect()->route('indicador.index');
+        }
+        $evaluaciones = Evaluacion::where('indicadorId', $id)->get();
+        foreach ($evaluaciones as $evaluacion) {
+            $evaluacion = $this->evaluacionService->get_evaluacion_stats($evaluacion);
+
+        }
+        $dimension = Dimension::find($indicador["dimensionId"]);
+        return view('indicadores.details', compact('indicador', 'evaluaciones', 'dimension'));
     }
     public function dimension_indicadores(Request $request)
     {

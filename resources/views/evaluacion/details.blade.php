@@ -26,7 +26,7 @@
             </div>
             <div class="mt-2 w-full">
                 <div class="p-2">
-                    <label class="form-label" for="fecha_inicio">Inicio del Monitoreo</label>
+                    <label class="form-label" for="fecha_inicio">Inicio de Evaluación</label>
                     <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio"
                         placeholder="Fecha de Inicio" />
                 </div>

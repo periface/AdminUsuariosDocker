@@ -25,6 +25,12 @@ return new class extends Migration
             $table->string("non_evaluable_formula");
             $table->string("formula_literal");
             $table->string("descripcion");
+            $table->boolean("finalizado")->default(false);
+            $table->unsignedBigInteger("finalizado_por")->nullable();
+            $table->date("finalizado_en")->nullable();
+            $table->foreign("areaId")->references("id")->on("area")->onDelete("cascade");
+            $table->foreign("indicadorId")->references("id")->on("indicador")->onDelete("cascade");
+            $table->foreign("finalizado_por")->references("id")->on("users")->onDelete("cascade");
             $table->timestamps();
         });
         Schema::create("evaluacion_result", function (Blueprint $table) {
@@ -49,7 +55,7 @@ return new class extends Migration
             $table->unsignedBigInteger("variableId");
             $table->unsignedBigInteger("usuarioId");
             $table->unsignedBigInteger("evaluacionResultId")->nullable();
-            $table->foreign("evaluacionResultId")->references("id")->on("users")->onDelete("cascade");
+            $table->foreign("evaluacionResultId")->references("id")->on("evaluacion_result")->onDelete("cascade");
             $table->foreign("evaluacionId")->references("id")->on("evaluacion")->onDelete("cascade");
             $table->foreign("variableId")->references("id")->on("variable")->onDelete("cascade");
             $table->foreign("usuarioId")->references("id")->on("users")->onDelete("cascade");

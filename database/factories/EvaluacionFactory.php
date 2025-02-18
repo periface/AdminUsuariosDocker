@@ -30,6 +30,9 @@ class EvaluacionFactory extends Factory
             "non_evaluable_formula" => $this->faker->text(),
             "formula_literal" => $this->faker->text(),
             "descripcion" => $this->faker->text(),
+            "finalizado" => $this->faker->boolean(),
+            "finalizado_por" => $this->faker->numberBetween(1, 10),
+            "finalizado_en" => $this->faker->date(),
         ];
     }
 }

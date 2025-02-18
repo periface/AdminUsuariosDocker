@@ -46,4 +46,8 @@ class VariableValue extends Model
     {
         return $this->belongsTo(Secretaria::class, 'secretariaId', 'id');
     }
+    public function evaluacion_result()
+    {
+        return $this->belongsTo(EvaluacionResult::class, 'evaluacionResultId', 'id');
+    }
 }

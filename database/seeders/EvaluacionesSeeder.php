@@ -54,6 +54,9 @@ class EvaluacionesSeeder extends Seeder
             'non_evaluable_formula' => '(ECADO/EPGCA)*100',
             'formula_literal' => '({ECADO}/{EPGCA})*100',
             'descripcion' => 'Mide el porcentaje de expedientes de compras devueltos por la DGCyOP a la Dirección Administrativa por motivo de observaciones',
+            'finalizado' => false,
+            'finalizado_por' => null,
+            'finalizado_en' => null,
         ]);
 
 

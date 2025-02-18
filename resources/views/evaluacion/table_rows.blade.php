@@ -35,18 +35,26 @@
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
                     <td class="text-sm text-tam-rojo font-bold">
-                        {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
-                    </td>
-                    @if($evaluacion->indicador)
+                            {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
+                            @if ($evaluacion['finalizado'])
+                                <span class="badge bg-tam-dorado text-tam-rojo">Evaluación Cerrada el
+                                    {{ $evaluacion['finalizado_en'] }}</span>
 
-                    <td>Evaluando
-                        <span class="font-bold text-sm text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span> en
-                        <span class="font-bold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                                <span class="badge bg-tam-dorado text-tam-rojo">Cerrado por
+                                    {{ $evaluacion['finalizado_por_user']["name"] }}</span>
+                            @endif
                     </td>
+                    @if ($evaluacion->indicador)
+                        <td>Evaluando
+                            <a href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}"><span
+                                    class="font-bold text-sm text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span></a>
+                            en
+                            <span class="font-bold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                        </td>
                     @else
-                    <td> Error: el indicador de esta evaluación no existe, por favor contacte al administrador del
-                        sistema.
-                    </td>
+                        <td> Error: el indicador de esta evaluación no existe, por favor contacte al administrador del
+                            sistema.
+                        </td>
                     @endif
                     <td class="font-bold">
                         @include('partials.evaluacion_total', [
@@ -104,8 +112,8 @@
                             <button type="button" class="btn btn-primary js-view-registros"
                                 data-id="{{ $evaluacion->id }}">Registros</button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary dropdown-toggle"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
 
@@ -113,6 +121,13 @@
                                             href="{{ route('evaluacion.ficha', ['id' => $evaluacion->id]) }}"
                                             data-id="{{ $evaluacion->id }}">Ficha</a>
                                     </li>
+                                    @if($evaluacion['finalizado'])
+                                    <li><a class="dropdown-item js-cerrar-evaluacion" href="#"
+                                            data-id="{{ $evaluacion->id }}">Abrir evaluación</a></li>
+                                    @else
+                                    <li><a class="dropdown-item js-cerrar-evaluacion" href="#"
+                                            data-id="{{ $evaluacion->id }}">Cerrar evaluación</a></li>
+                                    @endif
                                     <li><a class="dropdown-item js-delete-evaluacion" href="#"
                                             data-id="{{ $evaluacion->id }}">Eliminar</a></li>
 

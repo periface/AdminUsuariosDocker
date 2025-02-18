@@ -11,6 +11,9 @@
 @section('title')
     <h6 class="m-0 font-weight-bold">
         Monitoreando {{ $indicador['nombre'] }}
+        @if ($evaluacion['finalizado'])
+            <span class="text-tam-rojo-fuerte font-bold">Finalizada</span>
+        @endif
     </h6>
 @endsection
 @section('content')
@@ -51,7 +54,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="hidden grid grid-cols-2 mt-4 text-center items-center">
+                                <div class="hidden mt-4 text-center items-center">
                                     <div id="status">
                                     </div>
                                     <div id="total">

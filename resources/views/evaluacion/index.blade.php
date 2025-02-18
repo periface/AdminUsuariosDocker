@@ -6,10 +6,6 @@
             font-weight: normal !important;
             font-size: 14px;
         }
-
-        .progress-stacked {
-            height: .5rem;
-        }
     </style>
     @vite(['node_modules/bs-stepper/dist/css/bs-stepper.min.css'])
 @endsection

@@ -26,4 +26,8 @@ class EvaluacionResult extends Model
     {
         return $this->hasMany(Anexo::class, 'evaluacionResultId', 'id');
     }
+    public function variable_values()
+    {
+        return $this->hasMany(VariableValue::class, 'evaluacionResultId', 'id');
+    }
 }

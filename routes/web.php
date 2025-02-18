@@ -81,20 +81,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // PERI WEB ROUTES
 
-    Route::prefix('dimension')->name("dimension.")->group(function () {
+    Route::prefix('dimension')->name("dimension.")->middleware(['role:ADM'])->group(function () {
         Route::get('/',  [DimensionController::class, 'index'])->name('index');
         Route::get('/{dimensionId}/indicadores',  [IndicadorController::class, 'dimension_indicadores'])->name('indicadores');
         Route::post('/get_table_rows',  [DimensionController::class, 'get_rows'])->name('get_table_rows');
         Route::get('/get_dimension_fields',  [DimensionController::class, 'get_dimension_fields'])->name('get_dimension_fields');
     });
 
-    Route::prefix('indicador')->name("indicador.")->group(function () {
+    Route::prefix('indicador')->name("indicador.")->middleware(['role:ADM'])->group(function () {
         Route::get('/',  [IndicadorController::class, 'index'])->name('index');
+        Route::get('/details/{id}',  [IndicadorController::class, 'details'])->name('details');
         Route::post('/get_table_rows/{dimensionId}',  [IndicadorController::class, 'get_rows'])->name('get_table_rows');
         Route::get('/get_indicador_fields',  [IndicadorController::class, 'get_indicador_fields'])->name('get_indicador_fields');
     });
 
-    Route::prefix('evaluacion')->name("evaluacion.")->group(function () {
+    Route::prefix('evaluacion')->name("evaluacion.")->middleware(['role:ADM|REV'])->group(function () {
         Route::get('/',  [EvaluacionController::class, 'index'])->name('index');
         Route::post('/get_table_rows',  [EvaluacionController::class, 'get_rows'])->name('get_table_rows');
         Route::get('/get_evaluacion_fields',  [EvaluacionController::class, 'get_evaluacion_fields'])->name('get_evaluacion_fields');
@@ -103,19 +104,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}/ficha',  [EvaluacionController::class, 'ficha'])->name('ficha');
     });
 
-    Route::prefix('registro')->name("registro.")->group(function () {
+    Route::prefix('registro')->name("registro.")->middleware(['role:ADM|REV'])->group(function () {
         Route::get('/get_registros_form/{id_evaluacion}/{fecha}',  [RegistrosController::class, 'get_registros_form'])->name('get_registros_form');
 
         Route::post('/get_table_rows/{id_evaluacion}',  [RegistrosController::class, 'get_rows'])->name('get_rows');
     });
 
-    Route::prefix('secretaria')->name("secretaria.")->group(function () {
+    Route::prefix('secretaria')->name("secretaria.")->middleware(['role:ADM'])->group(function () {
         Route::get('/',  [SecretariaController::class, 'index'])->middleware('role:ADM')->name('index');
         Route::post('/get_table_rows',  [SecretariaController::class, 'get_rows'])->name('get_table_rows');
         Route::get('/get_secretaria_fields',  [SecretariaController::class, 'get_secretaria_fields'])->middleware('role:ADM')->name('get_secretaria_fields');
     });
 
-    Route::prefix('anexos')->name("anexos.")->group(function () {
+    Route::prefix('anexos')->name("anexos.")->middleware(['role:ADM|REV'])->group(function () {
         Route::get('/{id}',  [AnexosController::class, 'index'])->name('index');
         Route::get('/get_rows/{id}',  [AnexosController::class, 'get_rows'])->name('get_rows');
         Route::post('/upload/{id}', [AnexosController::class, 'upload'])->name('upload');

@@ -80,11 +80,14 @@
                             <button type="button" class="btn btn-primary indicadorModalBtn"
                                 data-id="{{ $indicador->id }}">Editar</button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary dropdown-toggle"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
 
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('indicador.details', $indicador->id) }}"
+                                            data-id="{{ $indicador->id }}">Detalles</a></li>
                                     <li><a class="dropdown-item js-set-formula" href="#"
                                             data-id="{{ $indicador->id }}">Definir formula</a></li>
                                     <li><a class="dropdown-item js-delete-indicador" href="#"
