@@ -6,6 +6,10 @@
             font-weight: normal !important;
             font-size: 14px;
         }
+        canvas {
+            width: 50% !important;
+            height: 50% !important;
+        }
     </style>
     @vite(['node_modules/bs-stepper/dist/css/bs-stepper.min.css'])
 @endsection
@@ -17,15 +21,22 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between py-3">
-            <h6 class="m-0 font-weight-bold text-gray-800">
-                EVALUACIONES INICIADAS
-            </h6>
-            <a class="btn bg-inst2 btn-icon-split btn-sm">
-                <span class="icon text-white evaluacionModalBtn">
-                    <i class="fa fa-plus"></i>
-                </span>
-                <span class="text text-white evaluacionModalBtn">Evaluar Indicador</span>
-            </a>
+
+            @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('GDI') || Auth::user()->hasRole('SPA'))
+                <h6 class="m-0 font-weight-bold text-gray-800">
+                    EVALUACIONES INICIADAS
+                </h6>
+                <a class="btn bg-inst2 btn-icon-split btn-sm">
+                    <span class="icon text-white evaluacionModalBtn">
+                        <i class="fa fa-plus"></i>
+                    </span>
+                    <span class="text text-white evaluacionModalBtn">Evaluar Indicador</span>
+                </a>
+            @else
+                <h6 class="m-0 font-weight-bold text-gray-800">
+                    MIS EVALUACIONES
+                </h6>
+            @endif
         </div>
         <div class="card-body">
             <div id="table-container">
@@ -70,6 +81,7 @@
     <div class="top-0 p-3 toast-container position-fixed end-0">
         <!-- Aquí se inyectarán los toasts dinámicamente -->
     </div>
+    <canvas id="radar"></canvas>
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

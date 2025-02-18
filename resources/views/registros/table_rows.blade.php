@@ -20,10 +20,10 @@
                     <span class="text-red-950 text-md font-bold">{{ $espacio['fecha'] }}</span>
                     <br>
                     <span class="text-2xl">
-                    @include('partials.periodos_counter', [
-                        'frecuencia_medicion' => $frecuencia_medicion,
-                        'index' => $loop->index + 1,
-                    ])
+                        @include('partials.periodos_counter', [
+                            'frecuencia_medicion' => $frecuencia_medicion,
+                            'index' => $loop->index + 1,
+                        ])
                     </span>
                     <br>
                     <span class="text-blue-900">{{ $espacio['days_left'] }}</span>
@@ -40,9 +40,23 @@
                     ])
                 </td>
                 <td>
-                    @include('partials.registro_buttons', [
-                        'espacio' => $espacio,
-                    ])
+
+                    @if (Auth::user()->hasRole('ADM')
+                    || Auth::user()->hasRole('GDI')
+                    || Auth::user()->hasRole('SPA')
+                    )
+                        @include('partials.registro_buttons_admin', [
+                            'espacio' => $espacio,
+                        ])
+                    @elseif (Auth::user()->hasRole('REV'))
+                        @include('partials.registro_buttons_rev', [
+                            'espacio' => $espacio,
+                        ])
+                    @else
+                        @include('partials.registro_buttons_rev', [
+                            'espacio' => $espacio,
+                        ])
+                    @endif
                 </td>
             </tr>
         @endforeach

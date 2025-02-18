@@ -71,6 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('areas/{area}',                              [AreaController::class, 'show'])->name('mostrar-area');
         Route::put('areas/{area}',                              [AreaController::class, 'update']);
         Route::delete('areas/{area}',                           [AreaController::class, 'destroy']);
+        Route::get('areas/dimensiones/{incluirTodasLasDimensiones}/{incluirEvaluacionesAbiertas}', [AreaController::class, 'dimensiones']);
     });
 
     // RUTAS DE ÁREAS PERI

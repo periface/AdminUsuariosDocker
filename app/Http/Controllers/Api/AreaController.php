@@ -17,7 +17,22 @@ class AreaController extends Controller
     {
         $this->areaService = $areaService;
     }
-
+    public function dimensiones($incluirTodasLasDimensiones, $incluirEvaluacionesAbiertas)
+    {
+        $report = $this->areaService->getDimensionesReport(
+            $incluirEvaluacionesAbiertas,
+            $incluirTodasLasDimensiones
+        );
+        return response()->json([
+            'data' => [
+                'attributes' => [
+                    'status' => 'success',
+                    'data' => $report,
+                    'statusCode' => Response::HTTP_OK
+                ]
+            ]
+        ], Response::HTTP_OK);
+    }
     public function index()
     {
         try {

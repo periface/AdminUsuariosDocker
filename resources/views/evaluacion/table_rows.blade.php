@@ -35,14 +35,14 @@
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
                     <td class="text-sm text-tam-rojo font-bold">
-                            {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
-                            @if ($evaluacion['finalizado'])
-                                <span class="badge bg-tam-dorado text-tam-rojo">Evaluación Cerrada el
-                                    {{ $evaluacion['finalizado_en'] }}</span>
+                        {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
+                        @if ($evaluacion['finalizado'])
+                            <span class="badge bg-tam-dorado text-tam-rojo">Evaluación Cerrada el
+                                {{ $evaluacion['finalizado_en'] }}</span>
 
-                                <span class="badge bg-tam-dorado text-tam-rojo">Cerrado por
-                                    {{ $evaluacion['finalizado_por_user']["name"] }}</span>
-                            @endif
+                            <span class="badge bg-tam-dorado text-tam-rojo">Cerrado por
+                                {{ $evaluacion['finalizado_por_user']['name'] }}</span>
+                        @endif
                     </td>
                     @if ($evaluacion->indicador)
                         <td>Evaluando
@@ -121,16 +121,18 @@
                                             href="{{ route('evaluacion.ficha', ['id' => $evaluacion->id]) }}"
                                             data-id="{{ $evaluacion->id }}">Ficha</a>
                                     </li>
-                                    @if($evaluacion['finalizado'])
-                                    <li><a class="dropdown-item js-cerrar-evaluacion" href="#"
-                                            data-id="{{ $evaluacion->id }}">Abrir evaluación</a></li>
-                                    @else
-                                    <li><a class="dropdown-item js-cerrar-evaluacion" href="#"
-                                            data-id="{{ $evaluacion->id }}">Cerrar evaluación</a></li>
-                                    @endif
-                                    <li><a class="dropdown-item js-delete-evaluacion" href="#"
-                                            data-id="{{ $evaluacion->id }}">Eliminar</a></li>
 
+                                    @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('GDI') || Auth::user()->hasRole('SPA'))
+                                        @if ($evaluacion['finalizado'])
+                                            <li><a class="dropdown-item js-cerrar-evaluacion" href="#"
+                                                    data-id="{{ $evaluacion->id }}">Abrir evaluación</a></li>
+                                        @else
+                                            <li><a class="dropdown-item js-cerrar-evaluacion" href="#"
+                                                    data-id="{{ $evaluacion->id }}">Cerrar evaluación</a></li>
+                                        @endif
+                                        <li><a class="dropdown-item js-delete-evaluacion" href="#"
+                                                data-id="{{ $evaluacion->id }}">Eliminar</a></li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>

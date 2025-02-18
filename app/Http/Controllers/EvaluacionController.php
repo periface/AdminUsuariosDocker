@@ -237,7 +237,12 @@ class EvaluacionController extends BaseController
             ], 500);
         }
     }
+    public static function isAdmin($user)
+    {
 
+        $roles = $user->getRoleNames();
+        return $roles[0] === "ADM";
+    }
     #Vistas parciales
 
     /**
@@ -264,13 +269,16 @@ class EvaluacionController extends BaseController
              * para limitar la información que va a consultar dependiendo el ROL
              * con el que cuente.
              */
+
             $user = auth()->user();
-            $roles = $user->getRoleNames();
-            if (!($roles[0] === "ADM")) {
-                $evaluaciones = Evaluacion::where('areaId', $user->areaId)
-                    ->get();
-            } else {
+            $responsableArea = Area::where('responsableId', $user->id)->first();
+            if (self::isAdmin($user)) {
                 $evaluaciones = Evaluacion::all();
+            } else {
+                $evaluaciones = Evaluacion::where(function ($query) use ($user, $responsableArea) {
+                    $query->where('areaId', '=', $user->areaId)
+                        ->orWhere('areaId', '=', $responsableArea->id);
+                })->get();
             }
 
             /**
