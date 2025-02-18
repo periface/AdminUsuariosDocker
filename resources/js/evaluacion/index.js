@@ -757,6 +757,7 @@ const materialRGBColors = [
 function make_datasets(data) {
     const datasets = [];
     for (let area of data) {
+        console.log(area);
         const color = materialRGBColors[Math.floor(Math.random() * materialRGBColors.length)];
         const dataset = {
             label: area.areaSiglas,

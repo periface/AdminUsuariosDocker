@@ -18,6 +18,7 @@ class DimensionData
     public $id;
     public $nombre;
     public $value;
+    public $divideBy;
 }
 class IndicePAreaViewModel
 {
@@ -108,16 +109,25 @@ class AreaService
         if ($suma_porcentaje == 0) {
             return 0;
         }
+        $promedio = $suma_porcentaje / $resultados_count;
         if ($sentido == "ascendente") {
-            return min(100, ($suma_porcentaje / $meta) * 100);
+            if ($promedio >= $meta) {
+                return 100;
+            }
+            $desempeño = max(0, ($promedio / $meta) * 100);
+            return $desempeño;
         }
-
+        $diff =  $promedio - $meta;
         if ($sentido == "descendente") {
-            return min(100, ($meta / $suma_porcentaje) * 100);
+            if ($diff <= 0) {
+                return 100;
+            }
+            $desempeño = max(0, 100 - (($diff / $meta) * 100));
+            return $desempeño;
         }
 
         if ($sentido == "constante") {
-            $error = abs($suma_porcentaje - $meta);
+            $error = abs($promedio - $meta);
             $desempeño = max(0, 100 - (($error / $meta) * 100));
             return $desempeño;
         }
@@ -128,6 +138,7 @@ class AreaService
     public static  function getDimensionInfo($evaluaciones, $addMissingDimensions = false)
     {
         $dimensionesResult = [];
+        $divideBy = 1;
         foreach ($evaluaciones as $evaluacion) {
             $indicador = Indicador::find($evaluacion["indicadorId"]);
             if (!$indicador) {
@@ -144,22 +155,29 @@ class AreaService
                 $dimensionData->nombre = $dimension["nombre"];
                 $dimensionData->value = $evaluacion_value;
                 $dimensionesResult[$dimension->id] = $dimensionData;
+                $dimensionesResult[$dimension->id]->divideBy = 1;
+                $divideBy++;
             } else {
                 $dimensionesResult[$dimension->id]->value += $evaluacion_value;
+                $dimensionesResult[$dimension->id]->divideBy++;
+                $divideBy++;
             }
         }
         if ($addMissingDimensions) {
             $allDimensions = Dimension::all();
             foreach ($allDimensions as $dimension) {
-
                 if (!isset($dimensionesResult[$dimension->id])) {
                     $dimensionData = new DimensionData();
                     $dimensionData->id = $dimension->id;
                     $dimensionData->nombre = $dimension["nombre"];
                     $dimensionData->value = 0;
+                    $dimensionData->divideBy = 1;
                     $dimensionesResult[$dimension->id] = $dimensionData;
                 }
             }
+        }
+        foreach ($dimensionesResult as $dimension) {
+            $dimension->value = $dimension->value / $dimension->divideBy;
         }
         return $dimensionesResult;
     }
