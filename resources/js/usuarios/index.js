@@ -4,11 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     loadUsers();
     document.getElementById("add-user").addEventListener("click", showFormUser);
     document.addEventListener('click', function (event) {
-        switch (event.target.classList.contains) {
-            case 'delete-user':
+        let targetClass = event.target.classList;
+        switch (true) {
+            case targetClass.contains('delete-user'):
                 confirmDelete(event.target.dataset.id);
                 break;
-            case 'edit-user':
+            case targetClass.contains('edit-user'):
                 console.log('Editando')
                 break;
 
