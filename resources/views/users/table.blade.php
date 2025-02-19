@@ -39,8 +39,8 @@
                             <td class="text-center">{{ $user->email }}</td>
                             <td class="text-center">{{ $user->fechaCreacion }}</td>
                             <td class="text-center">
-                                @if ($user->status === 0)
-                                    <span class="badge bg-secondary">
+                                @if (!$user->status)
+                                    <span class="badge bg-danger">
                                         Inactivo
                                     </span>
                                 @else

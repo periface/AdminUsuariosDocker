@@ -178,6 +178,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $request->merge(['is_active' => $request->has('is_active') ? 1 : 0]);
+
         $request->validate([
             // 'email' => 'required|email|unique:users,email,' . $user->id,
             // 'password' => 'required',
@@ -192,7 +194,7 @@ class UserController extends Controller
             'data' => [
                 'attributes' => [
                     'status' => 'success',
-                    'data' => 'Usuario actualizado correctamente', // $user,
+                    'data' => 'Su solicitud se ha realizado correctamente', // $user,
                     'statusCode' => Response::HTTP_OK
                 ]
             ]

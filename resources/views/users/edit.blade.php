@@ -45,6 +45,18 @@
             </select>
         </div>
     </div>
+    <div class="row mt-2">
+        <div class="col">
+            <label for="is_active">Estatus:</label>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="is_active" role="switch" id="is_active" 
+                {{ $user->status ? 'checked' : ''}}>
+                <label class="form-check-label" for="is_active">
+                    {{ $user->status ? 'Activo' : 'Inactivo' }}
+                </label>
+            </div>
+        </div>
+    </div>
     <div class=" modal-footer mt-2">
         <button type="button" class="btn btn-inst3 btn-sm" data-bs-dismiss="modal">
             <small>CANCELAR</small>

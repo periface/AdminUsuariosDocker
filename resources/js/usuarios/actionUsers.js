@@ -111,7 +111,7 @@ export const editFormUser = async (user) => {
         const responseJson = await updateUser(formData, user);
         if (responseJson.data.attributes.statusCode === 200) {
             closeModal();
-            showNotification('Éxito', responseJson.data.attributes.data, 'success');
+            showNotification('Proceso Completado', responseJson.data.attributes.data, 'success');
             setTimeout(() => loadUsers(), 800);
         }
     }
