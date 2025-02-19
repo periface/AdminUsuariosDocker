@@ -10,6 +10,7 @@
                     <th class="text-center">Rol</th>
                     <th class="text-center">Correo Electrónico</th>
                     <th class="text-center">Fecha registro</th>
+                    <th class="text-center">Estatus</th>
                     <th class="text-center">Opciones</th>
                 </tr>
             </thead>
@@ -30,13 +31,24 @@
                                         Sin Asignar
                                     </span>
                                 @else
-                                    <span class="badge bg-success">
+                                    <span class="badge bg-primary">
                                         {{ $user->rol }}
                                     </span>
                                 @endif
                             </td>
                             <td class="text-center">{{ $user->email }}</td>
                             <td class="text-center">{{ $user->fechaCreacion }}</td>
+                            <td class="text-center">
+                                @if ($user->status === 0)
+                                    <span class="badge bg-secondary">
+                                        Inactivo
+                                    </span>
+                                @else
+                                    <span class="badge bg-success">
+                                        Activo
+                                    </span>
+                                @endif
+                            </td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">

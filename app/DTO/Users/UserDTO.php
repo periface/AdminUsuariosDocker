@@ -16,6 +16,7 @@ class UserDTO
     public $rolId;
     public $rol;
     public $secretariaId;
+    public $status;
 
     public function __construct(
         int $id,
@@ -26,10 +27,11 @@ class UserDTO
         string $fechaCreacion,
         string $fechaModificacion,
         ?int $areaId,
-        int $secretariaId,
         ?string $areaName = null,
         ?int $rolId = null,
-        ?string $rol = null
+        ?string $rol = null,
+        int $secretariaId,
+        string $status
     ) {
         $this->id = $id;
         $this->nombre = $nombre;
@@ -43,5 +45,6 @@ class UserDTO
         $this->rolId = $rolId;
         $this->rol = $rol;
         $this->secretariaId = $secretariaId;
+        $this->status = $status;
     }
 }

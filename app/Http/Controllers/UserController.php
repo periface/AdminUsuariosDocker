@@ -107,9 +107,11 @@ class UserController extends Controller
             // $user->areaName = Area::where('id', $user->areaId)->first()->nombre;
             $role = $this->roleService->getUserRoles($user);
             if (!empty($role)) {
+                $user->rolId = $role[0]->id;
                 $user->rol = $role[0]->alias;
             }
         }
+
         return view('users.table', compact('users'));
 
     }
