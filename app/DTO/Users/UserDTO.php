@@ -13,6 +13,7 @@ class UserDTO
     public $fechaModificacion;
     public $areaId;
     public $areaName;
+    public $rolId;
     public $rol;
     public $secretariaId;
 
@@ -27,6 +28,7 @@ class UserDTO
         ?int $areaId,
         int $secretariaId,
         ?string $areaName = null,
+        ?int $rolId = null,
         ?string $rol = null
     ) {
         $this->id = $id;
@@ -38,6 +40,7 @@ class UserDTO
         $this->fechaModificacion = $fechaModificacion;
         $this->areaId = $areaId;
         $this->areaName = $areaName;
+        $this->rolId = $rolId;
         $this->rol = $rol;
         $this->secretariaId = $secretariaId;
     }

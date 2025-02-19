@@ -44,7 +44,7 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item edit-user" id="{{ $user->id }}" style="cursor: pointer">Editar</a>
+                                            <a class="dropdown-item edit-user" data-id="{{ $user->id }}" style="cursor: pointer">Editar</a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item delete-user" data-id="{{ $user->id }}" style="cursor: pointer">Eliminar</a>

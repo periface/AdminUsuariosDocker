@@ -172,26 +172,27 @@ class UserController extends Controller
         ], Response::HTTP_OK);
     }
 
-    /**
+    /** 
      * Función para actualizar información de un usuario en específico
      * * @param User $user contiene el usuario que desea actualizar en la base
      */
     public function update(Request $request, User $user)
     {
-
         $request->validate([
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'required',
-            'name' => 'required'
+            // 'email' => 'required|email|unique:users,email,' . $user->id,
+            // 'password' => 'required',
+            'name' => 'required',
+            'apPaterno' => 'required'
         ]);
 
         $user->update($request->all());
+        $user->roles()->sync([$request->input('roleId')]);
 
         return response()->json([
             'data' => [
                 'attributes' => [
                     'status' => 'success',
-                    'data' => $user,
+                    'data' => 'Usuario actualizado correctamente', // $user,
                     'statusCode' => Response::HTTP_OK
                 ]
             ]

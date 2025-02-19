@@ -43,6 +43,22 @@ export const fetchUserForm = async () => {
     }
 }
 
+export const fetchEditFormUser = async (user) => {
+    try {
+        const response = await fetch(`${WEB_URL}/${user}/edit`, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+
+        return await response.text();
+    } catch (error) {
+        console.log('Error al obtener formulario', error);
+        return `<p>Ocurrió un error al obtener el formulario.</p>`
+    }
+}
+
 /**
  * Método POST para el alta de usuarios
  * @param { formData } recibe el formulario con la información del usuario
@@ -56,6 +72,25 @@ export const registerUser = async (formData) => {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
                 Accept: 'application/json'
+            },
+            body: formData
+        });
+
+        return await response.json();
+
+    } catch (error) {
+        console.log('Error al registrar usuario', error);
+        return null;
+    }
+}
+
+export const updateUser = async (formData, user) => {
+    try {
+        const response = await fetch(`${API_URL}/${user}`, {
+            method: "POST",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json',
             },
             body: formData
         });

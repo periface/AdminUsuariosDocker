@@ -39,7 +39,18 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('user.edit', compact('user'));
+        $userRole = $this->roleService->getUserRoles($user);
+        $user = $this->userService->getUserById($user);
+        if(count($userRole) > 0){
+            foreach ($userRole as $rol) {
+                $user->roleId = $rol->id;
+                $user->role = $rol->alias;
+            }
+        }
+        $areas = Area::all();
+        $roles = $this->roleService->getAllRoles();
+        
+        return view('users.edit', compact('user', 'areas', 'roles'));
     }
 
     public function userRolesAndPermissions(User $user)

@@ -42,6 +42,7 @@ class UserService
     public function getUserById(User $user)
     {
 
+        
         $area = Area::find($user->areaId);
         $userDto = new UserDTO(
             $user->id,

@@ -1,5 +1,5 @@
 import { closeModal, openModal } from "../utils/modal";
-import { fetchUserForm, fetchUsers, registerUser, eliminarUsuario } from "./apiUser";
+import { fetchUserForm, fetchUsers, registerUser, eliminarUsuario, fetchEditFormUser, updateUser } from "./apiUser";
 import { showNotification } from "../utils/notification";
 
 
@@ -75,6 +75,46 @@ const attachFormEvents = () => {
         }
     }
 
+}
+
+export const editFormUser = async (user) => {
+    const formHtml = await fetchEditFormUser(user);
+    openModal(formHtml, 'Editar Usuario');
+
+    let userForm = document.getElementById("userForm");
+    $('#userForm').validate({
+        rules: {
+            name: { required: true, minlength: 4 },
+            paterno: { required: true },
+            email: { required: true },
+            password: { required: true }
+        },
+        messages: {
+            name: {
+                required: 'El nombre es requerido',
+                minlength: 'Debe tener al menos 4 caracteres'
+            },
+            apPaterno: {
+                required: 'El apellido es requerido',
+            }
+        }
+    });
+
+    userForm.onsubmit = async (event) => {
+        event.preventDefault();
+        if (!$("#userForm").valid()) return;
+        let user = document.getElementById("user").value;
+        const formData = new FormData($("#userForm")[0]);
+
+        formData.append("_method", "PUT");
+
+        const responseJson = await updateUser(formData, user);
+        if (responseJson.data.attributes.statusCode === 200) {
+            closeModal();
+            showNotification('Éxito', responseJson.data.attributes.data, 'success');
+            setTimeout(() => loadUsers(), 800);
+        }
+    }
 }
 
 export const confirmDelete = (user) => {
