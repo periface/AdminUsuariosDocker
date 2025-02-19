@@ -160,4 +160,74 @@ class EvaluacionService
         }
         return $evaluacion;
     }
+    /**
+     * Obtiene el desempeño de un indicador
+     * en base a los resultados de la evaluación
+     * y la meta del indicador, devuelve una calificación
+     * de 0 a 100
+     * @param $indicador
+     * @param $evaluacion
+     * @return float
+     */
+    public static function getIndicadorPerformanceValue($indicador, $evaluacion)
+    {
+        $resultados = EvaluacionResult::where('evaluacionId', $evaluacion->id)
+            ->get();
+        $suma_porcentaje = $resultados->sum('resultado');
+        $resultados_count = $resultados->count();
+        if ($resultados_count == 0) {
+            return 0;
+        }
+        $sentido = $indicador["sentido"];
+        $meta = $evaluacion["meta"];
+        if ($meta == 0) {
+            return 0;
+        }
+        if ($suma_porcentaje == 0) {
+            return 0;
+        }
+        $promedio_resultados = $suma_porcentaje / $resultados_count;
+
+        if ($sentido == "ascendente") {
+            if ($promedio_resultados >= $meta) {
+                // Si el promedio de los resultados
+                // es mayor o igual a la meta,
+                // el desempeño es 100
+                return 100;
+            }
+            // Si el promedio de los resultados es menor a la meta
+            // se calcula el desempeño en base a la siguiente fórmula
+            // (promedio_resultados / meta) * 100
+            // Si el resultado es menor a 0, se asigna 0
+            // Si el resultado es mayor a 100, se asigna 100
+            // Si el resultado está entre 0 y 100, se asigna el resultado
+            // como el desempeño
+            $desempeño = max(0, ($promedio_resultados / $meta) * 100);
+            return $desempeño;
+        }
+        if ($sentido == "descendente") {
+            // Si el sentido es descendente
+            // se calcula la diferencia entre
+            // el promedio de los resultados
+            // y la meta
+            $diff =  $promedio_resultados - $meta;
+            // Si el promedio de los resultados
+            // es menor o igual a la meta,
+            // el desempeño es 100
+            if ($diff <= 0) {
+                return 100;
+            }
+            $desempeño = max(0, 100 - (($diff / $meta) * 100));
+            return $desempeño;
+        }
+
+        if ($sentido == "constante") {
+            $error = abs($promedio_resultados - $meta);
+            $desempeño = max(0, 100 - (($error / $meta) * 100));
+            return $desempeño;
+        }
+
+        return 0; // Si el sentido no es válido
+
+    }
 }
