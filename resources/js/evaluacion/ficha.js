@@ -133,7 +133,6 @@ function get_month_name_and_day(date) {
     return result + ' ' + d.getFullYear();
 }
 function get_line_data(data) {
-    console.log(data);
     data.evaluation_results = data.evaluation_results.filter((evaluation) => evaluation.resultado != null);
     data.evaluation_results.sort((a, b) => {
         return new Date(a.fecha) - new Date(b.fecha);

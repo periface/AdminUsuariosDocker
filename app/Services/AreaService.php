@@ -5,7 +5,10 @@ namespace App\Services;
 use App\Models\Area;
 use App\Models\User;
 use App\DTO\Area\AreaDTO;
+use App\Models\Dimension;
 use App\Models\Evaluacion;
+use App\Models\EvaluacionResult;
+use App\Models\Indicador;
 use Illuminate\Support\Facades\Log;
 
 class DimensionData
@@ -13,12 +16,14 @@ class DimensionData
     public $id;
     public $nombre;
     public $value;
+    public $divideBy;
 }
 class IndicePAreaViewModel
 {
     public $areaId;
     public $areaNombre;
-    public $dimensiones;
+    public $areaSiglas;
+    public $dimensionesResult;
 }
 class AreaService
 {
@@ -81,16 +86,151 @@ class AreaService
 
     public function setResponsableArea(User $user)
     {
-
         $area = Area::where('id', $user->areaId)
             ->update(['responsableId' => $user->id]);
         return $area;
     }
-    public function getIndicePorArea($areaId)
+    private static function getEvaluationPerformanceValue($indicador, $evaluacion)
     {
-        $indice = [];
-        $area = Area::where('id', $areaId)
+        $resultados = EvaluacionResult::where('evaluacionId', $evaluacion->id)
             ->get();
-        $evaluaciones = Evaluacion::where('areaId', $areaId)->andWhere('finalizado', 1)->get();
+        $suma_porcentaje = $resultados->sum('resultado');
+        $resultados_count = $resultados->count();
+        if ($resultados_count == 0) {
+            return 0;
+        }
+        $sentido = $indicador["sentido"];
+        $meta = $evaluacion["meta"];
+        if ($meta == 0) {
+            return 0;
+        }
+        if ($suma_porcentaje == 0) {
+            return 0;
+        }
+        $promedio_resultados = $suma_porcentaje / $resultados_count;
+
+        if ($sentido == "ascendente") {
+            if ($promedio_resultados >= $meta) {
+                // Si el promedio de los resultados
+                // es mayor o igual a la meta,
+                // el desempeño es 100
+                return 100;
+            }
+            // Si el promedio de los resultados es menor a la meta
+            // se calcula el desempeño en base a la siguiente fórmula
+            // (promedio_resultados / meta) * 100
+            // Si el resultado es menor a 0, se asigna 0
+            // Si el resultado es mayor a 100, se asigna 100
+            // Si el resultado está entre 0 y 100, se asigna el resultado
+            // como el desempeño
+            $desempeño = max(0, ($promedio_resultados / $meta) * 100);
+            return $desempeño;
+        }
+        if ($sentido == "descendente") {
+            // Si el sentido es descendente
+            // se calcula la diferencia entre
+            // el promedio de los resultados
+            // y la meta
+            $diff =  $promedio_resultados - $meta;
+            // Si el promedio de los resultados
+            // es menor o igual a la meta,
+            // el desempeño es 100
+            if ($diff <= 0) {
+                return 100;
+            }
+            $desempeño = max(0, 100 - (($diff / $meta) * 100));
+            return $desempeño;
+        }
+
+        if ($sentido == "constante") {
+            $error = abs($promedio_resultados - $meta);
+            $desempeño = max(0, 100 - (($error / $meta) * 100));
+            return $desempeño;
+        }
+
+        return 0; // Si el sentido no es válido
+
+    }
+    public static  function getDimensionInfo($evaluaciones, $addMissingDimensions = false)
+    {
+        $dimensionesResult = [];
+        $divideBy = 1;
+        foreach ($evaluaciones as $evaluacion) {
+            $indicador = Indicador::find($evaluacion["indicadorId"]);
+            if (!$indicador) {
+                continue;
+            }
+            $dimension = Dimension::find($indicador["dimensionId"]);
+            if (!$dimension) {
+                continue;
+            }
+            $evaluacion_value = self::getEvaluationPerformanceValue($indicador, $evaluacion);
+            if (!isset($dimensionesResult[$dimension->id])) {
+                $dimensionData = new DimensionData();
+                $dimensionData->id = $dimension->id;
+                $dimensionData->nombre = $dimension["nombre"];
+                $dimensionData->value = $evaluacion_value;
+                $dimensionesResult[$dimension->id] = $dimensionData;
+                $dimensionesResult[$dimension->id]->divideBy = $divideBy;
+                $divideBy++;
+            } else {
+                $dimensionesResult[$dimension->id]->value += $evaluacion_value;
+                $dimensionesResult[$dimension->id]->divideBy++;
+                $divideBy++;
+            }
+        }
+        if ($addMissingDimensions) {
+            $allDimensions = Dimension::all();
+            foreach ($allDimensions as $dimension) {
+                if (!isset($dimensionesResult[$dimension->id])) {
+                    $dimensionData = new DimensionData();
+                    $dimensionData->id = $dimension->id;
+                    $dimensionData->nombre = $dimension["nombre"];
+                    $dimensionData->value = 0;
+                    $dimensionData->divideBy = 1;
+                    $dimensionesResult[$dimension->id] = $dimensionData;
+                }
+            }
+        }
+        foreach ($dimensionesResult as $dimension) {
+            $dimension->value = $dimension->value / $dimension->divideBy;
+        }
+        return $dimensionesResult;
+    }
+    public function getDimensionesReport($incluirTodasEvaluaciones = false, $incluirTodasDimensiones = false)
+    {
+        $areas = Area::all();
+        $response = [];
+        foreach ($areas as $area) {
+            $evaluaciones = self::getEvaluacionesFinalizadas($area, $incluirTodasEvaluaciones);
+            $dimensionInfo = self::getDimensionInfo($evaluaciones, $incluirTodasDimensiones);
+            if (count($evaluaciones) == 0) {
+                continue;
+            }
+            if (count($dimensionInfo) == 0) {
+                continue;
+            }
+            $indicePAreaViewModel = new IndicePAreaViewModel();
+            $indicePAreaViewModel->areaId = $area["id"];
+            $indicePAreaViewModel->areaNombre = $area["nombre"];
+            $indicePAreaViewModel->areaSiglas = $area["siglas"];
+            $indicePAreaViewModel->dimensionesResult = $dimensionInfo;
+            $response[] = $indicePAreaViewModel;
+        }
+        return $response;
+    }
+    private static function getEvaluacionesFinalizadas($area, $incluirTodos = false)
+    {
+        if ($incluirTodos == "true") {
+            $evaluaciones = Evaluacion::where('areaId', "=", $area->id)
+                ->get();
+            return $evaluaciones;
+        } else {
+            $evaluaciones = Evaluacion::where(function ($query) use ($area) {
+                $query->where('areaId', "=", $area->id)
+                    ->where('finalizado', "=", 1);
+            })->get();
+            return $evaluaciones;
+        }
     }
 }
