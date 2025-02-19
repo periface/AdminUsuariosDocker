@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24fadfd710f4465ab4a4b7dfe6f7ed2e",
+    "content-hash": "3ae96cee7faf62d9ef248e2bc2dcc0f1",
     "packages": [
         {
             "name": "brick/math",
@@ -3364,66 +3364,6 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
-            "name": "spatie/laravel-package-tools",
-            "version": "1.19.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-package-tools.git",
-                "reference": "1c9c30ac6a6576b8d15c6c37b6cf23d748df2faa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/1c9c30ac6a6576b8d15c6c37b6cf23d748df2faa",
-                "reference": "1c9c30ac6a6576b8d15c6c37b6cf23d748df2faa",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^9.28|^10.0|^11.0|^12.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^7.7|^8.0|^9.0|^10.0",
-                "pestphp/pest": "^1.23|^2.1|^3.1",
-                "phpunit/phpunit": "^9.5.24|^10.5|^11.5",
-                "spatie/pest-plugin-test-time": "^1.1|^2.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\LaravelPackageTools\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Tools for creating Laravel packages",
-            "homepage": "https://github.com/spatie/laravel-package-tools",
-            "keywords": [
-                "laravel-package-tools",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/laravel-package-tools/issues",
-                "source": "https://github.com/spatie/laravel-package-tools/tree/1.19.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-02-06T14:58:20+00:00"
-        },
-        {
             "name": "spatie/laravel-permission",
             "version": "6.15.0",
             "source": {
@@ -5788,109 +5728,6 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
-        },
-        {
-            "name": "turso/libsql",
-            "version": "v0.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tursodatabase/libsql-php.git",
-                "reference": "631b3cefc2245722eb9bdf0e4b845e92fafe9812"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tursodatabase/libsql-php/zipball/631b3cefc2245722eb9bdf0e4b845e92fafe9812",
-                "reference": "631b3cefc2245722eb9bdf0e4b845e92fafe9812",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ffi": "*",
-                "php": ">=8.3"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.64",
-                "phpstan/phpstan": "2.0.x-dev",
-                "phpunit/phpunit": "^11"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
-                "psr-4": {
-                    "Libsql\\": "src/",
-                    "Libsql\\Tests\\": "tests/"
-                },
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Levy A.",
-                    "email": "levyddsa@gmail.com"
-                }
-            ],
-            "description": "libSQL bindings for PHP",
-            "support": {
-                "issues": "https://github.com/tursodatabase/libsql-php/issues",
-                "source": "https://github.com/tursodatabase/libsql-php/tree/v0.2.4"
-            },
-            "time": "2025-01-15T13:57:21+00:00"
-        },
-        {
-            "name": "turso/libsql-laravel",
-            "version": "v0.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tursodatabase/libsql-laravel.git",
-                "reference": "02251570e3b2af60a755d8caaebed65f85bd7f7e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tursodatabase/libsql-laravel/zipball/02251570e3b2af60a755d8caaebed65f85bd7f7e",
-                "reference": "02251570e3b2af60a755d8caaebed65f85bd7f7e",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/database": "^11.0",
-                "spatie/laravel-package-tools": "^1.16",
-                "turso/libsql": "^0.2"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.64",
-                "phpstan/phpstan": "2.0.x-dev",
-                "phpunit/phpunit": "^11"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Libsql\\Laravel\\LibsqlServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Libsql\\Laravel\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Levy A.",
-                    "email": "levyddsa@gmail.com"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/tursodatabase/libsql-laravel/issues",
-                "source": "https://github.com/tursodatabase/libsql-laravel/tree/v0.1.3"
-            },
-            "time": "2025-01-13T02:08:32+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
