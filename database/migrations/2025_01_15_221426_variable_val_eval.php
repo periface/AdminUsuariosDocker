@@ -14,6 +14,8 @@ return new class extends Migration
     {
         Schema::create("evaluacion", function (Blueprint $table) {
             $table->id();
+            $table->decimal("rendimiento")->nullable();
+            $table->boolean("meta_alcanzada")->nullable();
             $table->unsignedBigInteger("areaId");
             $table->unsignedBigInteger("indicadorId");
             $table->string("frecuencia_medicion");
@@ -35,8 +37,9 @@ return new class extends Migration
         });
         Schema::create("evaluacion_result", function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("resultNumber");
             $table->unsignedBigInteger("evaluacionId");
-            $table->decimal("resultado");
+            $table->decimal("resultado")->nullable();
             $table->string("status")->default("capturado"); // capturado, aprobado, rechazado
             $table->unsignedBigInteger("aprobadoPorId")->nullable();
             $table->date("fecha");

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class EvaluacionResult extends Model
 {
     use HasFactory, HasTimestamps;
+    public $resultNumber;
     public $evaluacionId;
     public $resultado;
     public $fecha;
@@ -17,6 +18,7 @@ class EvaluacionResult extends Model
     public $used_formula;
     protected $table = 'evaluacion_result';
     protected $fillable = [
+        'resultNumber',
         'evaluacionId',
         'resultado',
         'fecha',

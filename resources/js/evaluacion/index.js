@@ -806,7 +806,14 @@ function create_chart(canvas, data) {
                     display: true,
                     text: 'Estado de los registros de la evaluación'
                 }
-            }
+            },
+            scales: {
+
+                y:{
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                }
+            },
         },
 
     }

@@ -110,17 +110,16 @@ class AreaService
             if (!$dimension) {
                 throw new \Exception("Dimension no encontrada id:" . $indicador["dimensionId"]);
             }
-            $evaluacion_value = EvaluacionService::getIndicadorPerformanceValue($indicador, $evaluacion);
             if (!isset($dimensionesResult[$dimension->id])) {
                 $dimensionData = new DimensionData();
                 $dimensionData->id = $dimension->id;
                 $dimensionData->nombre = $dimension["nombre"];
-                $dimensionData->value = $evaluacion_value;
+                $dimensionData->value = $evaluacion["rendimiento"];
                 $dimensionesResult[$dimension->id] = $dimensionData;
                 $dimensionesResult[$dimension->id]->divideBy = $divideBy;
                 $divideBy++;
             } else {
-                $dimensionesResult[$dimension->id]->value += $evaluacion_value;
+                $dimensionesResult[$dimension->id]->value += $evaluacion["rendimiento"];
                 $dimensionesResult[$dimension->id]->divideBy++;
                 $divideBy++;
             }

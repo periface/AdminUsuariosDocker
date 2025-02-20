@@ -137,23 +137,126 @@ function get_line_data(data) {
     data.evaluation_results.sort((a, b) => {
         return new Date(a.fecha) - new Date(b.fecha);
     });
+    const meta = parseFloat(data.metaValue);
+    const sentido = data.sentido;
     const labels = []
     const main_data_set = {
         label: data.indicador.nombre,
         data: [],
-        fill: false,
+        fill: true,
         backgroundColor: "rgba(78, 115, 223, 0.05)",
         borderColor: "rgba(78, 115, 223, 1)",
         lineTension: 0.3,
         pointRadius: 3,
-        pointBackgroundColor: "rgba(78, 115, 223, 1)",
-        pointBorderColor: "rgba(78, 115, 223, 1)",
+        pointBackgroundColor: (context) => {
+            const value = context.parsed.y;
+            if (value === null || value === undefined) {
+                return null;
+            }
+            if (sentido === 'ascendente') {
+                if (value > meta) {
+                    return 'rgba(0, 255, 0, 1)';
+                } else {
+                    return 'rgba(255, 0, 0, 1)';
+                }
+            }
+            if (sentido === 'descendente') {
+                if (value < meta) {
+                    return 'rgba(0, 255, 0, 1)';
+                } else {
+                    return 'rgba(255, 0, 0, 1)';
+                }
+            }
+        },
+        pointBorderColor: (context) => {
+            const value = context.parsed.y;
+            if (value === null || value === undefined) {
+                return null;
+            }
+            if (sentido === 'ascendente') {
+                if (value > meta) {
+                    return 'rgba(0, 255, 0, 1)';
+                } else {
+                    return 'rgba(255, 0, 0, 1)';
+                }
+            }
+            if (sentido === 'descendente') {
+                if (value < meta) {
+                    return 'rgba(0, 255, 0, 1)';
+                } else {
+                    return 'rgba(255, 0, 0, 1)';
+                }
+            }
+        },
         pointHoverRadius: 3,
-        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointHoverBackgroundColor: "rgba(255, 255, 255, 1)",
         pointHoverBorderColor: "rgba(78, 115, 223, 1)",
         pointHitRadius: 10,
         pointBorderWidth: 2,
         stepped: true,
+        pointStyle: (context) => {
+            const value = context.parsed.y;
+            if (value === null || value === undefined) {
+                return null;
+            }
+            if (sentido === 'ascendente') {
+                if (value > meta) {
+                    return 'circle';
+                } else {
+                    return 'rect';
+                }
+            }
+            if (sentido === 'descendente') {
+                if (value < meta) {
+                    return 'circle';
+                } else {
+                    return 'rect';
+                }
+            }
+        },
+        segment: {
+            borderColor: (context) => {
+                const value = context.p1.parsed.y;
+                if (value === null || value === undefined) {
+                    return null;
+                }
+                if (sentido === 'ascendente') {
+
+                    if (value > meta) {
+                        return 'rgba(0, 255, 0, 1)';
+                    } else {
+                        return 'rgba(255, 0, 0, 1)';
+                    }
+                }
+                if (sentido === 'descendente') {
+                    if (value < meta) {
+                        return 'rgba(0, 255, 0, 1)';
+                    } else {
+                        return 'rgba(255, 0, 0, 1)';
+                    }
+                }
+            },
+            borderDash: (context) => {
+                const value = context.p1.parsed.y;
+                if (value === null || value === undefined) {
+                    return null;
+                }
+                if (sentido === 'ascendente') {
+                    if (value > meta) {
+                        return [0, 0];
+                    } else {
+                        return [5, 5];
+                    }
+                }
+                if (sentido === 'descendente') {
+                    if (value < meta) {
+                        return [0, 0];
+                    } else {
+                        return [5, 5];
+                    }
+                }
+            }
+        }
     }
     // yellowish colors
     const envalidacion_data_set = {
@@ -198,7 +301,6 @@ function get_line_data(data) {
     let index = 0;
     for (const evaluation of data.evaluation_results) {
         labels.push(get_month_name_and_day(evaluation.fecha));
-        console.log(evaluation);
         if (evaluation.status === 'aprobado') {
             main_data_set.data.push({
                 x: labels[index],
@@ -230,6 +332,10 @@ function get_line_data(data) {
     }
 }
 function line_chart(data) {
+    console.log(data);
+
+    const meta = parseFloat(data.metaValue);
+    const sentido = data.sentido;
     const line_data = get_line_data(data);
     const container = document.getElementById('line-chart');
     const unidad = UNIDADES.filter((unidad) => unidad.nombre === data.indicador.unidad_medida);
@@ -260,6 +366,9 @@ function line_chart(data) {
 
                 x: {
                     display: true,
+                    border: {
+                        display: true,
+                    },
                     title: {
                         display: true,
                         text: 'Periodos de captura',
@@ -273,6 +382,10 @@ function line_chart(data) {
                     }
                 },
                 y: {
+                    border: {
+                        display: true,
+                    },
+
                     display: true,
                     title: {
                         display: true,
@@ -296,9 +409,9 @@ function line_chart(data) {
                     position: 'top',
                 },
                 zoom: {
-                    limits:{
-                        x: {min: 1, max: 100},
-                        y: {min: 1, max: 100},
+                    limits: {
+                        x: { min: 1, max: 100 },
+                        y: { min: 1, max: 100 },
                     },
                     pan: {
                         enabled: true,

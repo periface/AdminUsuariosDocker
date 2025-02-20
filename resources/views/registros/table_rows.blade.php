@@ -22,7 +22,7 @@
                     <span class="text-2xl">
                         @include('partials.periodos_counter', [
                             'frecuencia_medicion' => $frecuencia_medicion,
-                            'index' => $loop->index + 1,
+                            'resultNumber' => $espacio['resultNumber'],
                         ])
                     </span>
                     <br>

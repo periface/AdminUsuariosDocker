@@ -32,11 +32,12 @@ class EvaluacionService
         }
         return $secretaria;
     }
-    public static function create_evaluation_result($fecha, $evaluacion_id)
+    public static function create_evaluation_result($fecha, $evaluacion_id, $counter)
     {
         try {
             $evaluacion_result = [
                 'id' => null,
+                'resultNumber' => $counter,
                 'evaluacionId' => $evaluacion_id,
                 'resultado' => 0,
                 'status' => 'pendiente',
@@ -76,8 +77,10 @@ class EvaluacionService
             $variables_valor = [];
             $evaluation_results = [];
             $variables = Indicador::find($indicador_id)->variables;
+            $counter = 1;
             foreach ($fechas_captura as $fecha) {
-                $eval_result = $this->create_evaluation_result($fecha, $evaluacion_id);
+                $eval_result = $this->create_evaluation_result($fecha, $evaluacion_id, $counter);
+                $counter++;
                 $evaluation_results[] = $eval_result;
                 foreach ($variables as $variable) {
                     $db_variable = $this->create_variable_value(
@@ -120,7 +123,6 @@ class EvaluacionService
             $aprobados_count++;
             $suma_porcentaje_aprobados += $aprobado["resultado"];
         }
-
         $indicador = Indicador::find($evaluacion["indicadorId"]);
         $evaluacion["results_aprobado"] = $aprobados_count;
         $evaluacion["total"] = 0;
@@ -160,6 +162,72 @@ class EvaluacionService
         }
         return $evaluacion;
     }
+    public static function calcular_rendimiento_asc($meta, $promedio_resultados)
+    {
+
+        if ($promedio_resultados >= $meta) {
+            // Si el promedio de los resultados
+            // es mayor o igual a la meta,
+            // el desempeño es 100
+            return 100;
+        }
+        // Si el promedio de los resultados es menor a la meta
+        // se calcula el desempeño en base a la siguiente fórmula
+        // (promedio_resultados / meta) * 100
+        // Si el resultado es menor a 0, se asigna 0
+        // Si el resultado es mayor a 100, se asigna 100
+        // Si el resultado está entre 0 y 100, se asigna el resultado
+        // como el desempeño
+        $desempeño = max(0, ($promedio_resultados / $meta) * 100);
+        return $desempeño;
+    }
+    public static function meta_desc_rendimiento($meta, $promedio_resultados)
+    {
+        $diff = $meta - $promedio_resultados;
+        // Si el promedio de los resultados
+        // es menor o igual a la meta,
+        // el desempeño es 100
+        if ($diff <= 0) {
+            return 100;
+        }
+        $desempeño = max(0, 100 - (($diff / $meta) * 100));
+        return $desempeño;
+    }
+    public static function calcular_rendimiento_desc($meta, $promedio_resultados)
+    {
+        // Si el sentido es descendente
+        // se calcula la diferencia entre
+        // el promedio de los resultados
+        // y la meta
+        if ($promedio_resultados == 0) {
+            return 0;
+        }
+        if ($promedio_resultados == $meta) {
+            return 100;
+        }
+        $meta = floatval($meta);
+        if ($promedio_resultados > $meta) {
+            $diff =  $promedio_resultados - $meta;
+            $desempeño = max(0, 100 - (($diff / $meta) * 100));
+            // como el indicador se sobrepaso de la meta
+            // se devuelve un valor negativo
+            // para indicar que el indicador se sobrepaso
+            // de la meta en un porcentaje negativo
+            // Ejemplo: si el indicador se sobrepaso de la meta
+            // en un 10%, se devuelve -10
+            // si el indicador se sobrepaso de la meta en un 20%
+            // se devuelve -20, esto solo en indicadores descendentes
+            return (100 - $desempeño) * -1;
+        }
+        if ($promedio_resultados < $meta) {
+            $rendimiento = self::meta_desc_rendimiento($meta, $promedio_resultados);
+            if ($rendimiento == 100) {
+                return 0;
+            }
+            return 100 - $rendimiento;
+        }
+        return 0;
+    }
     /**
      * Obtiene el desempeño de un indicador
      * en base a los resultados de la evaluación
@@ -171,54 +239,26 @@ class EvaluacionService
      */
     public static function getIndicadorPerformanceValue($indicador, $evaluacion)
     {
-        $resultados = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->get();
-        $suma_porcentaje = $resultados->sum('resultado');
-        $resultados_count = $resultados->count();
-        if ($resultados_count == 0) {
-            return 0;
-        }
+
         $sentido = $indicador["sentido"];
         $meta = $evaluacion["meta"];
-        if ($meta == 0) {
-            return 0;
-        }
-        if ($suma_porcentaje == 0) {
+        $resultados = EvaluacionResult::where('evaluacionId', $evaluacion->id)
+            ->get();
+        // count only results with value
+        $resultados = $resultados->filter(function ($result) {
+            return $result["resultado"] != null && $result["status"] == "aprobado";
+        });
+        $suma_porcentaje = $resultados->sum('resultado');
+        $resultados_count = $resultados->count();
+        if ($resultados_count == 0 || $meta == 0 || $suma_porcentaje == 0) {
             return 0;
         }
         $promedio_resultados = $suma_porcentaje / $resultados_count;
-
         if ($sentido == "ascendente") {
-            if ($promedio_resultados >= $meta) {
-                // Si el promedio de los resultados
-                // es mayor o igual a la meta,
-                // el desempeño es 100
-                return 100;
-            }
-            // Si el promedio de los resultados es menor a la meta
-            // se calcula el desempeño en base a la siguiente fórmula
-            // (promedio_resultados / meta) * 100
-            // Si el resultado es menor a 0, se asigna 0
-            // Si el resultado es mayor a 100, se asigna 100
-            // Si el resultado está entre 0 y 100, se asigna el resultado
-            // como el desempeño
-            $desempeño = max(0, ($promedio_resultados / $meta) * 100);
-            return $desempeño;
+            return self::calcular_rendimiento_asc($meta, $promedio_resultados);
         }
         if ($sentido == "descendente") {
-            // Si el sentido es descendente
-            // se calcula la diferencia entre
-            // el promedio de los resultados
-            // y la meta
-            $diff =  $promedio_resultados - $meta;
-            // Si el promedio de los resultados
-            // es menor o igual a la meta,
-            // el desempeño es 100
-            if ($diff <= 0) {
-                return 100;
-            }
-            $desempeño = max(0, 100 - (($diff / $meta) * 100));
-            return $desempeño;
+            return self::calcular_rendimiento_desc($meta, $promedio_resultados);
         }
 
         if ($sentido == "constante") {
@@ -229,5 +269,17 @@ class EvaluacionService
 
         return 0; // Si el sentido no es válido
 
+    }
+    public function get_meta_alcanzada($indicador, $evaluacion)
+    {
+        if ($indicador["sentido"] == "ascendente") {
+            return floatval($evaluacion["totalValue"]) >= floatval($evaluacion["meta"]);
+        }
+        if ($indicador["sentido"] == "descendente") {
+            return floatval($evaluacion["totalValue"]) <= floatval($evaluacion["meta"]);
+        }
+        if ($indicador["sentido"] == "constante") {
+            return floatval($evaluacion["totalValue"]) == floatval($evaluacion["meta"]);
+        }
     }
 }

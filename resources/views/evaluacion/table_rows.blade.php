@@ -5,21 +5,26 @@
 <table class="table table-striped projects" id="evaluacionesTable">
     <thead class="small">
         <tr class="w-full">
-            <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
-                Periodo
+            <th style="width: 10%" data-sort="id" data-order="asc" class="cursor-pointer sort">
+                Estado
             </th>
-            <th style="width: 40%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
-                Evaluación
+
+            <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
+                Indicador
+            </th>
+            <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
+               Area
+            </th>
+
+            <th style="width: 10%" data-sort="id" data-order="asc" class="cursor-pointer sort">
+                Total
             </th>
             <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
-                Total Alcanzado
+                Meta
             </th>
 
             <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
-                Meta Esperada
-            </th>
-            <th style="width: 20%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
-                Periodos
+                Rendimiento
             </th>
             <th style="width: 10%" class="">
                 Acciones
@@ -34,28 +39,34 @@
         @else
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
-                    <td class="text-sm text-tam-rojo font-bold">
-                        {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
+                    <td class="text-sm">
                         @if ($evaluacion['finalizado'])
-                            <span class="badge bg-tam-dorado text-tam-rojo">Evaluación Cerrada el
-                                {{ $evaluacion['finalizado_en'] }}</span>
-
-                            <span class="badge bg-tam-dorado text-tam-rojo">Cerrado por
-                                {{ $evaluacion['finalizado_por_user']['name'] }}</span>
+                            <span class="badge badge-success">Finalizado</span>
+                        @else
+                            <span class="badge badge-danger">En proceso</span>
                         @endif
                     </td>
                     @if ($evaluacion->indicador)
-                        <td>Evaluando
-                            <a href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}"><span
-                                    class="font-bold text-sm text-slate-950">{{ $evaluacion->indicador['nombre'] }}</span></a>
-                            en
-                            <span class="font-bold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                        <td class="text-sm text-tam-rojo font-semibold">
+                            <a href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}">
+                                {{ $evaluacion->indicador['nombre'] }}
+                            </a>
+                            @if ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 1)
+                                <span class="">[Meta alcanzada]</span>
+                            @elseif ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 0)
+                                <span class="">[Meta no alcanzada]</span>
+                            @endif
+
                         </td>
                     @else
                         <td> Error: el indicador de esta evaluación no existe, por favor contacte al administrador del
                             sistema.
                         </td>
                     @endif
+
+                    <td class="font-bold">
+                        <span class="font-semibold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                    </td>
                     <td class="font-bold">
                         @include('partials.evaluacion_total', [
                             'evaluacion' => $evaluacion,
@@ -67,44 +78,24 @@
                             'evaluacion' => $evaluacion,
                         ])
                     </td>
-                    <td>
-                        <span class="">
-                            {{ $evaluacion['results'] }}
-                        </span>
-                        @include('partials.periodos_names', [
-                            'frecuencia_medicion' => $evaluacion['frecuencia_medicion'],
-                        ])
 
-                        <div class="progress-stacked">
+                    <td class="font-bold">
 
-                            <div class="progress progress-sm" role="progressbar" aria-label="Segment three"
-                                title="{{ $evaluacion['results_aprobado'] }} Validados"
-                                aria-valuenow="{{ $evaluacion['aprobado'] }}" aria-valuemin="0"
-                                aria-valuemax="{{ $evaluacion['results'] }}"
-                                style="width: {{ $evaluacion['porcentaje_aprobados'] }}%">
-                                <div class="progress-bar bg-success"></div>
-                            </div>
-                            <div class="progress progress-sm" role="progressbar" aria-label="Segment two"
-                                title="{{ $evaluacion['results_pendiente'] }} Pendientes"
-                                aria-valuenow="{{ $evaluacion['pendiente'] }}" aria-valuemin="0"
-                                aria-valuemax="{{ $evaluacion['results'] }}"
-                                style="width: {{ $evaluacion['porcentaje_pendientes'] }}%">
-                                <div class="progress-bar bg-warning"></div>
-                            </div>
-                            <div class="progress progress-sm" role="progressbar"
-                                title="{{ $evaluacion['results_capturado'] }} Capturados" aria-label="Segment one"
-                                aria-valuenow="{{ $evaluacion['results_capturado'] }}" aria-valuemin="0"
-                                aria-valuemax="{{ $evaluacion['results'] }}"
-                                style="width: {{ $evaluacion['porcentaje_capturados'] }}%">
-                                <div class="progress-bar bg-info"></div>
-                            </div>
-                            <div class="progress progress-sm" role="progressbar" aria-label="Segment four"
-                                title="{{ $evaluacion['results_rechazado'] }} Rechazados"
-                                aria-valuenow="{{ $evaluacion['rechazado'] }}" aria-valuemin="0"
-                                aria-valuemax="{{ $evaluacion['results'] }}"
-                                style="width: {{ $evaluacion['porcentaje_rechazados'] }}%">
-                                <div class="progress-bar bg-danger"></div>
-                            </div>
+                        @if ($evaluacion['rendimiento'] == null)
+                            <span class="badge badge-danger">Sin rendimiento</span>
+                        @elseif ($evaluacion['rendimiento'] < 0.7)
+                            <span class="badge badge-danger">
+                                {{ $evaluacion['rendimiento'] }}%
+                            </span>
+                        @elseif ($evaluacion['rendimiento'] < 0.85)
+                            <span class="badge badge-warning">
+                                {{ $evaluacion['rendimiento'] }}%
+                            </span>
+                        @else
+                            <span class="badge badge-success">
+                                {{ $evaluacion['rendimiento'] }}%
+                            </span>
+                        @endif
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm" role="group"
@@ -141,7 +132,7 @@
             @endforeach
             <tr>
 
-                <td colspan="2">
+                <td colspan="3">
                     <div class="flex items-center justify-start">
                         <div class="w-1/2">
                             {{ $totalRows }} de {{ $grandTotalRows }} registros
