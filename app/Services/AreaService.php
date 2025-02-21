@@ -88,13 +88,45 @@ class AreaService
             ->update(['responsableId' => $user->id]);
         return $area;
     }
+    private static function getCategoriasPerformance($evaluaciones)
+    {
+        $dimensionesResult = [];
+        $divideBy = 1;
+        foreach ($evaluaciones as $evaluacion) {
+            $indicador = Indicador::find($evaluacion["indicadorId"]);
+            if (!$indicador) {
+                throw new \Exception("Indicador de evaluacion no encontrado, id:" . $evaluacion["indicadorId"]);
+            }
+            $categoria = $indicador["categoria"];
+            if (!$categoria) {
+                throw new \Exception("Categoria no encontrada id:" . $indicador["dimensionId"]);
+            }
+            if (!isset($dimensionesResult[$categoria])) {
+                $dimensionData = new DimensionData();
+                $dimensionData->id = $categoria;
+                $dimensionData->nombre = $categoria;
+                $dimensionData->value = $evaluacion["rendimiento"];
+                $dimensionesResult[$categoria] = $dimensionData;
+                $dimensionesResult[$categoria]->divideBy = $divideBy;
+                $divideBy++;
+            } else {
+                $dimensionesResult[$categoria]->value += $evaluacion["rendimiento"];
+                $dimensionesResult[$categoria]->divideBy++;
+                $divideBy++;
+            }
+        }
+        foreach ($dimensionesResult as $dimension) {
+            $dimension->value = $dimension->value / $dimension->divideBy;
+        }
+        return $dimensionesResult;
+    }
     /**
      *  Get the performance of the dimensions of the area
      * @param $evaluaciones
      * @param bool $getAllDimensions
      * @return array
      */
-    public static function getDimensionPerformance($evaluaciones, $getAllDimensions = false)
+    private static function getDimensionPerformance($evaluaciones, $getAllDimensions = false)
     {
         $dimensionesResult = [];
         $divideBy = 1;
@@ -139,10 +171,44 @@ class AreaService
         }
         return $dimensionesResult;
     }
-    public function getDimensionesReport($incluirTodasEvaluaciones = false, $incluirTodasDimensiones = false)
+    public function getCategoriasReport($id, $incluirtodasEvaluaciones)
     {
-        $areas = Area::all();
+        $areas = [];
+        if ($id != null && $id != "0") {
+            $areas = Area::where('id', $id)
+                ->get();
+        } else {
+            $areas = Area::all();
+        }
         $response = [];
+        foreach ($areas as $area) {
+            $evaluaciones = self::getEvaluacionesFinalizadas($area, $incluirtodasEvaluaciones);
+            $dimensionPerformanceCharges = self::getCategoriasPerformance($evaluaciones);
+            if (count($evaluaciones) == 0) {
+                continue;
+            }
+            if (count($dimensionPerformanceCharges) == 0) {
+                continue;
+            }
+            $indicePAreaViewModel = new IndicePAreaViewModel();
+            $indicePAreaViewModel->areaId = $area["id"];
+            $indicePAreaViewModel->areaNombre = $area["nombre"];
+            $indicePAreaViewModel->areaSiglas = $area["siglas"];
+            $indicePAreaViewModel->dimensionesResult = $dimensionPerformanceCharges;
+            $response[] = $indicePAreaViewModel;
+        }
+        return $response;
+    }
+    public function getDimensionesReport($id, $incluirTodasEvaluaciones = false, $incluirTodasDimensiones = false)
+    {
+        $areas = [];
+        $response = [];
+        if ($id != null && $id != "0") {
+            $areas = Area::where('id', $id)
+                ->get();
+        } else {
+            $areas = Area::all();
+        }
         foreach ($areas as $area) {
             $evaluaciones = self::getEvaluacionesFinalizadas($area, $incluirTodasEvaluaciones);
             $dimensionPerformanceCharges = self::getDimensionPerformance($evaluaciones, $incluirTodasDimensiones);

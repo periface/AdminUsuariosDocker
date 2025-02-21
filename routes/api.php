@@ -68,10 +68,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['middleware' => ['role:ADM']], function () {
         Route::get('areas',                                     [AreaController::class, 'index']);
         Route::post('areas',                                    [AreaController::class, 'store']);
-        Route::get('areas/{area}',                              [AreaController::class, 'show'])->name('mostrar-area');
         Route::put('areas/{area}',                              [AreaController::class, 'update']);
         Route::delete('areas/{area}',                           [AreaController::class, 'destroy']);
-        Route::get('areas/dimensiones/{incluirTodasLasDimensiones}/{incluirEvaluacionesAbiertas}', [AreaController::class, 'dimensiones']);
+        Route::get('areas/performance/{id}/{incluirTodasLasEtiquetas}/{incluirEvaluacionesAbiertas}/{tipo}', [AreaController::class, 'getPerformanceReport']);
     });
 
     // RUTAS DE ÁREAS PERI

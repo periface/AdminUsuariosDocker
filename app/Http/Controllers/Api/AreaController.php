@@ -17,9 +17,48 @@ class AreaController extends Controller
     {
         $this->areaService = $areaService;
     }
-    public function dimensiones($incluirTodasLasDimensiones, $incluirEvaluacionesAbiertas)
+    public function getPerformanceReport(
+        $id = 0,
+        $incluirTodasLasEtiquetas = false,
+        $incluirEvaluacionesAbiertas,
+        $tipo = "dimension"
+    ) {
+        if ($tipo == "dimensiones") {
+            return $this->dimensiones($id, $incluirTodasLasEtiquetas, $incluirEvaluacionesAbiertas);
+        }
+        if ($tipo == "categorias") {
+            return $this->categorias($id, $incluirEvaluacionesAbiertas);
+        }
+        return response()->json([
+            'data' => [
+                'attributes' => [
+                    'status' => 'error',
+                    'data' => 'Tipo de reporte no válido',
+                    'statusCode' => Response::HTTP_BAD_REQUEST
+                ]
+            ]
+        ], Response::HTTP_BAD_REQUEST);
+    }
+    public function categorias($id, $incluirEvaluacionesAbiertas)
+    {
+        $report = $this->areaService->getCategoriasReport(
+            $id,
+            $incluirEvaluacionesAbiertas
+        );
+        return response()->json([
+            'data' => [
+                'attributes' => [
+                    'status' => 'success',
+                    'data' => $report,
+                    'statusCode' => Response::HTTP_OK
+                ]
+            ]
+        ], Response::HTTP_OK);
+    }
+    public function dimensiones($id, $incluirTodasLasDimensiones, $incluirEvaluacionesAbiertas)
     {
         $report = $this->areaService->getDimensionesReport(
+            $id,
             $incluirEvaluacionesAbiertas,
             $incluirTodasLasDimensiones
         );
