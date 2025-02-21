@@ -82,6 +82,8 @@
         <!-- Aquí se inyectarán los toasts dinámicamente -->
     </div>
     <canvas id="radar"></canvas>
+
+    <canvas id="radar2"></canvas>
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

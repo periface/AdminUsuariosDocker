@@ -176,6 +176,7 @@ async function bind_modal_events() {
                     }
                 });
                 const responseJson = await response.json();
+                console.log(responseJson);
                 if (!responseJson.error) {
                     state.dimensionModal.modal('hide');
                     await fetch_rows();
@@ -185,6 +186,7 @@ async function bind_modal_events() {
                         class="btn btn-success btn-sm">Ver</a>`, true);
                 } else {
                     console.log(responseJson);
+                    createToast('Administración de Dimensiones', responseJson.error, false);
                 }
             }
         });
@@ -256,14 +258,6 @@ function changeLimit(limit) {
     }).catch((error) => {
         console.log(error);
     })
-}
-function reset_table() {
-    state.tableReq = state.tableDefaultState;
-    fetch_rows().then(() => {
-        console.log('Table reset');
-    }).catch((error) => {
-        console.log(error);
-    });
 }
 function changeSort(sort, order) {
     state.tableReq.sort = sort;

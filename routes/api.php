@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\AreaController;
+use App\Http\Controllers\Api\DatavizController;
 use App\Http\Controllers\DimensionController;
 use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\IndicadorController;
@@ -68,10 +69,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['middleware' => ['role:ADM']], function () {
         Route::get('areas',                                     [AreaController::class, 'index']);
         Route::post('areas',                                    [AreaController::class, 'store']);
-        Route::get('areas/{area}',                              [AreaController::class, 'show'])->name('mostrar-area');
         Route::put('areas/{area}',                              [AreaController::class, 'update']);
         Route::delete('areas/{area}',                           [AreaController::class, 'destroy']);
-        Route::get('areas/dimensiones/{incluirTodasLasDimensiones}/{incluirEvaluacionesAbiertas}', [AreaController::class, 'dimensiones']);
     });
 
     // RUTAS DE ÁREAS PERI
@@ -105,5 +104,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/registro/{id}/{status}', [RegistrosController::class, 'set_status']);
 
         Route::get('/registro/{id}/{status}', [RegistrosController::class, 'set_status']);
+        Route::get('/dataviz/performance/{id}/{incluirTodasLasEtiquetas}/{incluirEvaluacionesAbiertas}/{tipo}', [DatavizController::class, 'getPerformanceReport']);
     });
 });

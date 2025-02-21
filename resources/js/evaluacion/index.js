@@ -1,7 +1,7 @@
 import { delete_evaluacion, get_rows, cerrar_evaluacion, load_evaluacion_form, post_evaluacion, load_evaluacion_config } from './cruds.js';
 import { debounce, createToast, show_confirm_action, toggle_loading } from '../utils/helpers.js';
 import { check_date_validity_range, calcula_fechas_captura } from './helpers.js';
-import { Chart, Interaction } from "chart.js/auto";
+import { PerformanceChart, PerformanceChartOptions } from '../dataviz/charts_performance';
 import Stepper from 'bs-stepper'
 import { UNIDADES } from '../UNIDADES.js';
 const state = {
@@ -717,105 +717,34 @@ async function start_view() {
         e.preventDefault();
         move_to_step(state.current_step - 1);
     });
-    await make_radar();
+    await load_performance_charts();
 }
-
-
-
-async function make_radar() {
-
-    //areas/dimensiones/false/true
-    const includeDimensiones = true;
-    const includeEvaluaciones = false;
-    const endpoint = '/api/areas/dimensiones/' + includeDimensiones + '/' + includeEvaluaciones;
-    const response = await fetch(endpoint, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + state.bearertoken,
-            'X-CSRF-TOKEN': state.xcsrftoken
-        }
-    });
-    const json = await response.json()
-    const chart_data = json.data.attributes.data;
-    create_chart(document.getElementById('radar'), chart_data);
-}
-const materialRGBColors = [
-    { bgColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)' }, // Rojo rosado
-    { bgColor: 'rgba(54, 162, 235, 0.2)', borderColor: 'rgba(54, 162, 235, 1)' }, // Azul
-    { bgColor: 'rgba(75, 192, 192, 0.2)', borderColor: 'rgba(75, 192, 192, 1)' }, // Verde agua
-    { bgColor: 'rgba(255, 206, 86, 0.2)', borderColor: 'rgba(255, 206, 86, 1)' }, // Amarillo
-    { bgColor: 'rgba(153, 102, 255, 0.2)', borderColor: 'rgba(153, 102, 255, 1)' }, // Morado
-    { bgColor: 'rgba(255, 159, 64, 0.2)', borderColor: 'rgba(255, 159, 64, 1)' }, // Naranja
-    { bgColor: 'rgba(201, 203, 207, 0.2)', borderColor: 'rgba(201, 203, 207, 1)' }, // Gris
-    { bgColor: 'rgba(0, 128, 128, 0.2)', borderColor: 'rgba(0, 128, 128, 1)' }, // Verde oscuro
-    { bgColor: 'rgba(220, 20, 60, 0.2)', borderColor: 'rgba(220, 20, 60, 1)' }, // Carmesí
-    { bgColor: 'rgba(0, 191, 255, 0.2)', borderColor: 'rgba(0, 191, 255, 1)' }, // Azul cielo
-    { bgColor: 'rgba(255, 140, 0, 0.2)', borderColor: 'rgba(255, 140, 0, 1)' } // Naranja oscuro
-];
-
-
-function make_datasets(data) {
-    const datasets = [];
-    for (let area of data) {
-        console.log(area);
-        const color = materialRGBColors[Math.floor(Math.random() * materialRGBColors.length)];
-        const dataset = {
-            label: area.areaSiglas,
-            data: [],
-            backgroundColor: color.bgColor,
-            borderColor: color.borderColor,
-            borderWidth: 1
-        }
-        for (let dimensionKey in area.dimensionesResult) {
-            const dimension = area.dimensionesResult[dimensionKey];
-            dataset.data.push(dimension.value);
-        }
-        datasets.push(dataset);
-    }
-    return datasets;
-}
-function make_labels(data) {
-    const dimensiones = [];
-    for (let area of data) {
-        for (let dimensionKey in area.dimensionesResult) {
-            const dimension = area.dimensionesResult[dimensionKey];
-            const found = dimensiones.find((d) => d === dimension.nombre);
-            if (!found) {
-                dimensiones.push(dimension.nombre);
-            }
-        }
-    }
-    return dimensiones;
-}
-function create_chart(canvas, data) {
-    const labels = make_labels(data);
-    const datasets = make_datasets(data);
-    const config = {
-        type: 'radar',
-        data: {
-            labels,
-            datasets
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Estado de los registros de la evaluación'
-                }
-            },
-            scales: {
-
-                y:{
-                    suggestedMin: 0,
-                    suggestedMax: 100,
-                }
-            },
-        },
-
-    }
-    new Chart(canvas, config);
+async function load_performance_charts() {
+    const dAreaPerformanceChartOptions =
+        new PerformanceChartOptions
+            (
+                'Rendimiento por dimensiones',
+                state.bearertoken,
+                state.xcsrftoken
+            );
+    const performanceChartDimension = new PerformanceChart(
+        document.getElementById('radar'),
+        0,
+        "dimensiones",
+        dAreaPerformanceChartOptions
+    );
+    await performanceChartDimension.init();
+    const cAreaPerformanceChartOptions =
+        new PerformanceChartOptions(
+            'Rendimiento por categorías',
+            state.bearertoken,
+            state.xcsrftoken
+        );
+    const performanceChartCategory = new PerformanceChart(
+        document.getElementById('radar2'),
+        0,
+        "categorias",
+        cAreaPerformanceChartOptions
+    );
+    await performanceChartCategory.init();
 }

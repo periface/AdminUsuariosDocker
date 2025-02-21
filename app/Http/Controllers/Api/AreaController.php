@@ -7,31 +7,17 @@ use Illuminate\Http\Request;
 use App\Services\AreaService;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use App\Services\DatavizService;
 
 class AreaController extends Controller
 {
 
     protected $areaService;
-
-    public function __construct(AreaService $areaService)
+    protected $datavizService;
+    public function __construct(AreaService $areaService, DatavizService $datavizService)
     {
         $this->areaService = $areaService;
-    }
-    public function dimensiones($incluirTodasLasDimensiones, $incluirEvaluacionesAbiertas)
-    {
-        $report = $this->areaService->getDimensionesReport(
-            $incluirEvaluacionesAbiertas,
-            $incluirTodasLasDimensiones
-        );
-        return response()->json([
-            'data' => [
-                'attributes' => [
-                    'status' => 'success',
-                    'data' => $report,
-                    'statusCode' => Response::HTTP_OK
-                ]
-            ]
-        ], Response::HTTP_OK);
+        $this->datavizService = $datavizService;
     }
     public function index()
     {
