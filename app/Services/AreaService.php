@@ -58,30 +58,27 @@ class AreaService
         return $areaDtoList;
     }
 
-    public function getAreaById(Area $area)
+    public function getAreaById($areaId)
     {
-        $areasDb = Area::where('id', $area->id)
-            ->get();
-        if (count($areasDb) > 0) {
+        $areaDb = Area::find($areaId);
 
-            foreach ($areasDb as $area) {
-                Log::info($area);
-                $user = User::find($area["responsableId"]);
-                $name = "Sin responsable asignado";
-                if ($user != null) {
-                    $name = $user->name . ' ' . $user->apPaterno . ' ' . $user->apMaterno;
-                }
-                $areaDtoList[] = new AreaDTO(
-                    $area->id,
-                    $area['nombre'],
-                    $area["siglas"],
-                    $name,
-                    $area["created_at"],
-                    $area["secretariaId"]
-                );
-            }
+        if (!$areaDb) {
+            return null;
         }
-        return $areaDtoList;
+
+        $user = User::find($areaDb["responsableId"]);
+        $name = "Sin responsable asignado";
+
+        $areaDto = new AreaDTO(
+            $areaDb->id,
+            $areaDb['nombre'],
+            $areaDb["siglas"],
+            $name,
+            $areaDb["created_at"],
+            $areaDb["secretariaId"]
+        );
+        
+        return $areaDto;
     }
 
     public function setResponsableArea(User $user)
@@ -90,6 +87,12 @@ class AreaService
             ->update(['responsableId' => $user->id]);
         return $area;
     }
+
+    public function hasResponsableArea($areaId){
+        $area = Area::find($areaId);
+        return $area->responsableId !== null ? true : false;
+    }
+
     private static function getEvaluationPerformanceValue($indicador, $evaluacion)
     {
         $resultados = EvaluacionResult::where('evaluacionId', $evaluacion->id)

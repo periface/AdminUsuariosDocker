@@ -68,6 +68,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/areas',                                          [AreaController::class, 'index'])->name('areas');
     Route::get('/areas/{area}/edit',                              [AreaController::class, 'createOrEdit']);
     Route::get('/areas/create',                                   [AreaController::class, 'create']);
+    Route::get('/areas/fetchAreas',                               [AreaController::class, 'fetchAreas']);
+    
     // });
 
     // Auth

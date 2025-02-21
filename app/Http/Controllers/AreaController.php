@@ -55,4 +55,23 @@ class AreaController extends Controller
         $secretarias = Secretaria::all();
         return view('areas.createEdit', compact('area', 'users', 'secretarias'));
     }
+
+    public function fetchAreas() {
+        $user = auth()->user();
+
+        $role = $user->getRoleNames();
+
+        switch ($role[0]) {
+            case 'SPA':
+                $area = Area::find($user->areaId);
+                $areas = $this->areaService->getAreaById($area);
+                break;
+
+            default:
+                $areas = $this->areaService->getAllAreas();
+                break;
+        }
+
+        return view('areas.table', compact('areas'));
+    }
 }

@@ -148,6 +148,8 @@ canvas {
 .error {
     font-size: 14px !important;
     /* Se agrega important por conflicto en clase sb-admin2 */
+    width: 100% !important;
+    /* Se agrega important por conflicto en clase sb-admin2 */
 }
 
 label.error {
@@ -278,6 +280,6 @@ tbody {
 }
 
 
-        .progress-stacked {
-            height: .5rem!important;
-        }
+.progress-stacked {
+    height: .5rem !important;
+}

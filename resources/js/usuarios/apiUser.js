@@ -1,5 +1,5 @@
-const WEB_URL = '/users';
-const API_URL = '/api/users';
+let WEB_URL = '/users';
+let API_URL = '/api/users';
 
 /**
  * Método GET para obtener todos los usuarios

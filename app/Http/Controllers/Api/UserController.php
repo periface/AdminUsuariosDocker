@@ -92,38 +92,51 @@ class UserController extends Controller
         ]);
 
         try {
-            // Interceptamos el objeto
+
+            // 1.- Obtenemos el rol antes de proceder
+            $role = Role::find($request->roleId);
+
+            // 2.- Si el rol es SPA, validamos que no tenga un responsable ya asignado el área 
+            if($role->name === "SPA" && $this->areaService->hasResponsableArea($request->areaId)){
+                return response()->json([
+                    'data' => [
+                    'attributes' => [
+                        'status' => 'Error',
+                        // 'data' => $user,
+                        'data' => 'El área ya cuenta con un responsable, si desea cambiarlo, deberá actualizar el área.',
+                        'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY
+                    ]
+                ]
+                ]);
+            }
+
+            // 3.- Creamos el usuario
             $data = $request->all();
             $data['activation_token'] = Str::random(60);
             $data['is_active'] = false;
-
-            // Creamos el usuario
             $user = User::create($data);
-
-            //Obtenemos el rol
-            $role = Role::find($data['roleId']);
-
-            // Le asignamos el rol
+            
+            // 4.- Asignamos el rol al usuario
             $assignRoleResponse = $this->roleController->attachRole($user, $role);
 
-            // Establecemos la relación uno a muchos
+            // 5.- Si el rol es SPA, lo establecemos como responsable del área
+            if($role->name == "SPA"){
+                $area = $this->areaService->setResponsableArea($user);
+            }
+            
+            // 6.- Creamos la relación Usuario - Area
             UserArea::create([
                 'userId' => $user->id,
                 'areaId' => $data['areaId'],
                 'updated_at' => Carbon::now(),
-                'created_at' => Carbon::now()
+                'created_at' => Carbon::now(),
+                'rolId' => $role->id
             ]);
-            
-            // Establecemos el responsable
-            if($role->name == "SPA"){
-                $area = $this->areaService->setResponsableArea($user);
-            }
 
             $wb_data = [
                 "email" => $user->email,
                 "activation_link" => 'http://localhost:8000/activate/' . $user->activation_token
             ];
-
 
             // $webhook_response = Http::post('http://localhost:5678/webhook-test/f45dc5db-14d6-4e1c-85d2-44fecabc8e69', $wb_data);
 
@@ -131,7 +144,6 @@ class UserController extends Controller
                 'data' => [
                     'attributes' => [
                         'status' => 'success',
-                        // 'data' => $user,
                         'data' => 'Para la activación de la cuenta, enviamos un correo a la dirección registrada',
                         'statusCode' => Response::HTTP_CREATED
                     ]

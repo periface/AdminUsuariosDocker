@@ -109,27 +109,33 @@
 <div class="card shadow mb-4">
     <input type="hidden" value="{{ $token }}" name="token" id="token">
     <div class="card-body">
-        <div class="container welcome-container">
-            <div class="card">
-                <h1 class="lead mb-3 text-gray-800 font-bold text-principal">Bienvenido al <br> Sistema de Indicadores</h1>
-                <p class="lead mb-4 text-gray-700 text-secundario">Una plataforma diseñada para la gestión y <br> el análisis de indicadores de desempeño en la <br> Dirección de Control Administrativo.</p>
-    
-                <h3 class="mt-3 text-gray-700">¿Qué puedes hacer con este sistema?</h3>
-                <ul class="list-group list-group-flush text-start mx-auto mt-3 " style="max-width: 400px;">
-                    <li class="list-group-item text-gray-700">📊 Registrar y gestionar indicadores de desempeño.</li>
-                    <li class="list-group-item text-gray-700">📈 Visualizar reportes y gráficos en tiempo real.</li>
-                    <li class="list-group-item text-gray-700">📌 Evaluar la eficiencia y eficacia de los procesos.</li>
-                    <li class="list-group-item text-gray-700">⚡ Optimizar la toma de decisiones administrativas.</li>
-                </ul>
-    
-                <div class="mt-4">
-                    <a href="manual_usuario.pdf" class="btn btn-outline-secondary btn-sm">Ver Manual de Usuario</a>
-                </div>
-    
-                <p class="footer mt-4">Para soporte técnico, contacte a: <br> <a href="mailto:soportecontroladministrativo@tamaulipas.gob.mx" class=" text-white lowercase badge bg-danger">soportecontroladministrativo@tamaulipas.gob.mx</a></p>
+        <div class="row">
+            <div class="col-7">
+                <img src="{{ asset('img/kpi_3.jpg') }}" class=" mt-10 img-fluid img-responsive" alt="">
             </div>
+            <div class="col-5 text-center">
+                        <h4 class=" mb-3 text-gray-800">Bienvenido al <br> Sistema de Indicadores</h4>
+                        <small class="mb-4 text-gray-700 text-secundario">Una plataforma diseñada para la gestión y análisis de indicadores <br> clave de desempeño en la Dirección de Control Administrativo.</small>
+            
+                        <hr>
+            
+                        <h5 class="mt-3 text-gray-700">¿Qué puedes hacer en el sistema?</h5>
+                        <ul class="list-group list-group-flush mx-auto mt-3 text-center" style="max-width: 400px;">
+                            <li class="list-group-item text-gray-700">📊 Registrar y gestionar indicadores de desempeño.</li>
+                            <li class="list-group-item text-gray-700">📈 Visualizar reportes y gráficos en tiempo real.</li>
+                            <li class="list-group-item text-gray-700">📌 Evaluar la eficiencia y eficacia de los procesos.</li>
+                            <li class="list-group-item text-gray-700">⚡ Optimizar la toma de decisiones administrativas.</li>
+                        </ul>
+            
+                        <div class="mt-4">
+                            <a href="manual_usuario.pdf" class="btn btn-outline-secondary btn-sm">Ver Manual de Usuario</a>
+                        </div>
+            
+                        <p class="footer mt-4">Para soporte técnico, contacte a: <br> <a href="mailto:soportecontroladministrativo@tamaulipas.gob.mx" class=" text-white lowercase badge bg-danger">soportecontroladministrativo@tamaulipas.gob.mx</a></p>
+            </div>
+        </div>
+        
     </div>
-</div>
 <!-- Section Modal -->
 <!-- Modal -->
 <div class="modal fade" id="modalConfig" tabindex="-1" aria-labelledby="modalConfig">

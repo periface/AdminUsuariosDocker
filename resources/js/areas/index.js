@@ -1,8 +1,9 @@
 import { eventListener } from "../utils/event";
 import { openModal, closeModal } from "../utils/modal";
 import { showNotification } from "../utils/notification";
+import { loadAreas } from "./actionArea";
 
-const areas = document.getElementById('areas');
+// const areas = document.getElementById('areas');
 
 const attachEventListeners = () => {
     eventListener('add-area', showFormArea);
@@ -20,31 +21,31 @@ const loadData = (data) => {
 
 }
 
-const getAreas = async () => {
+// const getAreas = async () => {
 
-    const response = await fetch('/areas', {
-        method: "GET",
-        headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-            Accept: 'application/json'
-        }
-    });
+//     const response = await fetch('/areas', {
+//         method: "GET",
+//         headers: {
+//             Authorization: 'Bearer ' + localStorage.getItem('token'),
+//             Accept: 'application/json'
+//         }
+//     });
 
-    if (!response.ok) {
-        const responseJson = await response.json();
-        switch (response.status) {
-            case 403:
-                toastr.error(responseJson.data, 'Acceso Denegado');
-                break;
-            default:
-                break;
-        }
-    }
+//     if (!response.ok) {
+//         const responseJson = await response.json();
+//         switch (response.status) {
+//             case 403:
+//                 toastr.error(responseJson.data, 'Acceso Denegado');
+//                 break;
+//             default:
+//                 break;
+//         }
+//     }
 
-    const responseText = await response.text();
-    loadData(responseText);
+//     const responseText = await response.text();
+//     loadData(responseText);
 
-}
+// }
 
 // Con el cambio MPA no se requiere esta función
 // areas.addEventListener('click', (event) => {
@@ -178,7 +179,7 @@ const showFormArea = async () => {
     const responseText = await response.text();
 
     console.log(responseText);
-    openModal(responseText, 'Agregar Área');
+    openModal(responseText, 'Registro de Áreas');
     let registerArea = document.getElementById('addArea');
 
     addArea(registerArea);
@@ -265,3 +266,10 @@ document.addEventListener('click', (event) => {
         confirmDelete(id);
     }
 })
+/**
+ * Iniciamos refactorización
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadAreas();
+});

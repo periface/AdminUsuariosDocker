@@ -14,7 +14,7 @@ class UserArea extends Model
     public $areaId;
 
     protected $table = 'user_area';
-    protected $fillable = ['userId', 'areaId'];
+    protected $fillable = ['userId', 'areaId','rolId'];
 
     public function usuarios(){
         return $this->belongsTo(User::class, 'userId');
