@@ -3,7 +3,7 @@
 /*
 *
 *  import { PerformanceChart
-*  } from './dataviz/charts_areas.js';
+*  } from './dataviz/charts';
 *
 
     const performanceChartDimension =
@@ -72,6 +72,7 @@ class PerformanceChart {
             options.id,
             options.tipo);
         this.#validateOptions(options);
+        console.log(options);
         this.options = options;
     }
     #validateInput(canvas, id, tipo) {
@@ -92,8 +93,14 @@ class PerformanceChart {
         }
     }
     async init() {
-        const chart_data = await this.#fetchChartData(this.id, this.tipo, this.options);
-        this.chart = this.#buildChart(this.canvas, chart_data, this.options.title);
+        const chart_data = await this.#fetchChartData(
+            this.id,
+            this.tipo,
+            this.options);
+        this.chart = this.#buildChart(
+            this.canvas,
+            chart_data,
+            this.options.title);
         return this;
     };
     async refresh() {

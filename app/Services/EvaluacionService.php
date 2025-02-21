@@ -130,7 +130,7 @@ class EvaluacionService
         $porcentaje_aprobados = 0;
         if ($evaluacion["results"] > 0 && $evaluacion["results_aprobado"] > 0) {
             $porcentaje_aprobados = $evaluacion["results_aprobado"] / $evaluacion["results"] * 100;
-            $total =  strval($suma_porcentaje_aprobados / $aprobados_count);
+            $total =  strval(number_format($suma_porcentaje_aprobados / $aprobados_count, 2, '.', ''));
             $evaluacion["totalValue"] = $total;
             $evaluacion["total"] = Indicador::get_value($total, $indicador["unidad_medida"]);
         }
