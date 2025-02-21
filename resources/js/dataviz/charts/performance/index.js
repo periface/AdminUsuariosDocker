@@ -1,34 +1,32 @@
 // Description: Clase para crear gráficos de rendimiento
 // @ejemplo
 /*
- *
- *  import { PerformanceChart,
- *           PerformanceChartOptions
- *  } from './dataviz/charts_areas.js';
- *
-    const options = new PerformanceChartOptions
-                    (
-                        'Rendimiento por dimensiones', // Título
-                        state.bearertoken,  // Token de autenticación
-                        state.xcsrftoken    // Token CSRF
-                    );
+*
+*  import { PerformanceChart
+*  } from './dataviz/charts_areas.js';
+*
 
-    const performanceChartDimension = new PerformanceChart(
-        document.getElementById('radar'), // Elemento canvas
-        0, // Id, del área, en este caso 0 carga todas las áreas
-        "dimensiones", // Tipo de gráfico: dimensiones|categorias
-        options // Opciones
-    );
+    const performanceChartDimension =
+        new PerformanceChart(
+            {
+                canvas: document.getElementById('radar'),
+                id: 0,
+                tipo: "dimensiones",
+                title: 'Rendimiento por dimensiones',
+                bearertoken: state.bearertoken,
+                xcsrftoken: state.xcsrftoken,
+                nivel: "area",
+            }
+        );
     // Se inicializa el gráfico; aquí se hace la petición a la API
     await performanceChartDimension.init();
     // Se actualiza el gráfico; aquí se hace la petición a la API,
     // pero no se crea otra instancia del gráfico
     await performanceChartDimension.refresh();
- *
- * */
+*
+**/
 
 import { Chart } from "chart.js/auto";
-
 // colores de la paleta de colores de material design
 // para los gráficos de rendimiento, se obtienen de forma aleatoria
 // en la función make_datasets
@@ -55,8 +53,8 @@ const materialRGBColors = [
  *
  * @param {HTMLCanvasElement} canvas
  * @param {number} id
- * @param {string} tipo
- * @param {PerformanceChartOptions} options
+ * @param {string} tipo dimensiones|categorias
+ * @param options
  * @returns {PerformanceChart}
  * @throws {Error} Si no se proporciona el token de autenticación
  */
@@ -66,12 +64,32 @@ class PerformanceChart {
     id = null;
     tipo = null;
     options = null;
-    constructor(canvas, id, tipo, options) {
+    constructor(options) {
+        this.canvas = options.canvas;
+        this.id = options.id;
+        this.tipo = options.tipo;
+        this.#validateInput(options.canvas,
+            options.id,
+            options.tipo);
         this.#validateOptions(options);
-        this.canvas = canvas;
-        this.id = id;
-        this.tipo = tipo;
         this.options = options;
+    }
+    #validateInput(canvas, id, tipo) {
+        if (!canvas || !tipo) {
+            throw new Error('Parámetros inválidos');
+        }
+        if (!(canvas instanceof HTMLCanvasElement)) {
+            throw new Error('El elemento canvas es inválido');
+        }
+        if (typeof id !== 'number') {
+            throw new Error('El id debe ser un número');
+        }
+        if (typeof tipo !== 'string') {
+            throw new Error('El tipo debe ser una cadena');
+        }
+        if (tipo !== 'dimensiones' && tipo !== 'categorias') {
+            throw new Error('El tipo debe ser dimensiones o categorias');
+        }
     }
     async init() {
         const chart_data = await this.#fetchChartData(this.id, this.tipo, this.options);
@@ -196,42 +214,9 @@ class PerformanceChart {
         if (!options) {
             throw new Error('Opciones inválidas');
         }
-        if (!options instanceof PerformanceChartOptions) {
-            throw new Error('Opciones inválidas, debe ser una instancia de PerformanceChartOptions');
-        }
     }
 
 }
-class PerformanceChartOptions {
-    incluirEtiquetas = false;
-    incluirEvaluacionesAbiertas = false;
-    title = 'Rendimiento';
-    bearertoken;
-    xcsrftoken;
-    /**
-     * @param {string} title
-     * @param {string} bearertoken
-     * @param {string} xcsrftoken
-     * @throws {Error} Si no se proporciona el token de autenticación
-     * @constructor
-     * @returns {PerformanceChartOptions}
-     * @example
-     * const options = new PerformanceChartOptions('Rendimiento', false, false, 'Bearer token', 'X-CSRF-TOKEN');
-     * performanceChart(canvas, 1, 'dimensiones', options);
-     */
-    constructor(title, bearertoken, xcsrftoken) {
-        this.incluirEtiquetas = true;
-        this.incluirEvaluacionesAbiertas = false;
-        this.title = title;
-        if (bearertoken === undefined || xcsrftoken === undefined) {
-            throw new Error('Falta el token de autenticación');
-        }
-        this.bearertoken = bearertoken;
-        this.xcsrftoken = xcsrftoken;
-    }
-}
-
 export {
-    PerformanceChartOptions,
     PerformanceChart
 }
