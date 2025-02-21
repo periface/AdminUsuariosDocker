@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Dimension;
 use App\Models\Secretaria;
 use Illuminate\Http\Request;
@@ -48,12 +49,7 @@ class DimensionController extends BaseController
     {
         $secretaria = Secretaria::find($secretariaId);
         if (!$secretaria) {
-            return response()->json([
-                'status' => 'error',
-                'data' => $secretariaId,
-                'statusCode' => 400,
-                'error' => "No se encontró la secretaria"
-            ], 400);
+            return null;
         }
         return $secretaria;
     }
@@ -72,7 +68,16 @@ class DimensionController extends BaseController
         }
 
         $user = (Auth::user()); //Obtenemos el usuario autenticado
-        $secretaria = $this->resolve_secretaria($user['secretariaId']);
+        $area = Area::find($user['areaId']);
+        $secretaria = $this->resolve_secretaria($area['secretariaId']);
+        if (!$secretaria) {
+            return response()->json([
+                'status' => 'error',
+                'data' => null,
+                'statusCode' => 404,
+                'error' => 'No se encontró la secretaría'
+            ], 404);
+        }
         if ($dimensionFound) {
             $dimensionFound['secretariaId'] = $secretaria->id; //Agregamos el id de la secretaria al request
             $dimensionFound['secretaria'] = $secretaria["nombre"];
@@ -93,7 +98,7 @@ class DimensionController extends BaseController
         // Una vez guardado en la base de datos enviamos respuesta exitosa a la vista
         return response()->json([
             'status' => 'success',
-            'data' => intval($id),
+            'data' => $id,
             'error' => null,
             'statusCode' => 200
         ], 200);

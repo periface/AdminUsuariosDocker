@@ -186,7 +186,6 @@ async function bind_modal_events() {
                         class="btn btn-success btn-sm">Ver</a>`, true);
                 } else {
                     console.log(responseJson);
-                    createToast('Administración de Dimensiones', responseJson.error, false);
                 }
             }
         });
