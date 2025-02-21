@@ -42,7 +42,7 @@ const state = {
     confirm_indicador_events_set: false,
     xcsrftoken: document.querySelector('meta[name="csrf-token"]').content || '',
 
-    dimensionId: null,
+    dimensionId: 0,
     bearertoken: localStorage.getItem('token') || '',
     indicador_view: $("#indicadorModal"),
     indicador_batch_view: $("#indicadorBatchModal"),
@@ -109,7 +109,6 @@ async function start_datatable() {
         state.indicadores_table_container.innerHTML = html;
         set_table_header_events();
         await set_modal_trigger_evts();
-
         set_table_footer_events();
         state.restart_popovers();
     } catch (error) {
@@ -326,9 +325,7 @@ async function open_indicador_form_evt(modal_open_btn, load_set_formula_window =
             const response_json = await post_indicador(form_data, state);
             if (!response_json.error) {
                 state.indicador_view.modal('hide');
-                if (state.dimensionId) {
-                    await start_datatable();
-                }
+                await start_datatable();
                 createToast('Administración de Dimensiones',
                     `Se guardó correctamente la información.
                     <a href="${state.WEB_URL}/${response_json.data}"
@@ -449,20 +446,6 @@ function set_select_dimension_evt() {
     const select = document.getElementById('dimensiones_select');
     select.addEventListener('change', (e) => {
         state.dimensionId = e.target.value;
-        if (state.dimensionId === '0') {
-            console.log('No dimension selected');
-            state.indicadores_table_container.innerHTML = `
-            <h1 class="text-center">
-                <p colspan="5"
-                 class="text-center p-5 text-2xl">Seleccione una dimensión para ver los indicadores
-                </p>
-            </h1>`;
-            //disable buttons
-            for (let modal_open_btn of state.modal_open_buttons) {
-                modal_open_btn.disabled = true;
-            }
-            return;
-        }
         for (let modal_open_btn of state.modal_open_buttons) {
             modal_open_btn.disabled = false;
         }
@@ -478,7 +461,7 @@ async function start_view() {
          class="text-center p-5 text-2xl">Seleccione una dimensión para ver los indicadores
         </p>
     </h1>`;
-
+    await start_datatable();
     await bind_upload_file();
 }
 
