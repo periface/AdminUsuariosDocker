@@ -86,7 +86,7 @@ class EvaluacionesSeeder extends Seeder
         $variables_valor = [];
         $evaluation_results = [];
         $variables = Indicador::find($indicador_id)->variables;
-
+        $evaluation_result_number = 1;
         foreach ($fechas_captura as $fecha) {
             $random1 = rand(1, 100);
             $random2 = rand(1, 100);
@@ -106,6 +106,7 @@ class EvaluacionesSeeder extends Seeder
             $result = $random1 / $random2 * 100;
             $evaluacion_result = [
                 'id' => null,
+                'resultNumber' => $evaluation_result_number,
                 'evaluacionId' => $evaluacion_id,
                 'resultado' => $result,
                 'status' => self::get_random_status(),
@@ -114,10 +115,10 @@ class EvaluacionesSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-
             \App\Models\EvaluacionResult::insert($evaluacion_result);
             $lastInsertedId = \App\Models\EvaluacionResult::latest()->first();
             $evaluation_results[] = $evaluacion_result;
+            $evaluation_result_number++;
             $counter = 0;
             foreach ($variables as $variable) {
                 $varValue = 0;

@@ -9,12 +9,12 @@
 
         canvas#line-chart {
             width: 100% !important;
-            height: 50vh !important;
+            height: 100% !important;
         }
 
         canvas#donut-chart {
             width: 100% !important;
-            height: 50vh !important;
+            height: 100% !important;
             margin: 0 auto;
         }
     </style>

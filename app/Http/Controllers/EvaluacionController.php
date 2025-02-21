@@ -113,6 +113,7 @@ class EvaluacionController extends BaseController
     {
         try {
             $evaluacion = Evaluacion::find($id);
+            $indicador = Indicador::find($evaluacion["indicadorId"]);
             if (!$evaluacion) {
                 return response()->json([
                     'status' => 'error',
@@ -122,15 +123,30 @@ class EvaluacionController extends BaseController
                 ], 404);
             }
             $toggle = !$evaluacion['finalizado'];
-            if ($toggle) {
-                $evaluacion->update(['finalizado' => $toggle, 'finalizado_por' => auth()->user()->id, 'finalizado_en' => now()]);
+            if ($toggle == true) {
+                $meta_alcanzada = $this->evaluacionService->get_meta_alcanzada($indicador, $evaluacion);
+                $performance = $this->evaluacionService->getIndicadorPerformanceValue($indicador, $evaluacion);
+                $evaluacion->update([
+                    'finalizado' => $toggle,
+                    'finalizado_por' => auth()->user()->id,
+                    'finalizado_en' => now(),
+                    'rendimiento' => $performance,
+                    'meta_alcanzada' => $meta_alcanzada
+                ]);
                 return response()->json([
                     'status' => 'success',
                     'data' => $evaluacion,
                     'statusCode' => 200
                 ], 200);
             }
-            $evaluacion->update(['finalizado' => $toggle, 'finalizado_por' => null, 'finalizado_en' => null]);
+
+            $evaluacion->update([
+                'finalizado' => $toggle,
+                'finalizado_por' => null,
+                'finalizado_en' => null,
+                'rendimiento' => null,
+                'meta_alcanzada' => null
+            ]);
             return response()->json([
                 'status' => 'success',
                 'data' => $evaluacion,

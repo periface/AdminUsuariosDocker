@@ -29,6 +29,7 @@ class AreaService
 {
 
     protected $userService;
+
     public function getAllAreas()
     {
 
@@ -87,102 +88,40 @@ class AreaService
             ->update(['responsableId' => $user->id]);
         return $area;
     }
-
-    public function hasResponsableArea($areaId){
-        $area = Area::find($areaId);
-        return $area->responsableId !== null ? true : false;
-    }
-
-    private static function getEvaluationPerformanceValue($indicador, $evaluacion)
-    {
-        $resultados = EvaluacionResult::where('evaluacionId', $evaluacion->id)
-            ->get();
-        $suma_porcentaje = $resultados->sum('resultado');
-        $resultados_count = $resultados->count();
-        if ($resultados_count == 0) {
-            return 0;
-        }
-        $sentido = $indicador["sentido"];
-        $meta = $evaluacion["meta"];
-        if ($meta == 0) {
-            return 0;
-        }
-        if ($suma_porcentaje == 0) {
-            return 0;
-        }
-        $promedio_resultados = $suma_porcentaje / $resultados_count;
-
-        if ($sentido == "ascendente") {
-            if ($promedio_resultados >= $meta) {
-                // Si el promedio de los resultados
-                // es mayor o igual a la meta,
-                // el desempeño es 100
-                return 100;
-            }
-            // Si el promedio de los resultados es menor a la meta
-            // se calcula el desempeño en base a la siguiente fórmula
-            // (promedio_resultados / meta) * 100
-            // Si el resultado es menor a 0, se asigna 0
-            // Si el resultado es mayor a 100, se asigna 100
-            // Si el resultado está entre 0 y 100, se asigna el resultado
-            // como el desempeño
-            $desempeño = max(0, ($promedio_resultados / $meta) * 100);
-            return $desempeño;
-        }
-        if ($sentido == "descendente") {
-            // Si el sentido es descendente
-            // se calcula la diferencia entre
-            // el promedio de los resultados
-            // y la meta
-            $diff =  $promedio_resultados - $meta;
-            // Si el promedio de los resultados
-            // es menor o igual a la meta,
-            // el desempeño es 100
-            if ($diff <= 0) {
-                return 100;
-            }
-            $desempeño = max(0, 100 - (($diff / $meta) * 100));
-            return $desempeño;
-        }
-
-        if ($sentido == "constante") {
-            $error = abs($promedio_resultados - $meta);
-            $desempeño = max(0, 100 - (($error / $meta) * 100));
-            return $desempeño;
-        }
-
-        return 0; // Si el sentido no es válido
-
-    }
-    public static  function getDimensionInfo($evaluaciones, $addMissingDimensions = false)
+    /**
+     *  Get the performance of the dimensions of the area
+     * @param $evaluaciones
+     * @param bool $getAllDimensions
+     * @return array
+     */
+    public static function getDimensionPerformance($evaluaciones, $getAllDimensions = false)
     {
         $dimensionesResult = [];
         $divideBy = 1;
         foreach ($evaluaciones as $evaluacion) {
             $indicador = Indicador::find($evaluacion["indicadorId"]);
             if (!$indicador) {
-                continue;
+                throw new \Exception("Indicador de evaluacion no encontrado, id:" . $evaluacion["indicadorId"]);
             }
             $dimension = Dimension::find($indicador["dimensionId"]);
             if (!$dimension) {
-                continue;
+                throw new \Exception("Dimension no encontrada id:" . $indicador["dimensionId"]);
             }
-            $evaluacion_value = self::getEvaluationPerformanceValue($indicador, $evaluacion);
             if (!isset($dimensionesResult[$dimension->id])) {
                 $dimensionData = new DimensionData();
                 $dimensionData->id = $dimension->id;
                 $dimensionData->nombre = $dimension["nombre"];
-                $dimensionData->value = $evaluacion_value;
+                $dimensionData->value = $evaluacion["rendimiento"];
                 $dimensionesResult[$dimension->id] = $dimensionData;
                 $dimensionesResult[$dimension->id]->divideBy = $divideBy;
                 $divideBy++;
             } else {
-                $dimensionesResult[$dimension->id]->value += $evaluacion_value;
+                $dimensionesResult[$dimension->id]->value += $evaluacion["rendimiento"];
                 $dimensionesResult[$dimension->id]->divideBy++;
                 $divideBy++;
             }
         }
-        if ($addMissingDimensions) {
+        if ($getAllDimensions) {
             $allDimensions = Dimension::all();
             foreach ($allDimensions as $dimension) {
                 if (!isset($dimensionesResult[$dimension->id])) {
@@ -206,18 +145,18 @@ class AreaService
         $response = [];
         foreach ($areas as $area) {
             $evaluaciones = self::getEvaluacionesFinalizadas($area, $incluirTodasEvaluaciones);
-            $dimensionInfo = self::getDimensionInfo($evaluaciones, $incluirTodasDimensiones);
+            $dimensionPerformanceCharges = self::getDimensionPerformance($evaluaciones, $incluirTodasDimensiones);
             if (count($evaluaciones) == 0) {
                 continue;
             }
-            if (count($dimensionInfo) == 0) {
+            if (count($dimensionPerformanceCharges) == 0) {
                 continue;
             }
             $indicePAreaViewModel = new IndicePAreaViewModel();
             $indicePAreaViewModel->areaId = $area["id"];
             $indicePAreaViewModel->areaNombre = $area["nombre"];
             $indicePAreaViewModel->areaSiglas = $area["siglas"];
-            $indicePAreaViewModel->dimensionesResult = $dimensionInfo;
+            $indicePAreaViewModel->dimensionesResult = $dimensionPerformanceCharges;
             $response[] = $indicePAreaViewModel;
         }
         return $response;
