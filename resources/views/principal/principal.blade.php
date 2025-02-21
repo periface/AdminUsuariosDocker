@@ -131,7 +131,7 @@
                             <a href="manual_usuario.pdf" class="btn btn-outline-secondary btn-sm">Ver Manual de Usuario</a>
                         </div>
             
-                        <p class="footer mt-4">Para soporte técnico, contacte a: <br> <a href="mailto:soportecontroladministrativo@tamaulipas.gob.mx" class=" text-white lowercase badge bg-danger">soportecontroladministrativo@tamaulipas.gob.mx</a></p>
+                        <p class="footer mt-4">Para soporte técnico, contacte a: <br> <a href="mailto:soporte.controladministrativo@tamaulipas.gob.mx" class=" text-white lowercase badge bg-danger">soporte.controladministrativo@tamaulipas.gob.mx</a></p>
             </div>
         </div>
         
