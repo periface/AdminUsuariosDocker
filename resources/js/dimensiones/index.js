@@ -259,14 +259,6 @@ function changeLimit(limit) {
         console.log(error);
     })
 }
-function reset_table() {
-    state.tableReq = state.tableDefaultState;
-    fetch_rows().then(() => {
-        console.log('Table reset');
-    }).catch((error) => {
-        console.log(error);
-    });
-}
 function changeSort(sort, order) {
     state.tableReq.sort = sort;
     state.tableReq.order = order;

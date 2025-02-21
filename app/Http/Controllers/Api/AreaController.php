@@ -7,70 +7,17 @@ use Illuminate\Http\Request;
 use App\Services\AreaService;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use App\Services\DatavizService;
 
 class AreaController extends Controller
 {
 
     protected $areaService;
-
-    public function __construct(AreaService $areaService)
+    protected $datavizService;
+    public function __construct(AreaService $areaService, DatavizService $datavizService)
     {
         $this->areaService = $areaService;
-    }
-    public function getPerformanceReport(
-        $id = 0,
-        $incluirTodasLasEtiquetas = false,
-        $incluirEvaluacionesAbiertas,
-        $tipo = "dimension"
-    ) {
-        if ($tipo == "dimensiones") {
-            return $this->dimensiones($id, $incluirTodasLasEtiquetas, $incluirEvaluacionesAbiertas);
-        }
-        if ($tipo == "categorias") {
-            return $this->categorias($id, $incluirEvaluacionesAbiertas);
-        }
-        return response()->json([
-            'data' => [
-                'attributes' => [
-                    'status' => 'error',
-                    'data' => 'Tipo de reporte no válido',
-                    'statusCode' => Response::HTTP_BAD_REQUEST
-                ]
-            ]
-        ], Response::HTTP_BAD_REQUEST);
-    }
-    public function categorias($id, $incluirEvaluacionesAbiertas)
-    {
-        $report = $this->areaService->getCategoriasReport(
-            $id,
-            $incluirEvaluacionesAbiertas
-        );
-        return response()->json([
-            'data' => [
-                'attributes' => [
-                    'status' => 'success',
-                    'data' => $report,
-                    'statusCode' => Response::HTTP_OK
-                ]
-            ]
-        ], Response::HTTP_OK);
-    }
-    public function dimensiones($id, $incluirTodasLasDimensiones, $incluirEvaluacionesAbiertas)
-    {
-        $report = $this->areaService->getDimensionesReport(
-            $id,
-            $incluirEvaluacionesAbiertas,
-            $incluirTodasLasDimensiones
-        );
-        return response()->json([
-            'data' => [
-                'attributes' => [
-                    'status' => 'success',
-                    'data' => $report,
-                    'statusCode' => Response::HTTP_OK
-                ]
-            ]
-        ], Response::HTTP_OK);
+        $this->datavizService = $datavizService;
     }
     public function index()
     {

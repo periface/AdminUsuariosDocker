@@ -1,7 +1,7 @@
 import { UNIDADES } from '../UNIDADES.js';
 import { get_stats } from './cruds.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import { Chart, Interaction } from "chart.js/auto";
+import { Chart } from "chart.js/auto";
 Chart.register(zoomPlugin);
 const state = {
     API_URL: "/api/v1/evaluacion",

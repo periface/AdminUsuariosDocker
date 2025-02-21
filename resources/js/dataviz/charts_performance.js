@@ -162,7 +162,7 @@ class PerformanceChart {
     async #fetchChartData(id, tipo, options) {
         const { incluirEtiquetas, incluirEvaluacionesAbiertas, bearertoken, xcsrftoken } = options;
         //areas/dimensiones/false/true
-        const endpoint = `/api/areas/performance/${id}/${incluirEtiquetas}/${incluirEvaluacionesAbiertas}/${tipo}`;
+        const endpoint = `/api/v1/dataviz/performance/${id}/${incluirEtiquetas}/${incluirEvaluacionesAbiertas}/${tipo}`;
         const response = await fetch(endpoint, {
             method: 'GET',
             headers: {
