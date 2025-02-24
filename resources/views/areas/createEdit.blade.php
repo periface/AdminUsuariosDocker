@@ -18,7 +18,7 @@
         <label for="nombre" class="form-label text-sm">Nombre: </label>
         <input class="form-control" id="nombre" name="nombre" placeholder="Nombre del área" value="{{ $area['nombre'] ?? "" }}">
     </div>
-    <div class="mt-2">
+    {{-- <div class="mt-2">
         <label for="status" class="form-label text-sm">Responsable: </label>
         <select class="form-select" id="responsableId" name="responsableId">
            <option value="0">Seleccione</option>
@@ -29,7 +29,7 @@
             </option>
            @endforeach
         </select>
-    </div>
+    </div> --}}
     <div class="mt-2">
         <label for="siglas" class="form-label text-sm">Siglas: </label>
         <input type="text" class="form-control" id="siglas" name="siglas" placeholder="Siglas" value = "{{ $area['siglas'] ?? "" }}">

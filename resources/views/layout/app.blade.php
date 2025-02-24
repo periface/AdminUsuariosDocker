@@ -132,8 +132,8 @@
                     <span>Usuarios</span>
                 </a>
             </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
+            @if (Auth::user()->hasRole('ADM'))
+                <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('roles') }}" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
@@ -148,6 +148,7 @@
                     <span>Permisos</span>
                 </a>
             </li>
+            @endif
             <!-- Divider -->
             <hr class="sidebar-divider">
 

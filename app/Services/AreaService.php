@@ -41,27 +41,30 @@ class AreaService
         return $areaDtoList;
     }
 
-    public function getAreaById($areaId)
+    public function getAreaById($areaId, $responsableId)
     {
-        $areaDb = Area::find($areaId);
-
+        $areaDb = Area::where('responsableId', $responsableId)
+                        ->get();
         if (!$areaDb) {
             return null;
         }
-
-        $user = User::find($areaDb["responsableId"]);
-        $name = "Sin responsable asignado";
-
-        $areaDto = new AreaDTO(
-            $areaDb->id,
-            $areaDb['nombre'],
-            $areaDb["siglas"],
-            $name,
-            $areaDb["created_at"],
-            $areaDb["secretariaId"]
-        );
-
-        return $areaDto;
+        
+        $areaDtoList = [];
+        $user = User::where('id', $responsableId)->first();
+        $name = ($user !== null) ? $user->name.' '.$user->apPaterno.' '.$user->apMaterno : "Sin responsable asignado";
+        if(count($areaDb) > 0){
+            foreach ($areaDb as $area) {
+                $areaDtoList[] = new AreaDTO(
+                    $area['id'],
+                    $area['nombre'],
+                    $area['siglas'],
+                    $name,
+                    $area['created_at'],
+                    $area['secretariaId']
+                );
+            }
+        }
+        return $areaDtoList;
     }
 
     public function setResponsableArea(User $user)

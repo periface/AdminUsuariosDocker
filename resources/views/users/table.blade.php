@@ -11,7 +11,9 @@
                     <th class="text-center">Correo Electrónico</th>
                     <th class="text-center">Fecha registro</th>
                     <th class="text-center">Estatus</th>
+                    @if (Auth::user()->hasRole('ADM'))
                     <th class="text-center">Opciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +51,7 @@
                                     </span>
                                 @endif
                             </td>
+                            @if (Auth::user()->hasRole('ADM'))
                             <td class="text-center">
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">
@@ -67,6 +70,8 @@
                                     </ul>
                                 </div>
                             </td>
+                            @endif
+                            
                         </tr>
                     @endforeach
                 @else

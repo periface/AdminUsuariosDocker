@@ -114,8 +114,10 @@ class UserService
                     $user->created_at,
                     $user->updated_at,
                     $user->areaId,
+                    $area['nombre'],
+                    null, null,
                     $user->secretariaId,
-                    $area != null ? $area['nombre'] : null
+                    $user->is_active
                 );
             }
         }

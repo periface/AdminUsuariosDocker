@@ -60,10 +60,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Accesos para responsables de área
-    Route::group(['middleware' => ['role:ADM|SPA']], function () {
-        Route::get('users',                                     [UserController::class, 'index']);
-        Route::get('areas',                                     [AreaController::class, 'index']);
-    });
+    // Route::group(['middleware' => ['role:ADM|SPA']], function () {
+    //     Route::get('users',                                     [UserController::class, 'index']);
+    //     Route::get('areas',                                     [AreaController::class, 'index']);
+    // });
 
     // Áreas
     Route::group(['middleware' => ['role:ADM']], function () {

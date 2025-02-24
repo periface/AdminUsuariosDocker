@@ -22,23 +22,7 @@ class AreaController extends Controller
 
     public function index()
     {
-        $user = auth()->user();
-
-        $role = $user->getRoleNames();
-
-        switch ($role[0]) {
-            case 'SPA':
-                $area = Area::find($user->areaId);
-                $areas = $this->areaService->getAreaById($area);
-                break;
-
-            default:
-                $areas = $this->areaService->getAllAreas();
-                break;
-        }
-
-
-        return view('areas.index', compact('areas'));
+        return view('areas.index');
     }
 
     public function create()
@@ -58,20 +42,17 @@ class AreaController extends Controller
 
     public function fetchAreas() {
         $user = auth()->user();
-
         $role = $user->getRoleNames();
 
         switch ($role[0]) {
-            case 'SPA':
-                $area = Area::find($user->areaId);
-                $areas = $this->areaService->getAreaById($area);
-                break;
-
-            default:
+            case 'ADM':
                 $areas = $this->areaService->getAllAreas();
                 break;
+                
+            default:
+                $areas = $this->areaService->getAreaById($user->areaId, $user->id);
+                break;
         }
-
         return view('areas.table', compact('areas'));
     }
 }

@@ -116,9 +116,6 @@ export const editFormUser = async (user) => {
             closeModal();
             showNotification('Proceso Completado', responseJson.data.attributes.data, 'success');
             setTimeout(() => loadUsers(), 800);
-        } else {
-            console.log(responseJson);
-            showNotification('Solicitud no procesada', responseJson.data.attributes.data, 'error');
         }
     }
 }
@@ -147,6 +144,53 @@ export const confirmDelete = (user) => {
                 }, 800);
             };
 
+        }
+    });
+}
+
+
+let prevRolText = null;
+
+// Capturar el valor previo antes de que el usuario cambie la opción
+document.addEventListener('focus', function (event) {
+    if (event.target.id === 'roleId') {
+        const selectedOption = event.target.selectedOptions[0]; // Almacena el valor actual cuando el select gana el foco
+        prevRolText = selectedOption.text;
+    }
+}, true);
+
+document.addEventListener('change', function (event) {
+    if (event.target.id === 'roleId') {
+        const selectedOption = event.target.selectedOptions[0];
+        const currentRolText = selectedOption.text; // El valor después de hacer el cambio
+
+        console.log(event);
+        console.log('Valor previo:', prevRolText);
+        console.log('Valor actual:', currentRolText);
+
+        // Hacer la comparación
+        if (prevRolText === 'Supervisor de Área' && currentRolText !== prevRolText) {
+            confirmAction('¿Desea continuar?', 'Si cambias el rol del usuario, el área quedará sin un responsable asignado.', 'warning');
+        } else {
+            console.log('El valor no cambió de "Supervisor de Área"');
+        }
+    }
+});
+
+const confirmAction = (title, text, icon) => {
+    Swal.fire({
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            return true;
+        } else {
+            closeModal();
         }
     });
 }

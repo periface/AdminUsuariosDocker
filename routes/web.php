@@ -37,7 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/principal',                                         [PrincipalController::class, 'index'])->name('principal');
 
     // Usuarios
-    Route::group(['middleware' => ['role:ADM']], function () {
+    // Route::group(['middleware' => ['role:ADM']], function () {
         Route::get('/users',                                         [UserController::class, 'index']);
         Route::get('/users/create',                                  [UserController::class, 'add']);
         Route::get('/users/{user}/edit',                             [UserController::class, 'edit']);
@@ -55,7 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/permissions/{user}/available-permissions',      [PermissionController::class, 'getAvailablePermissions']);
         Route::get('/permissions/{role}/available-permissions-role', [PermissionController::class, 'getAvailablePermissionsRole']);
         Route::get('/permissions/add',                               [PermissionController::class, 'addPermissionForm']);
-    });
+    // });
 
     // Accesos para responsables de área
     // Route::group(['middleware' => ['role:ADM|SPA']], function () {

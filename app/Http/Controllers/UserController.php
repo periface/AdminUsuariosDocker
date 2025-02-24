@@ -94,12 +94,12 @@ class UserController extends Controller
         $role = $user->getRoleNames();
 
         switch ($role[0]) {
-            case 'SPA':
-                $users = $this->userService->getUsersByArea($user);
-                break;
-            
-            default:
+            case 'ADM':
                 $users = $this->userService->getAllUsers();
+                break;
+                
+                default:
+                $users = $this->userService->getUsersByArea($user);
                 break;
         }
 
