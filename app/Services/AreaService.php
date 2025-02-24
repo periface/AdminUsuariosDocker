@@ -70,4 +70,9 @@ class AreaService
             ->update(['responsableId' => $user->id]);
         return $area;
     }
+
+    public function hasResponsableArea($areaId){
+        $area = Area::find($areaId);
+        return $area['responsableId'];
+    }
 }

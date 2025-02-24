@@ -199,6 +199,35 @@ class UserController extends Controller
             'apPaterno' => 'required'
         ]);
 
+        $role = Role::find($request->roleId);
+
+        // 5.- Si el rol es SPA, lo establecemos como responsable del área
+        if($role->name === "SPA"){
+            $responsable = $this->areaService->hasResponsableArea($request->areaId);
+            if($responsable && $responsable !== $user->id){
+                return response()->json([
+                    'data' => [
+                        'attributes' => [
+                            'status' => 'error',
+                            'data' => 'Su solicitud no puede ser procesada, el área ya cuenta con un responsable', // $user,
+                            'statusCode' => Response::HTTP_UNPROCESSABLE_ENTITY
+                        ]
+                    ]
+                ]);
+            }
+            $area = $this->areaService->setResponsableArea($user);
+            
+            // 6.- Creamos la relación Usuario - Area
+            UserArea::create([
+                'userId' => $user->id,
+                'areaId' => $request->areaId,
+                'updated_at' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'rolId' => $role->id
+            ]);
+
+        }
+
         $user->update($request->all());
         $user->roles()->sync([$request->input('roleId')]);
 

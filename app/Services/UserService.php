@@ -41,6 +41,36 @@ class UserService
         return $userDtoList;
     }
 
+    /**
+     * 
+    */
+    public function getAllUsersArea($areaId){
+        
+        $usersDtoList = [];
+        $users = User::find($areaId)
+                    ->get();
+
+        if ( !$users && count($users) > 0) {
+            foreach ($users as $user) {
+                $userDtoList[] = new UserDTO(
+                    $user->id,
+                    $user->name,
+                    $user->apPaterno,
+                    $user->apMaterno,
+                    $user->email,
+                    $user->created_at,
+                    $user->updated_at,
+                    $user->areaId,
+                    null,
+                    null, null,
+                    $user->secretariaId,
+                    $user->is_active
+                );
+            }
+        }
+        return $userDtoList;        
+    }
+
     public function getUserById(User $user)
     {
 

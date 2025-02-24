@@ -116,6 +116,9 @@ export const editFormUser = async (user) => {
             closeModal();
             showNotification('Proceso Completado', responseJson.data.attributes.data, 'success');
             setTimeout(() => loadUsers(), 800);
+        } else {
+            console.log(responseJson);
+            showNotification('Solicitud no procesada', responseJson.data.attributes.data, 'error');
         }
     }
 }
