@@ -2,26 +2,23 @@
     <input type="text" class="form-control form-control-sm js-search" placeholder="Buscar"
         {{ $search ? 'value=' . $search : '' }}>
 </div>
-<table class="table table-striped projects" id="dimensionesTable">
+<table class="table table-striped projects table-sm" id="dimensionesTable">
     <thead class="small">
         <tr class="w-full">
-            <th style="width: 10%" data-sort="id" data-order="desc" class="sort cursor-pointer ">
-                # <i class="fas fa-sort pl-2"></i>
-            </th>
-            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 15%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Nombre <i class="fas fa-sort pl-2"></i>
             </th>
 
-            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 40%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Descripcion <i class="fas fa-sort pl-2"></i>
             </th>
             <th style="width: 20%" data-sort="descripcion" data-order="asc" class="sort cursor-pointer">
                 Creado en <i class="fas fa-sort pl-2"></i>
             </th>
-            <th style="width: 20%" data-sort="status" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 10%" data-sort="status" data-order="asc" class="sort cursor-pointer">
                 Status <i class="fas fa-sort pl-2"></i>
             </th>
-            <th style="width: 100%" class="sort cursor-pointer flex align-middle items-center">
+            <th style="width: 15%" class="sort cursor-pointer flex align-middle items-center">
                 Acciones
             </th>
         </tr>
@@ -34,23 +31,22 @@
         @else
             @foreach ($dimensiones as $dimension)
                 <tr>
-                    <td>{{ $dimension['id'] }}</td>
-                    <td>{{ $dimension['nombre'] }}</td>
+                    <td class="text-sm">{{ $dimension['nombre'] }}</td>
 
-                    <td>{{ $dimension['descripcion'] }}</td>
-                    <td>{{ $dimension['secretaria'] }}</td>
-                    <td>
+                    <td class="text-sm">{{ $dimension['descripcion'] }}</td>
+                    <td class="text-sm">{{ $dimension['secretaria'] }}</td>
+                    <td class="text-sm">
                         @include('partials.activo_inactivo', ['status' => $dimension['status']])
                     </td>
-                    <td>
+                    <td class="text-sm">
                         <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
-                            <button class="btn btn-primary text-white btn-primary btn-sm js-details">
+                            <button class="btn  text-white btn-inst3 btn-sm js-details">
                                 <a class="dimensionModalBtn text-white"
                                     data-id="{{ $dimension->id }}">Editar</a>
                             </button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                <button type="button" class="btn btn-sm btn-inst3 dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">

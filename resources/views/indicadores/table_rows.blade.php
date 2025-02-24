@@ -2,27 +2,30 @@
     <input type="text" class="form-control form-control-sm js-search" placeholder="Buscar"
         {{ $search ? 'value=' . $search : '' }}>
 </div>
-<table class="table table-striped projects" id="indicadoresTable">
-    <thead class="small">
-        <tr class="w-full">
-            <th style="width: 30%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+<table class="table table-sm table-striped projects" id="indicadoresTable">
+    <thead class="small thead">
+        <tr class="w-full text-sm">
+
+            <th style="width: 30%" data-sort="nombre" data-order="asc" class="sort text-sm cursor-pointer">
                 Nombre <i class="fas fa-sort pl-2"></i>
             </th>
 
-            <th style="width: 15%" data-sort="dimension" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 15%" data-sort="dimension" data-order="asc" class="sort text-sm cursor-pointer">
                 Dimension <i class="fas fa-sort pl-2"></i>
             </th>
             <th style="width: 10%" data-sort="categoria" data-order="asc" class="sort cursor-pointer">
                 Categoría <i class="fas fa-sort pl-2"></i>
             </th>
-
+            <th style="width: 10%" data-sort="sentido" data-order="asc" class="sort cursor-pointer">
+                Sentido <i class="fas fa-sort pl-2"></i>
+            </th>
             <th style="width: 20%" data-sort="metodo_calculo" data-order="asc" class="sort cursor-pointer">
                 Método de Cálculo <i class="fas fa-sort pl-2[a"></i>
             </th>
             <th style="width: 10%" data-sort="status" data-order="asc" class="sort cursor-pointer">
                 Status <i class="fas fa-sort pl-2"></i>
             </th>
-            <th style="width: 100%" class="flex align-middle items-center">
+            <th style="width: 100%" class="flex align-middle">
                 Acciones
             </th>
         </tr>
@@ -35,47 +38,54 @@
         @else
             @foreach ($indicadores as $indicador)
                 <tr>
-                    <td>{{ $indicador['nombre'] }}
-                        @if ($indicador['sentido'] == 'ascendente')
-                            <span class="text-xs text-tam-rojo-fuerte font-semibold">
-                                [Ascendente]
-                            </span>
-                        @elseif ($indicador['sentido'] == 'descendente')
-                            <span class="text-xs text-tam-dorado-fuerte font-semibold">
-                                [Descendente]
-                            </span>
-                        @else
-                            <span class="text-xs text-teal-600 font-semibold">
-                                [Constante]
-                            </span>
-                        @endif
+                    <td class="text-sm">{{ $indicador['nombre'] }}
 
                     </td>
 
-                    <td>{{ $indicador['dimension'] }}</td>
-                    <td>{{ $indicador['categoria'] }}</td>
-                    <td>
+                    <td class="text-sm">{{ $indicador['dimension'] }}</td>
+                    <td class="text-sm">{{ $indicador['categoria'] }}</td>
+                    <td class="text-center text-sm">
+                        @if ($indicador['sentido'] == 'ascendente')
+                            <span class="text-xs badge badge-success text-tam-rojo-fuerte font-semibold">
+                                Ascendente <i class="fas fa-arrow-up"></i>
+                            </span>
+                        @elseif ($indicador['sentido'] == 'descendente')
+                            <span class="text-xs badge badge-primary text-tam-dorado-fuerte font-semibold">
+                                Descendente <i class="fas fa-arrow-down"></i>
+                            </span>
+                        @else
+                            <span class="text-xs badge badge-secondary text-teal-600 font-semibold">
+                                Constante <i class="fas fa-arrows-alt-h"></i>
+                            </span>
+                        @endif
+                    </td>
+                    <td class="text-sm">
                         @if ($indicador['indicador_confirmado'])
                             <span class="badge badge-success">
                                 <i class="fas fa-check"></i>
+
+                        <a href="#" class="js-set-formula text-white" data-id="{{ $indicador->id }}"
+                            title="{{ $indicador['metodo_calculo'] }}">{{ $indicador['non_evaluable_formula'] }}
+                            <a>
                             </span>
                         @else
                             <span class="badge badge-danger">
                                 <i class="fas fa-hourglass-half"></i>
-                            </span>
-                        @endif
-                        <a href="#" class="js-set-formula" data-id="{{ $indicador->id }}"
+
+                        <a href="#" class="js-set-formula text-white" data-id="{{ $indicador->id }}"
                             title="{{ $indicador['metodo_calculo'] }}">{{ $indicador['non_evaluable_formula'] }}
                             <a>
+                            </span>
+                        @endif
                     </td>
-                    <td>
+                    <td class="text-sm">
                         @if ($indicador['status'] === 1)
                             <span class="badge badge-success">Activo</span>
                         @else
                             <span class="badge badge-danger">Inactivo</span>
                         @endif
                     </td>
-                    <td>
+                    <td class="text-sm">
                         <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
                             <button type="button" class="btn btn-primary indicadorModalBtn"
@@ -86,8 +96,7 @@
                                 </button>
                                 <ul class="dropdown-menu">
 
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('indicador.details', $indicador->id) }}"
+                                    <li><a class="dropdown-item" href="{{ route('indicador.details', $indicador->id) }}"
                                             data-id="{{ $indicador->id }}">Detalles</a></li>
                                     <li><a class="dropdown-item js-set-formula" href="#"
                                             data-id="{{ $indicador->id }}">Definir formula</a></li>

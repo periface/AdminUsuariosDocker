@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="table table-sm table-striped">
     <thead class="thead small">
         <tr>
             <th class=" w-1/12 text-center">#</th>

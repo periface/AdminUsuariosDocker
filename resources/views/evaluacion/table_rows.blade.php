@@ -104,12 +104,12 @@
                         @endif
                     </td>
                     <td>
-                        <div class="btn-group btn-group-sm" role="group"
+                        <div class="btn-group btn-group-sm " role="group"
                             aria-label="Button group with nested dropdown">
-                            <button type="button" class="btn btn-primary js-view-registros"
+                            <button type="button" class="btn btn-sm btn-inst3 js-view-registros"
                                 data-id="{{ $evaluacion->id }}">Registros</button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                <button type="button" class="btn btn-inst3 dropdown-toggle btn-sm" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">

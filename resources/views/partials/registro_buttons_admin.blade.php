@@ -1,15 +1,15 @@
-<div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
+<div class="btn-group btn-group-sm " role="group" aria-label="Button group with nested dropdown">
     @if (new DateTime($espacio['fecha']) == new DateTime('today'))
         @if ($espacio['status'] == 'capturado')
             <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
-                class="js-registrar btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
+                class="js-registrar btn btn-inst3 btn-sm indicadorModalBtn">
                 <i class="fa fa-plus
                                 "></i>
                 Editar
             </button>
         @else
             <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
-                class="js-registrar btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
+                class="js-registrar btn btn-inst3 btn-sm indicadorModalBtn">
                 <i class="fa fa-plus
                                 "></i>
                 Registrar
@@ -17,14 +17,14 @@
         @endif
     @else
         <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
-            class="js-registrar btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
+            class="js-registrar btn btn-inst3 btn-sm indicadorModalBtn">
             <i class="fa fa-plus
                                 "></i>
             Editar
         </button>
     @endif
     <div class="btn-group" role="group">
-        <button type="button" class="btn btnSecondaryOficial btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+        <button type="button" class="btn btn-inst3 btn-sm dropdown-toggle" data-bs-toggle="dropdown"
             aria-expanded="false">
         </button>
         <ul class="dropdown-menu">

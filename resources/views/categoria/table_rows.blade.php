@@ -3,26 +3,23 @@
     <input type="text" class="form-control form-control-sm js-search" placeholder="Buscar"
         {{ $search ? 'value=' . $search : '' }}>
 </div>
-<table class="table table-striped projects" id="categoriasTable">
+<table class="table table-sm table-striped projects" id="categoriasTable">
     <thead class="small">
         <tr class="w-full">
-            <th style="width: 10%" data-sort="id" data-order="desc" class="sort cursor-pointer ">
-                # <i class="fas fa-sort pl-2"></i>
-            </th>
-            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 15%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Nombre <i class="fas fa-sort pl-2"></i>
             </th>
 
-            <th style="width: 20%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 40%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Descripcion <i class="fas fa-sort pl-2"></i>
             </th>
             <th style="width: 20%" data-sort="descripcion" data-order="asc" class="sort cursor-pointer">
                 Creado en <i class="fas fa-sort pl-2"></i>
             </th>
-            <th style="width: 20%" data-sort="status" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 10%" data-sort="status" data-order="asc" class="sort cursor-pointer">
                 Status <i class="fas fa-sort pl-2"></i>
             </th>
-            <th style="width: 100%" class="sort cursor-pointer flex align-middle items-center">
+            <th style="width: 15%" class="sort cursor-pointer flex align-middle items-center">
                 Acciones
             </th>
         </tr>
@@ -35,15 +32,14 @@
         @else
             @foreach ($categorias as $categoria)
                 <tr>
-                    <td>{{ $categoria['id'] }}</td>
-                    <td>{{ $categoria['nombre'] }}</td>
+                    <td class="text-sm">{{ $categoria['nombre'] }}</td>
 
-                    <td>{{ $categoria['descripcion'] }}</td>
-                    <td>{{ $categoria['secretaria'] }}</td>
-                    <td>
+                    <td class="text-sm">{{ $categoria['descripcion'] }}</td>
+                    <td class="text-sm">{{ $categoria['secretaria'] }}</td>
+                    <td class="text-sm">
                         @include('partials.activo_inactivo', ['status' => $categoria['status']])
                     </td>
-                    <td>
+                    <td class="text-sm">
                         <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
                             <button class="btn btn-primary text-white btn-primary btn-sm js-details">
@@ -65,7 +61,7 @@
             @endforeach
             <tr>
 
-                <td colspan="2">
+                <td colspan="4">
                     <div class="flex items-center justify-start">
                         <div class="w-1/2">
                             {{ $totalRows }} de {{ $grandTotalRows }} registros

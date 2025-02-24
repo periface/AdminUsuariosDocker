@@ -2,7 +2,7 @@
     <input type="text" class="form-control form-control-sm js-search" placeholder="Buscar"
         {{ $search ? 'value=' . $search : '' }}>
 </div>
-<table class="table table-bordered table-striped table-hover" id="table-container">
+<table class="table table-sm table-bordered table-striped table-hover" id="table-container">
     <thead>
 
         <tr>

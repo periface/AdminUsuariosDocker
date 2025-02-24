@@ -39,8 +39,6 @@
                                 <option value="{{ $categoria['id'] }}"
                                     {{ $indicador['categoriaId'] == $categoria['id'] ? 'selected' : '' }}>
                                     {{ $categoria['nombre'] }}</option>
-                            @elseif ($categoria['id'] == $categoriaId)
-                                <option value="{{ $categoria['id'] }}" selected>{{ $categoria['nombre'] }}</option>
                             @else
                                 <option value="{{ $categoria['id'] }}">{{ $categoria['nombre'] }}</option>
                             @endif
