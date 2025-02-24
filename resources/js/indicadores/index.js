@@ -15,7 +15,7 @@
 
 import papaparse from "papaparse";
 import { Repl } from 'pochijs';
-import { delete_indicador, get_rows, load_indicador_form, post_indicador, get_dimension_by_name } from './cruds.js';
+import { delete_indicador, get_rows, load_indicador_form, get_categoria_by_name, post_indicador, get_dimension_by_name } from './cruds.js';
 import { debounce, createToast, show_confirm_action, assert, restart_popovers } from '../utils/helpers.js';
 const state = {
     API_URL: "/api/v1/indicador",
@@ -560,7 +560,9 @@ function set_indicadores_form_evt(indicadores_db) {
         for await (let indicador of indicadores_db) {
             const estado = document.querySelector(`.js-estados-${i}`);
             estado.innerHTML = badgeProcessing;
+            console.log(indicador);
             const dimension_response = await get_dimension_by_name(indicador.dimension, state);
+            const categoria_response = await get_categoria_by_name(indicador.categoria, state);
             if (dimension_response.error) {
                 estado.innerHTML = badgeError + ' <br>' + dimension_response.error;
                 i++;
@@ -571,8 +573,13 @@ function set_indicadores_form_evt(indicadores_db) {
                 i++;
                 continue;
             }
+            if (categoria_response.error) {
+                estado.innerHTML = badgeError + ' <br>' + categoria_response.error;
+                i++;
+                continue;
+            }
             const dimensionId = dimension_response.data[0].id;
-
+            const categoriaId = categoria_response.data[0].id;
             const validate_response = validate_indicador(indicador);
             if (validate_response.error) {
                 estado.innerHTML = badgeError + ' <br>' + validate_response.error;
@@ -594,6 +601,7 @@ function set_indicadores_form_evt(indicadores_db) {
             form_data.append('dimensionId', dimensionId);
             form_data.append('requiere_anexo', indicador.requiere_anexo);
             form_data.append('medio_verificacion', indicador.medio_verificacion);
+            form_data.append('categoriaId', categoriaId);
             form_data.append('categoria', indicador.categoria);
 
             const response_json = await post_indicador(form_data, state);
@@ -669,6 +677,7 @@ function make_indicadores_db(dimensiones) {
     let indicadores_res = [];
     for (let dimension in dimensiones) {
         const indicadores = dimensiones[dimension].indicadores.map(indicador => {
+            console.log(indicador);
             // just fill the blanks
             indicador["evaluable_formula"] = "";
             indicador["non_evaluable_formula"] = "";
@@ -718,7 +727,7 @@ function make_indicadores_db(dimensiones) {
 function group_dimensiones(data) {
     const dimensiones = [];
     for (let row of data) {
-        if (row["Dimensión"] === undefined) {
+        if (row["Dimensión"] === undefined || row["Dimensión"] === '') {
             continue;
         }
 

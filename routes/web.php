@@ -4,6 +4,7 @@ use App\Http\Controllers\AnexosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MonitorController;
@@ -69,7 +70,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/areas/{area}/edit',                              [AreaController::class, 'createOrEdit']);
     Route::get('/areas/create',                                   [AreaController::class, 'create']);
     Route::get('/areas/fetchAreas',                               [AreaController::class, 'fetchAreas']);
-    
+
     // });
 
     // Auth
@@ -90,6 +91,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/get_dimension_fields',  [DimensionController::class, 'get_dimension_fields'])->name('get_dimension_fields');
     });
 
+    Route::prefix('categoria')->name("categoria.")->middleware(['role:ADM'])->group(function () {
+        Route::get('/',  [CategoriasController::class, 'index'])->name('index');
+        Route::get('/{categoriaId}/indicadores',  [CategoriasController::class, 'categoria_indicadores'])->name('indicadores');
+        Route::post('/get_table_rows',  [CategoriasController::class, 'get_rows'])->name('get_table_rows');
+        Route::get('/get_categoria_fields',  [CategoriasController::class, 'get_categoria_fields'])->name('get_categoria_fields');
+    });
     Route::prefix('indicador')->name("indicador.")->middleware(['role:ADM'])->group(function () {
         Route::get('/',  [IndicadorController::class, 'index'])->name('index');
         Route::get('/details/{id}',  [IndicadorController::class, 'details'])->name('details');

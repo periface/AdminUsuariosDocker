@@ -6,6 +6,7 @@ use App\Models\Area;
 use App\Models\Dimension;
 use App\Models\Evaluacion;
 use App\Models\Indicador;
+use App\Models\IndicadorCategoria;
 use App\Models\Secretaria;
 use App\Models\Variable;
 use App\Services\EvaluacionService;
@@ -92,7 +93,9 @@ class IndicadorController extends BaseController
         try {
             // Agregamos validación al request para mantener integridad en el información
             [$data, $indicador_found, $error] = $this->get_indicador_from_req($request);
+            $categoriaName = IndicadorCategoria::find($data["categoriaId"])["nombre"];
             $variables = $request->variables;
+            $data["categoria"] = $categoriaName;
             if (!$variables) {
                 $variables = "[]";
             }
@@ -364,17 +367,46 @@ class IndicadorController extends BaseController
     public function get_indicador_fields(Request $request)
     {
         $dimensiones = Dimension::all();
+        $categorias = IndicadorCategoria::all();
         $id = $request->id;
         if (!$id) {
-            return view('indicadores.fields', ['indicador' => null, 'dimensionId' => $request->dimensionId, 'dimensiones' => $dimensiones]);
+            return view(
+                'indicadores.fields',
+                [
+                    'indicador' => null,
+                    'dimensionId' => $request->dimensionId,
+                    'dimensiones' => $dimensiones,
+                    'categorias' => $categorias
+                ]
+            );
         }
         $set_formula = $request->set_formula;
         $dimensionId = $request->dimensionId;
         $indicador = Indicador::find($id);
+
+        $categoriaId = $indicador["categoriaId"];
         if ($set_formula) {
-            return view('indicadores.set_formula', ['indicador' => $indicador, 'dimensionId' => $dimensionId, 'dimensiones' => $dimensiones]);
+            return view(
+                'indicadores.set_formula',
+                [
+                    'indicador' => $indicador,
+                    'dimensionId' => $dimensionId,
+                    'dimensiones' => $dimensiones,
+                    'categorias' => $categorias,
+                    'categoriaId' => $categoriaId
+                ]
+            );
         }
-        return view('indicadores.fields', ['indicador' => $indicador, 'dimensionId' => $dimensionId, 'dimensiones' => $dimensiones]);
+        return view(
+            'indicadores.fields',
+            [
+                'indicador' => $indicador,
+                'dimensionId' => $dimensionId,
+                'categoriaId' => $categoriaId,
+                'dimensiones' => $dimensiones,
+                'categorias' => $categorias
+            ]
+        );
     }
 
     # Helpers
@@ -403,6 +435,7 @@ class IndicadorController extends BaseController
             'requiere_anexo' => 'required',
             'medio_verificacion' => 'required',
             'categoria' => 'nullable',
+            'categoriaId' => 'required',
         ]);
         $input_id = $request->id ?? null;
         if ($validator->fails()) {

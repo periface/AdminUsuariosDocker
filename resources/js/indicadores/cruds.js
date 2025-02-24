@@ -22,6 +22,35 @@ async function delete_indicador(id, state) {
         toggle_loading(false, 'loaderbd');
     }
 }
+
+async function get_categoria_by_name(name, state) {
+    try {
+        toggle_loading(true);
+        const response = await fetch("/api/v1/categoria/get_by_name/" + name, {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': state.xcsrftoken,
+                "Accept": "application/json, text/plain, */*",
+                "X-Requested-With": "XMLHttpRequest",
+                "Content-Type": "application/json",
+                "Authorization": 'Bearer ' + state.bearertoken,
+            },
+            credentials: 'same-origin'
+        });
+        const json_response = await response.json();
+        return json_response;
+    }
+    catch (error) {
+        console.error(error);
+        return {
+            error: error,
+            data: null
+        };
+    }
+    finally {
+        toggle_loading(false);
+    }
+}
 async function get_dimension_by_name(name, state) {
     try {
         toggle_loading(true);
@@ -135,4 +164,4 @@ async function load_indicador_form(id, set_formula, state) {
         toggle_loading(false, 'loaderbd');
     }
 }
-export { delete_indicador, get_rows, post_indicador, load_indicador_form, get_dimension_by_name };
+export { delete_indicador, get_rows, post_indicador, load_indicador_form, get_categoria_by_name, get_dimension_by_name };

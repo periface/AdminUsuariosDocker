@@ -3,20 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
-use App\Models\Dimension;
-use App\Models\Secretaria;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Routing\Controller as BaseController;
+use App\Models\IndicadorCategoria;
+use App\Models\Secretaria;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
-class DimensionController extends BaseController
+class CategoriasController extends Controller
 {
 
     public function index()
     {   // todo: viewmodelllll para vista principal
-        return view('dimension.index');
+        return view('categoria.index');
     }
 
     public function get_by_name(Request $request)
@@ -26,22 +25,22 @@ class DimensionController extends BaseController
                 'status' => 'error',
                 'data' => null,
                 'statusCode' => 400,
-                'error' => "No se encontró la dimensión"
+                'error' => "No se encontró la categoria"
             ], 400);
         }
         $name = $request->name;
-        $dimension = Dimension::where('nombre', $name)->get();
-        if ($dimension->count() === 0) {
+        $categoria = IndicadorCategoria::where('nombre', $name)->get();
+        if ($categoria->count() === 0) {
             return response()->json([
                 'status' => 'error',
                 'data' => null,
                 'statusCode' => 404,
-                'error' => "No se encontró la dimension"
+                'error' => "No se encontró la categoria"
             ], 404);
         }
         return response()->json([
             'status' => 'success',
-            'data' => $dimension,
+            'data' => $categoria,
             'statusCode' => 200
         ], 200);
     }
@@ -56,7 +55,7 @@ class DimensionController extends BaseController
     public function post(Request $request)
     {
         // Agregamos validación al request para mantener integridad en la información
-        [$data, $dimensionFound, $error] = $this->get_dimension_from_req($request);
+        [$data, $categoriaFound, $error] = $this->get_categoria_from_req($request);
 
         if ($error) {
             return response()->json([
@@ -78,23 +77,21 @@ class DimensionController extends BaseController
                 'error' => 'No se encontró la secretaría'
             ], 404);
         }
-        if ($dimensionFound) {
-            $dimensionFound['secretariaId'] = $secretaria->id; //Agregamos el id de la secretaria al request
-            $dimensionFound['secretaria'] = $secretaria["nombre"];
-            $dimensionFound->update($data);
+        if ($categoriaFound) {
+            $categoriaFound['secretariaId'] = $secretaria->id; //Agregamos el id de la secretaria al request
+            $categoriaFound['secretaria'] = $secretaria["nombre"];
+            $categoriaFound->update($data);
             return response()->json([
                 'status' => 'success',
-                'data' => $dimensionFound->id,
+                'data' => $categoriaFound->id,
                 'statusCode' => 200
             ], 200);
         }
 
         $data['secretariaId'] = $area["secretariaId"]; //Agregamos el id de la secretaria al request
         $data['secretaria'] = $secretaria["nombre"];
-        Log::info($data);
         // Si la validación se cumple, guardamos en la base de datos
-        $id = Dimension::create($data)->id;
-
+        $id = IndicadorCategoria::create($data)->id;
         // Una vez guardado en la base de datos enviamos respuesta exitosa a la vista
         return response()->json([
             'status' => 'success',
@@ -108,26 +105,26 @@ class DimensionController extends BaseController
         try {
 
             if (!$request->id) {
-                $dimensiones = Dimension::all();
+                $categorias = IndicadorCategoria::all();
                 return response()->json([
                     'status' => 'success',
-                    'data' => $dimensiones,
+                    'data' => $categorias,
                     'statusCode' => 200
                 ], 200);
             }
 
-            $dimension = Dimension::find($request->id);
-            if (!$dimension) {
+            $categoria = IndicadorCategoria::find($request->id);
+            if (!$categoria) {
                 return response()->json([
                     'status' => 'error',
                     'data' => null,
-                    'error' => 'No se encontró la dimensión',
+                    'error' => 'No se encontró la categoria',
                     'statusCode' => 404
                 ], 404);
             }
             return response()->json([
                 'status' => 'success',
-                'data' => $dimension,
+                'data' => $categoria,
                 'statusCode' => 200
             ], 200);
         } catch (\Throwable $_) {
@@ -142,7 +139,7 @@ class DimensionController extends BaseController
     public function put(Request $request)
     {
 
-        [$data, $dimension, $error] = $this->get_dimension_from_req($request);
+        [$data, $categoria, $error] = $this->get_categoria_from_req($request);
         if ($error) {
             return response()->json([
                 'status' => 'error',
@@ -152,10 +149,10 @@ class DimensionController extends BaseController
             ], 422);
         }
         try {
-            $dimension->update($data);
+            $categoria->update($data);
             return response()->json([
                 'status' => 'success',
-                'data' => $dimension,
+                'data' => $categoria,
                 'statusCode' => 200
             ], 200);
         } catch (\Throwable $_) {
@@ -170,25 +167,25 @@ class DimensionController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $dimension = Dimension::find($request->id);
-            $indicadores_dimension = $dimension->indicadores;
-            if ($indicadores_dimension->count() > 0) {
+            $categoria = IndicadorCategoria::find($request->id);
+            $indicadores_categoria = $categoria->indicadores;
+            if ($indicadores_categoria->count() > 0) {
                 return response()->json([
                     'status' => 'error',
-                    'error' => 'No se puede eliminar la dimensión porque tiene indicadores asociados',
+                    'error' => 'No se puede eliminar la categoria porque tiene indicadores asociados',
                     'data' => null,
                     'statusCode' => 400
                 ], 400);
             }
-            if (!$dimension) {
+            if (!$categoria) {
                 return response()->json([
                     'status' => 'error',
-                    'error' => 'No se encontró la dimensión',
+                    'error' => 'No se encontró la categoria',
                     'data' => null,
                     'statusCode' => 404
                 ], 404);
             }
-            $dimension->delete();
+            $categoria->delete();
             return response()->json([
                 'status' => 'success',
                 'data' => request()->id,
@@ -207,7 +204,7 @@ class DimensionController extends BaseController
     #Vistas parciales
 
     /**
-     * Función para obtener las filas de la tabla de dimensiones
+     * Función para obtener las filas de la tabla de categorias
      * @param Request $request
      * @return \Illuminate\Contracts\View\View
      */
@@ -219,13 +216,13 @@ class DimensionController extends BaseController
         $sort = $request->input("sort") ?? 'id';
         $order = $request->input("order") ?? 'desc';
         $search = $request->input("search") ?? '';
-        $dimensiones = [];
+        $categorias = [];
         $grandTotalRows = 0;
         $totalRows = 0;
         $totalPages = 0;
         try {
             if ($search !== '') {
-                $dimensiones = Dimension::where('nombre', 'like', "%$search%")
+                $categorias = IndicadorCategoria::where('nombre', 'like', "%$search%")
                     ->orWhere('descripcion', 'like', "%$search%")
                     ->orWhere('sentido', 'like', "%$search%")
                     ->orWhere('status', 'like', "%$search%")
@@ -233,15 +230,15 @@ class DimensionController extends BaseController
                     ->limit($limit)
                     ->offset($offset)
                     ->get();
-                $totalRows = $dimensiones->count();
+                $totalRows = $categorias->count();
                 $grandTotalRows = $totalRows;
                 $totalPages = ceil($totalRows / $limit);
             } else {
-                $dimensiones = Dimension::orderBy($sort, $order)
+                $categorias = IndicadorCategoria::orderBy($sort, $order)
                     ->limit($limit)
                     ->offset($offset)
                     ->get();
-                $grandTotalRows = Dimension::count();
+                $grandTotalRows = IndicadorCategoria::count();
                 $totalRows = $grandTotalRows;
                 $totalPages = ceil($totalRows / $limit);
             }
@@ -250,8 +247,8 @@ class DimensionController extends BaseController
             Log::error($_);
         }
 
-        return view('dimension.table_rows', [
-            'dimensiones' => $dimensiones,
+        return view('categoria.table_rows', [
+            'categorias' => $categorias,
             'totalRows' => $totalRows,
             'grandTotalRows' => $grandTotalRows,
             'totalPages' => $totalPages,
@@ -263,28 +260,28 @@ class DimensionController extends BaseController
         ]);
     }
     /**
-     * Función para obtener los campos de una dimensión
+     * Función para obtener los campos de una categoria
      * @param Request $request
      * @return \Illuminate\Contracts\View\View
      */
-    public function get_dimension_fields(Request $request)
+    public function get_categoria_fields(Request $request)
     {
         $id = $request->id;
         if ($id) {
-            $dimension = Dimension::find($id);
-            return view('dimension.fields', ['dimension' => $dimension]);
+            $categoria = IndicadorCategoria::find($id);
+            return view('categoria.fields', ['categoria' => $categoria]);
         }
-        return view('dimension.fields', ['dimension' => null]);
+        return view('categoria.fields', ['categoria' => null]);
     }
 
     # Helpers
 
     /**
-     * Función para validar la información de la dimensión
+     * Función para validar la información de la categoria
      * @param Request $request
-     * @return array [array|null, Dimension|null, string|null]
+     * @return array [array|null, IndicadorCategoria|null, string|null]
      */
-    protected function get_dimension_from_req(Request $request)
+    protected function get_categoria_from_req(Request $request)
     {
         // Agregamos validación al request para mantener integridad en la información
         $validator = Validator::make($request->all(), [
@@ -298,11 +295,11 @@ class DimensionController extends BaseController
         }
         if ($input_id) {
             try {
-                $dimension = Dimension::find(intval($input_id));
-                if (!$dimension) {
-                    return [null, null, 'No se encontró la dimensión'];
+                $categoria = IndicadorCategoria::find(intval($input_id));
+                if (!$categoria) {
+                    return [null, null, 'No se encontró la categoria'];
                 }
-                return [$validator->validated(), $dimension, null];
+                return [$validator->validated(), $categoria, null];
             } catch (\Throwable $_) {
                 return [null, null, $_];
             }

@@ -32,35 +32,19 @@
                 </select>
                 <div class="mt-2">
                     <label for="categoria" class="form-label text-sm">Categoría: </label>
-                    <select class="form-select" id="categoria" name="categoria">
+                    <select class="form-select" id="categoriaId" name="categoriaId">
                         <option value="">Seleccione una categoría</option>
-                        @if ($indicador && $indicador->id)
-                            <option value="Capital Humano"
-                                {{ $indicador['categoria'] == 'Capital Humano' ? 'selected' : '' }}>
-                                Capital Humano</option>
-                            <option value="Capital Organizacional"
-                                {{ $indicador['categoria'] == 'Capital Organizacional' ? 'selected' : '' }}>Capital
-                                Organizacional
-                            </option>
-                            <option value="Capital Tecnologico"
-                                {{ $indicador['categoria'] == 'Capital Tecnologico' ? 'selected' : '' }}>Capital
-                                Tecnologico
-                            </option>
-                            <option value="Capital Financiero"
-                                {{ $indicador['categoria'] == 'Capital Financiero' ? 'selected' : '' }}>Capital
-                                Financiero
-                            </option>
-                            <option value="Capital Relacional"
-                                {{ $indicador['categoria'] == 'Capital Relacional' ? 'selected' : '' }}>Capital
-                                Relacional
-                            </option>
-                        @else
-                            <option value="Capital Humano">Capital Humano</option>
-                            <option value="Capital Organizacional">Capital Organizacional</option>
-                            <option value="Capital Tecnologico">Capital Tecnologico</option>
-                            <option value="Capital Financiero">Capital Financiero</option>
-                            <option value="Capital Relacional">Capital Relacional</option>
-                        @endif
+                        @foreach ($categorias as $categoria)
+                            @if ($indicador && $indicador->id)
+                                <option value="{{ $categoria['id'] }}"
+                                    {{ $indicador['categoriaId'] == $categoria['id'] ? 'selected' : '' }}>
+                                    {{ $categoria['nombre'] }}</option>
+                            @elseif ($categoria['id'] == $categoriaId)
+                                <option value="{{ $categoria['id'] }}" selected>{{ $categoria['nombre'] }}</option>
+                            @else
+                                <option value="{{ $categoria['id'] }}">{{ $categoria['nombre'] }}</option>
+                            @endif
+                        @endforeach
                     </select>
                 </div>
                 <div class="mt-2">
