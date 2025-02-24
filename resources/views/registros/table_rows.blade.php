@@ -6,29 +6,32 @@
     <thead>
 
         <tr>
-            <th>Periodo</th>
-            <th>Estado</th>
-            <th>Resultado</th>
-            <th>Acciones</th>
+            <th style="width: 20%" class="text-sm">Periodo</th>
+
+            <th style="width: 20%"class="text-sm">Fecha de Captura</th>
+            <th style="width:15%" class="text-sm">Estado</th>
+            <th style="width:15%" class="text-sm">Resultado</th>
+            <th style="width: 15%" class="text-sm">Acciones</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($evaluacion_results as $espacio)
             <tr>
                 <td>
-
-                    <span class="text-red-950 text-md font-bold">{{ $espacio['fecha'] }}</span>
-                    <br>
-                    <span class="text-2xl">
+                    <span class="text-sm">
                         @include('partials.periodos_counter', [
                             'frecuencia_medicion' => $frecuencia_medicion,
                             'resultNumber' => $espacio['resultNumber'],
                         ])
-                    </span>
                     <br>
-                    <span class="text-blue-900">{{ $espacio['days_left'] }}</span>
+                    <span class="text-blue-900 text-xs">{{ $espacio['days_left'] }}</span>
+                    </span>
                 </td>
+                <td>
+                    <span class="text-red-950 text-sm">{{ $espacio['fecha'] }}</span>
 
+                    <br>
+                </td>
                 <td>
                     @include('partials.registro_status', [
                         'espacio' => $espacio,
@@ -41,10 +44,7 @@
                 </td>
                 <td>
 
-                    @if (Auth::user()->hasRole('ADM')
-                    || Auth::user()->hasRole('GDI')
-                    || Auth::user()->hasRole('SPA')
-                    )
+                    @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('GDI') || Auth::user()->hasRole('SPA'))
                         @include('partials.registro_buttons_admin', [
                             'espacio' => $espacio,
                         ])

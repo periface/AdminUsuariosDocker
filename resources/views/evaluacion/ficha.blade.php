@@ -85,7 +85,7 @@
             </div>
         </div>
         <div class="p-1 w-full">
-            <div id="total" class="">
+            <div id="total" class="hover:shadow-lg cursor-pointer js-show-details">
             </div>
         </div>
     </div>
