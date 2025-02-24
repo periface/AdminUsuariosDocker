@@ -1,7 +1,7 @@
 import { delete_evaluacion, get_rows, cerrar_evaluacion, load_evaluacion_form, post_evaluacion, load_evaluacion_config } from './cruds.js';
 import { debounce, createToast, show_confirm_action, toggle_loading } from '../utils/helpers.js';
 import { check_date_validity_range, calcula_fechas_captura } from './helpers.js';
-import { PerformanceChart, PerformanceChartOptions } from '../dataviz/charts_performance';
+import { PerformanceChart } from '../dataviz/charts';
 import Stepper from 'bs-stepper'
 import { UNIDADES } from '../UNIDADES.js';
 const state = {
@@ -720,31 +720,30 @@ async function start_view() {
     await load_performance_charts();
 }
 async function load_performance_charts() {
-    const dAreaPerformanceChartOptions =
-        new PerformanceChartOptions
-            (
-                'Rendimiento por dimensiones',
-                state.bearertoken,
-                state.xcsrftoken
-            );
-    const performanceChartDimension = new PerformanceChart(
-        document.getElementById('radar'),
-        0,
-        "dimensiones",
-        dAreaPerformanceChartOptions
-    );
-    await performanceChartDimension.init();
-    const cAreaPerformanceChartOptions =
-        new PerformanceChartOptions(
-            'Rendimiento por categorías',
-            state.bearertoken,
-            state.xcsrftoken
+    const performanceChartDimension =
+        new PerformanceChart(
+            {
+                canvas: document.getElementById('radar'),
+                id: 0,
+                tipo: "dimensiones",
+                title: 'Rendimiento por dimensiones',
+                bearertoken: state.bearertoken,
+                xcsrftoken: state.xcsrftoken,
+                nivel: "area",
+            }
         );
+    await performanceChartDimension.init();
+
     const performanceChartCategory = new PerformanceChart(
-        document.getElementById('radar2'),
-        0,
-        "categorias",
-        cAreaPerformanceChartOptions
+        {
+            canvas: document.getElementById('radar2'),
+            id: 0,
+            tipo: "categorias",
+            title: 'Rendimiento por categorías',
+            bearertoken: state.bearertoken,
+            xcsrftoken: state.xcsrftoken,
+            nivel: "area",
+        }
     );
     await performanceChartCategory.init();
 }

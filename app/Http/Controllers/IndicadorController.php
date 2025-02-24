@@ -37,7 +37,6 @@ class IndicadorController extends BaseController
         $evaluaciones = Evaluacion::where('indicadorId', $id)->get();
         foreach ($evaluaciones as $evaluacion) {
             $evaluacion = $this->evaluacionService->get_evaluacion_stats($evaluacion);
-
         }
         $dimension = Dimension::find($indicador["dimensionId"]);
         return view('indicadores.details', compact('indicador', 'evaluaciones', 'dimension'));
@@ -282,26 +281,49 @@ class IndicadorController extends BaseController
         $error = null;
         try {
             if ($search !== '') {
-                $indicadores = Indicador::where('nombre', 'like', "%$search%")
-                    ->where('dimensionId', $dimensionId)
-                    ->orWhere('descripcion', 'like', "%$search%")
-                    ->orWhere('status', 'like', "%$search%")
-                    ->orderBy($sort, $order)
-                    ->limit($limit)
-                    ->offset($offset)
-                    ->get();
-                $totalRows = $indicadores::where('dimensionId', $dimensionId)->count();
-                $grandTotalRows = $totalRows;
-                $totalPages = ceil($totalRows / $limit);
+                if ($dimensionId == 0) {
+                    $indicadores = Indicador::where('nombre', 'like', "%$search%")
+                        ->where('descripcion', 'like', "%$search%")
+                        ->orWhere('status', 'like', "%$search%")
+                        ->orderBy($sort, $order)
+                        ->limit($limit)
+                        ->offset($offset)
+                        ->get();
+                    $totalRows = $indicadores::count();
+                    $grandTotalRows = $totalRows;
+                    $totalPages = ceil($totalRows / $limit);
+                } else {
+                    $indicadores = Indicador::where('nombre', 'like', "%$search%")
+                        ->where('dimensionId', $dimensionId)
+                        ->orWhere('descripcion', 'like', "%$search%")
+                        ->orWhere('status', 'like', "%$search%")
+                        ->orderBy($sort, $order)
+                        ->limit($limit)
+                        ->offset($offset)
+                        ->get();
+                    $totalRows = $indicadores::where('dimensionId', $dimensionId)->count();
+                    $grandTotalRows = $totalRows;
+                    $totalPages = ceil($totalRows / $limit);
+                }
             } else {
-                $indicadores = Indicador::orderBy($sort, $order)
-                    ->where('dimensionId', $dimensionId)
-                    ->limit($limit)
-                    ->offset($offset)
-                    ->get();
-                $grandTotalRows = Indicador::where('dimensionId', $dimensionId)->count();
-                $totalRows = $grandTotalRows;
-                $totalPages = ceil($totalRows / $limit);
+                if ($dimensionId == 0) {
+                    $indicadores = Indicador::orderBy($sort, $order)
+                        ->limit($limit)
+                        ->offset($offset)
+                        ->get();
+                    $grandTotalRows = Indicador::count();
+                    $totalRows = $grandTotalRows;
+                    $totalPages = ceil($totalRows / $limit);
+                } else {
+                    $indicadores = Indicador::orderBy($sort, $order)
+                        ->where('dimensionId', $dimensionId)
+                        ->limit($limit)
+                        ->offset($offset)
+                        ->get();
+                    $grandTotalRows = Indicador::where('dimensionId', $dimensionId)->count();
+                    $totalRows = $grandTotalRows;
+                    $totalPages = ceil($totalRows / $limit);
+                }
             }
             // return using compact
         } catch (\Throwable $_) {
