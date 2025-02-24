@@ -33,7 +33,8 @@ class IndicadorFactory extends Factory
             'medio_verificacion' => $this->faker->text(),
             'requiere_anexo' => $this->faker->boolean,
             'secretaria' => $this->faker->name(),
-            'categoria' => $this->faker->randomElement(['capital humano', 'capital estructural', 'capital relacional', 'capital tecnologico'])
+            'categoria' => $this->faker->randomElement(['capital humano', 'capital estructural', 'capital relacional', 'capital tecnologico']),
+            'dimension' => $this->faker->name(),
         ];
     }
 }

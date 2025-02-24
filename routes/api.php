@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\DatavizController;
+use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\DimensionController;
 use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\IndicadorController;
@@ -87,6 +88,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/dimension/{id}', [DimensionController::class, 'delete']);
         Route::get('/dimension/{id}/area', [DimensionController::class, 'getAreas']);
         Route::get('/dimension/get_by_name/{name}',  [DimensionController::class, 'get_by_name'])->name('get_by_name');
+
+
+        Route::get('/categoria', [CategoriasController::class, 'get']);
+        Route::post('/categoria', [CategoriasController::class, 'post']);
+        Route::get('/categoria/{id}', [CategoriasController::class, 'get']);
+        Route::put('/categoria/{id}', [CategoriasController::class, 'put']);
+        Route::delete('/categoria/{id}', [CategoriasController::class, 'delete']);
+        Route::get('/categoria/{id}/area', [CategoriasController::class, 'getAreas']);
+        Route::get('/categoria/get_by_name/{name}',  [CategoriasController::class, 'get_by_name'])->name('get_by_name');
 
         Route::get('/indicador', [IndicadorController::class, 'get']);
         Route::post('/indicador', [IndicadorController::class, 'post']);

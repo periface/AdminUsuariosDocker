@@ -1,8 +1,9 @@
+
 <div class="flex items w-1/3 mb-2 border-black">
     <input type="text" class="form-control form-control-sm js-search" placeholder="Buscar"
         {{ $search ? 'value=' . $search : '' }}>
 </div>
-<table class="table table-striped projects" id="dimensionesTable">
+<table class="table table-striped projects" id="categoriasTable">
     <thead class="small">
         <tr class="w-full">
             <th style="width: 10%" data-sort="id" data-order="desc" class="sort cursor-pointer ">
@@ -26,36 +27,36 @@
             </th>
         </tr>
     </thead>
-    <tbody id="dimensionesTableBody">
-        @if (count($dimensiones) === 0)
+    <tbody id="categoriasTableBody">
+        @if (count($categorias) === 0)
             <tr>
-                <td colspan="6" class="text-center">No hay dimensiones registradas</td>
+                <td colspan="6" class="text-center">No hay categorias registradas</td>
             </tr>
         @else
-            @foreach ($dimensiones as $dimension)
+            @foreach ($categorias as $categoria)
                 <tr>
-                    <td>{{ $dimension['id'] }}</td>
-                    <td>{{ $dimension['nombre'] }}</td>
+                    <td>{{ $categoria['id'] }}</td>
+                    <td>{{ $categoria['nombre'] }}</td>
 
-                    <td>{{ $dimension['descripcion'] }}</td>
-                    <td>{{ $dimension['secretaria'] }}</td>
+                    <td>{{ $categoria['descripcion'] }}</td>
+                    <td>{{ $categoria['secretaria'] }}</td>
                     <td>
-                        @include('partials.activo_inactivo', ['status' => $dimension['status']])
+                        @include('partials.activo_inactivo', ['status' => $categoria['status']])
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
                             <button class="btn btn-primary text-white btn-primary btn-sm js-details">
-                                <a class="dimensionModalBtn text-white"
-                                    data-id="{{ $dimension->id }}">Editar</a>
+                                <a class="categoriaModalBtn text-white"
+                                    data-id="{{ $categoria->id }}">Editar</a>
                             </button>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-primary dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item js-delete-dimension" href="#"
-                                            data-id="{{ $dimension->id }}">Eliminar</a></li>
+                                    <li><a class="dropdown-item js-delete-categoria" href="#"
+                                            data-id="{{ $categoria->id }}">Eliminar</a></li>
                                 </ul>
                             </div>
                         </div>

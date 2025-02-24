@@ -660,7 +660,7 @@ function handle_evaluacion_params(fecha_inicio, fecha_fin, periodicidad) {
         $("#evaluacionForm").validate()
     }
     state.fechas_captura = calcula_fechas_captura(fecha_inicio, fecha_fin, periodicidad);
-    if (state.fechas_captura.length > 0) {
+    if (state.fechas_captura.length > 0 && state.is_date_valid) {
         state.step_btn.disabled = false;
         const capturas_html = render_capturas_table();
         document.getElementById('capturas-table').innerHTML = capturas_html;

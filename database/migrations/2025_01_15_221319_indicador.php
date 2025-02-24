@@ -31,7 +31,11 @@ return new class extends Migration
             $table->string("secretaria");
             $table->string("medio_verificacion");
             $table->boolean("requiere_anexo")->default(false);
+            $table->unsignedBigInteger("categoriaId")->nullable();
+            $table->foreign("categoriaId")->references("id")->on("indicador_categoria")->onDelete("cascade");
             $table->string("categoria")->nullable();
+
+            $table->string("dimension")->nullable();
             $table->timestamps();
         });
     }

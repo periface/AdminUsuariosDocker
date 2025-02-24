@@ -13,7 +13,7 @@
                 Indicador
             </th>
             <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
-               Area
+                Area
             </th>
 
             <th style="width: 10%" data-sort="id" data-order="asc" class="cursor-pointer sort">
@@ -39,23 +39,29 @@
         @else
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
-                    <td class="text-sm">
-                        @if ($evaluacion['finalizado'])
-                            <span class="badge badge-success">Finalizado</span>
-                        @else
-                            <span class="badge badge-danger">En proceso</span>
-                        @endif
+                    <td class="text-sm text-center">
+                            @if ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 1)
+                                <a href="#" class="btn btn-success btn-circle btn-sm">
+                                    <i class="fas fa-check"></i>
+                                </a><br>
+                                <span class="text-sm text-tam-rojo">Finalizado</span>
+                            @elseif ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 0)
+                                <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </a><br>
+                                <span class="text-sm text-tam-rojo">Finalizado</span>
+                            @elseif ($evaluacion['finalizado'] == 0)
+                                <a href="#" class="btn btn-info btn-circle btn-sm">
+                                    <i class="fas fa-sync animate-spin"></i>
+                                </a><br>
+                                <span class="text-sm text-tam-rojo">En proceso</span>
+                            @endif
                     </td>
                     @if ($evaluacion->indicador)
-                        <td class="text-sm text-tam-rojo font-semibold">
+                        <td class="text-sm text-tam-rojo">
                             <a href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}">
                                 {{ $evaluacion->indicador['nombre'] }}
                             </a>
-                            @if ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 1)
-                                <span class="">[Meta alcanzada]</span>
-                            @elseif ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 0)
-                                <span class="">[Meta no alcanzada]</span>
-                            @endif
 
                         </td>
                     @else
@@ -64,22 +70,22 @@
                         </td>
                     @endif
 
-                    <td class="font-bold">
-                        <span class="font-semibold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                    <td class="">
+                        <span class="text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
                     </td>
-                    <td class="font-bold">
+                    <td class="">
                         @include('partials.evaluacion_total', [
                             'evaluacion' => $evaluacion,
                         ])
                     </td>
-                    <td class="font-bold">
+                    <td class="">
 
                         @include('partials.evaluacion_meta', [
                             'evaluacion' => $evaluacion,
                         ])
                     </td>
 
-                    <td class="font-bold">
+                    <td class="">
 
                         @if ($evaluacion['rendimiento'] == null)
                             <span class="badge badge-danger">Sin rendimiento</span>

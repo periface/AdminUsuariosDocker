@@ -68,7 +68,7 @@
                                 class="btn btn-primary bg-tam-rojo-fuerte btn-sm js-step">Siguiente</button>
 
                             <button type="submit" id="js-submit" disabled
-                                class="btn btn-primary btn-sm js-submit">Guardar</button>
+                                class="btn btn-primary btn-sm js-submit">Empezar evaluacion</button>
                         </div>
                     </form>
                 </div>

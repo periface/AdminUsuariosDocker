@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AreasSeeder::class,
             UsersSeeder::class,
             DimensionesSeeder::class,
+            IndicadorCategoriaSeeder::class,
             IndicadoresSeeder::class,
             EvaluacionesSeeder::class
         ]);

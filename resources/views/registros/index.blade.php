@@ -6,6 +6,12 @@
             font-weight: normal !important;
             font-size: 14px;
         }
+
+        canvas {
+            padding:5px;
+            width: 30% !important;
+            margin: 0 auto;
+        }
     </style>
 @endsection
 @section('title')
@@ -19,9 +25,9 @@
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <input type="hidden" id="evaluacionId" value="{{ $evaluacionId }}">
-    <div class="grid grid-cols-[30%_70%]">
+    <div class="grid grid-cols-1">
         <div class="p-2">
-            <div class="card shadow mb-4 p-0">
+            <div class="card shadow p-0">
                 <div class="card-header py-3">
                     <p class="m-0 text-md text-red-950 font-bold">
                         <span>
@@ -31,28 +37,16 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12">
-                            <div class="bg-white rounded-md shadow-sm p-3">
-                                <div class="grid grid-cols-1">
+                        <div class="col-4">
+                            <div class="bg-white">
+                                <div class="grid grid-cols-1 p-2">
                                     <div>
-
-                                        <p class="text-center font-bold m-0">Area objetivo: </p>
-                                        <p class="">
+                                        <p class="font-bold m-0">Area objetivo: </p>
+                                        <p class="text-xs">
                                             {{ $area['nombre'] }}
                                         </p>
                                     </div>
                                     <hr>
-                                    <div class="w-full">
-                                        <p class="text-center m-0 font-bold"> Método de Cálculo</p>
-                                        <p>
-
-                                            <span class="text-xs text-pink-950 font-bold">
-                                                {{ $indicador['nombre'] }}= </span>
-                                            <span class="text-xs text-blue-950">
-                                                {{ $indicador['metodo_calculo'] }}
-                                            </span>
-                                        </p>
-                                    </div>
                                 </div>
                                 <div class="hidden mt-4 text-center items-center">
                                     <div id="status">
@@ -60,9 +54,26 @@
                                     <div id="total">
                                     </div>
                                 </div>
-                                <canvas id="donut-chart" class="w-full h-auto">
-                                </canvas>
                             </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="w-full p-2">
+                                <p class=" m-0 font-bold"> Método de Cálculo</p>
+                                <p>
+
+                                    <span class="text-xs text-pink-950 font-bold">
+                                        {{ $indicador['nombre'] }}= </span>
+                                    <span class="text-xs text-blue-950">
+                                        {{ $indicador['metodo_calculo'] }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+
+                            <canvas id="donut-chart" class="w-full h-auto">
+                            </canvas>
                         </div>
                     </div>
                 </div>

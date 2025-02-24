@@ -5,14 +5,14 @@
 <table class="table table-striped projects" id="indicadoresTable">
     <thead class="small">
         <tr class="w-full">
-            <th style="width: 10%" data-sort="id" data-order="desc" class="sort cursor-pointer ">
-                # <i class="fas fa-sort pl-2"></i>
-            </th>
             <th style="width: 30%" data-sort="nombre" data-order="asc" class="sort cursor-pointer">
                 Nombre <i class="fas fa-sort pl-2"></i>
             </th>
 
-            <th style="width: 20%" data-sort="categoria" data-order="asc" class="sort cursor-pointer">
+            <th style="width: 15%" data-sort="dimension" data-order="asc" class="sort cursor-pointer">
+                Dimension <i class="fas fa-sort pl-2"></i>
+            </th>
+            <th style="width: 10%" data-sort="categoria" data-order="asc" class="sort cursor-pointer">
                 Categoría <i class="fas fa-sort pl-2"></i>
             </th>
 
@@ -35,7 +35,6 @@
         @else
             @foreach ($indicadores as $indicador)
                 <tr>
-                    <td>{{ $indicador['id'] }}</td>
                     <td>{{ $indicador['nombre'] }}
                         @if ($indicador['sentido'] == 'ascendente')
                             <span class="text-xs text-tam-rojo-fuerte font-semibold">
@@ -52,6 +51,8 @@
                         @endif
 
                     </td>
+
+                    <td>{{ $indicador['dimension'] }}</td>
                     <td>{{ $indicador['categoria'] }}</td>
                     <td>
                         @if ($indicador['indicador_confirmado'])
@@ -118,7 +119,7 @@
                     </div>
 
                 </td>
-                <td colspan="4">
+                <td colspan="5">
 
                     <div class="flex items-center flex-nowrap">
                         @for ($i = 1; $i <= $totalPages; $i++)

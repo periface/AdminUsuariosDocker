@@ -47,16 +47,6 @@
             </div>
         </div>
 
-        <div id="dimensiones_select" class="row mt-3 ">
-            <div class="col-12">
-                <select class="form-select form-select-md" id="dimensiones_select" aria-label="Default select example">
-                    <option value="0" selected>Seleccione una dimensión</option>
-                    @foreach ($dimensiones as $dimension)
-                        <option value="{{ $dimension['id'] }}">{{ $dimension['nombre'] }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
         <div class="card-body">
             <div id="table-container">
                 @include('partials.table_loader')

@@ -18,6 +18,7 @@ class IndicadoresSeeder extends Seeder
         $dimensionCalidad = \App\Models\Dimension::where('nombre', 'Calidad')->first();
         $dimensionEficiencia = \App\Models\Dimension::where('nombre', 'Eficiencia')->first();
         $secretaria = \App\Models\Secretaria::where('siglas', 'SA')->first();
+        $indicadorCategoria = \App\Models\IndicadorCategoria::where('nombre', 'Capital Organizacional')->first();
         $indicador = \App\Models\Indicador::factory()->create([
             'clave' => 'CO1',
             'nombre' => 'Expedientes de Compras con Observaciones',
@@ -28,6 +29,7 @@ class IndicadoresSeeder extends Seeder
             'metodo_calculo' => '(Expedientes de compra devueltos con observaciones
 por la DGCyOP/ Expedientes de compra entregados a la DGCyOP) *100',
             'dimensionId' => $dimensionCalidad->id,
+            'dimension' => $dimensionCalidad['nombre'],
             'evaluable_formula' => '({ECADO}/{EPGCA})*100',
             'non_evaluable_formula' => '(ECADO/EPGCA)*100',
             'indicador_confirmado' => true,
@@ -35,7 +37,8 @@ por la DGCyOP/ Expedientes de compra entregados a la DGCyOP) *100',
             'secretaria' => $secretaria['nombre'],
             'medio_verificacion' => 'No definido',
             'requiere_anexo' => false,
-            'categoria' => 'Capital Organizacional'
+            'categoria' => 'Capital Organizacional',
+            'categoriaId' => $indicadorCategoria->id
         ]);
 
         self::create_variable($indicador["id"], 'Expedientes de compra devueltos con observaciones por la DGCyOP', 'ECADO');
@@ -53,6 +56,7 @@ de Expedientes de Compras ante la DGCyOP',
             'metodo_calculo' => 'Suma del tiempo total de atención a observaciones por tipo de procedimiento de compra/
 Total de expedientes devueltos con observaciones por procedimiento de compra',
             'dimensionId' => $dimensionEficiencia->id,
+            'dimension' => $dimensionEficiencia['nombre'],
             'evaluable_formula' => '{STTAOTPC}/{TEDOPC}',
             'non_evaluable_formula' => 'STTAOTPC/TEDOPC',
             'indicador_confirmado' => true,
@@ -60,7 +64,8 @@ Total de expedientes devueltos con observaciones por procedimiento de compra',
             'secretaria' => $secretaria['nombre'],
             'medio_verificacion' => 'No definido',
             'requiere_anexo' => false,
-            'categoria' => 'Capital Organizacional'
+            'categoria' => 'Capital Organizacional',
+            'categoriaId' => $indicadorCategoria->id
         ]);
 
         self::create_variable($indicador2["id"], 'Suma del tiempo total de atención a observaciones por tipo de procedimiento de compra', 'STTAOTPC');

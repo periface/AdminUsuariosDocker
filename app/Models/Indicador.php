@@ -17,6 +17,7 @@ class Indicador extends Model
     public $unidad_medida; // $, %, kg, etc
     public $metodo_calculo; // formula x * y / z = resultado
     public $dimensionId;
+    public $categoriaId;
     public $evaluable_formula;
     public $non_evaluable_formula;
     public $indicador_confirmado;
@@ -25,6 +26,7 @@ class Indicador extends Model
     public $requiere_anexo;
     public $secretaria;
     public $categoria; //capital humano, capital estructural, capital relacional, capital tecnologico
+    public $dimension;
     protected $fillable = [
         'clave',
         'nombre',
@@ -33,6 +35,7 @@ class Indicador extends Model
         'metodo_calculo',
         'status',
         'dimensionId',
+        'categoriaId',
         'sentido',
         'evaluable_formula',
         'non_evaluable_formula',
@@ -41,11 +44,16 @@ class Indicador extends Model
         'secretaria',
         'medio_verificacion',
         'requiere_anexo',
-        'categoria'
+        'categoria',
+        'dimension',
     ];
     public function dimension()
     {
         return $this->belongsTo(Dimension::class, 'dimensionId', 'id');
+    }
+    public function categoria()
+    {
+        return $this->belongsTo(IndicadorCategoria::class, 'categoriaId', 'id');
     }
     public function variables()
     {

@@ -1,13 +1,18 @@
             @if ($indicador && $indicador->id)
                 <input type="hidden" name="id" value="{{ $indicador->id }}">
                 <input type="hidden" name="dimensionId" value="{{ $indicador['dimensionId'] }}">
+
+                <input type="hidden" name="categoriaId" value="{{ $indicador['dimensionId'] }}">
                 <input type="hidden" id="indicador_confirmado" name="indicador_confirmado"
                     value="{{ $indicador['indicador_confirmado'] }}">
 
                 <input type="hidden" id="clave" name="clave" value="{{ $indicador['clave'] }}">
+
             @endif
             @if (!$indicador || !$indicador->id)
                 <input type="hidden" name="dimensionId" value="{{ $dimensionId }}">
+
+                <input type="hidden" name="categoriaId" value="{{ $categoriaId }}">
             @endif
             <input class="form-control" type="hidden" id="nombre" name="nombre" placeholder="Nombre del indicador"
                 value="{{ $indicador['nombre'] ?? '' }}">

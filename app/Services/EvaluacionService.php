@@ -18,6 +18,11 @@ class EvaluacionService
         $evaluacion = Evaluacion::find($id);
         return $this->get_report($evaluacion);
     }
+    public static function get_evaluacion_stats_by_id($id)
+    {
+        $evaluacion = Evaluacion::find($id);
+        return self::get_report($evaluacion);
+    }
     function get_evaluacion_stats(Evaluacion $evaluacion)
     {
         return $this->get_report($evaluacion);
@@ -100,12 +105,9 @@ class EvaluacionService
     }
     static function get_report($evaluacion)
     {
-
         $evaluacion["area"] = Area::find($evaluacion["areaId"]);
-
         $evaluacion["evaluation_results"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)->get();
         $evaluacion["results"] = count($evaluacion["evaluation_results"]);
-
         $evaluacion["results_capturado"] = EvaluacionResult::where('evaluacionId', $evaluacion->id)
             ->where('status', 'capturado')
             ->count();
@@ -272,14 +274,19 @@ class EvaluacionService
     }
     public function get_meta_alcanzada($indicador, $evaluacion)
     {
+        $eval_copy = self::get_evaluacion_stats_by_id($evaluacion["id"]);
+        $total = floatval($eval_copy["totalValue"]);
+        $meta = floatval($eval_copy["meta"]);
+
         if ($indicador["sentido"] == "ascendente") {
-            return floatval($evaluacion["totalValue"]) >= floatval($evaluacion["meta"]);
+            return $total >= $meta;
         }
         if ($indicador["sentido"] == "descendente") {
-            return floatval($evaluacion["totalValue"]) <= floatval($evaluacion["meta"]);
+            return $total <= $meta;
         }
         if ($indicador["sentido"] == "constante") {
-            return floatval($evaluacion["totalValue"]) == floatval($evaluacion["meta"]);
+            return $total == $meta;
         }
+        return false;
     }
 }

@@ -113,6 +113,7 @@ class EvaluacionController extends BaseController
     {
         try {
             $evaluacion = Evaluacion::find($id);
+
             $indicador = Indicador::find($evaluacion["indicadorId"]);
             if (!$evaluacion) {
                 return response()->json([

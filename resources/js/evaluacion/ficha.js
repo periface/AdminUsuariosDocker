@@ -10,7 +10,8 @@ const state = {
     xcsrftoken: document.querySelector('meta[name="csrf-token"]').content || '',
     bearertoken: localStorage.getItem('token') || '',
     donut_chart: null,
-    line_chart: null
+    line_chart: null,
+    stats: null
 }
 function init_view() {
     load_evaluacion_stats();
@@ -23,6 +24,7 @@ async function load_evaluacion_stats() {
         createToast('Registros', 'Error al cargar las estadísticas', 'error');
         return;
     }
+    state.stats = data;
     donut_chart(data);
     line_chart(data);
     total_meta(data);
@@ -124,6 +126,14 @@ function total_meta(data) {
     const total = document.getElementById('total');
     const total_html = total_card(data);
     total.innerHTML = total_html;
+    const totalbtn = document.getElementsByClassName('js-show-details');
+    for (const btn of totalbtn) {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('click');
+        });
+    }
+
 }
 function get_month_name_and_day(date) {
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
