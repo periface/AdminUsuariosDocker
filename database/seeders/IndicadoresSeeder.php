@@ -29,6 +29,7 @@ class IndicadoresSeeder extends Seeder
             'metodo_calculo' => '(Expedientes de compra devueltos con observaciones
 por la DGCyOP/ Expedientes de compra entregados a la DGCyOP) *100',
             'dimensionId' => $dimensionCalidad->id,
+            'dimension' => $dimensionCalidad['nombre'],
             'evaluable_formula' => '({ECADO}/{EPGCA})*100',
             'non_evaluable_formula' => '(ECADO/EPGCA)*100',
             'indicador_confirmado' => true,
@@ -55,6 +56,7 @@ de Expedientes de Compras ante la DGCyOP',
             'metodo_calculo' => 'Suma del tiempo total de atención a observaciones por tipo de procedimiento de compra/
 Total de expedientes devueltos con observaciones por procedimiento de compra',
             'dimensionId' => $dimensionEficiencia->id,
+            'dimension' => $dimensionEficiencia['nombre'],
             'evaluable_formula' => '{STTAOTPC}/{TEDOPC}',
             'non_evaluable_formula' => 'STTAOTPC/TEDOPC',
             'indicador_confirmado' => true,

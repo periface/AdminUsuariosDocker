@@ -93,9 +93,27 @@ class IndicadorController extends BaseController
         try {
             // Agregamos validación al request para mantener integridad en el información
             [$data, $indicador_found, $error] = $this->get_indicador_from_req($request);
-            $categoriaName = IndicadorCategoria::find($data["categoriaId"])["nombre"];
+            $categoria = IndicadorCategoria::find($data["categoriaId"]);
+            if (!$categoria) {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => null,
+                    'error' => 'No se encontró la categoría',
+                    'statusCode' => 404
+                ], 404);
+            }
+            $dimension = Dimension::find($data["dimensionId"]);
+            if (!$dimension) {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => null,
+                    'error' => 'No se encontró la dimensión',
+                    'statusCode' => 404
+                ], 404);
+            }
+            $data["categoria"] =  $categoria["nombre"];;
+            $data["dimension"] =  $dimension["nombre"];;
             $variables = $request->variables;
-            $data["categoria"] = $categoriaName;
             if (!$variables) {
                 $variables = "[]";
             }
@@ -288,6 +306,10 @@ class IndicadorController extends BaseController
                     $indicadores = Indicador::where('nombre', 'like', "%$search%")
                         ->where('descripcion', 'like', "%$search%")
                         ->orWhere('status', 'like', "%$search%")
+
+                        ->orWhere('dimension', 'like', "%$search%")
+
+                        ->orWhere('categoria', 'like', "%$search%")
                         ->orderBy($sort, $order)
                         ->limit($limit)
                         ->offset($offset)

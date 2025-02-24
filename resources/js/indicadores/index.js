@@ -442,19 +442,7 @@ async function render_indicador_form(id, load_set_formula_window = false) {
         update_metodo_calculo(formula.value);
     }
 }
-function set_select_dimension_evt() {
-    const select = document.getElementById('dimensiones_select');
-    select.addEventListener('change', (e) => {
-        state.dimensionId = e.target.value;
-        for (let modal_open_btn of state.modal_open_buttons) {
-            modal_open_btn.disabled = false;
-        }
-        start_datatable();
-    });
-}
 async function start_view() {
-
-    set_select_dimension_evt();
     state.indicadores_table_container.innerHTML = `
     <h1 class="text-center">
         <p colspan="5"
