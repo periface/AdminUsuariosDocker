@@ -142,6 +142,23 @@ function get_month_name_and_day(date) {
     // add year at end
     return result + ' ' + d.getFullYear();
 }
+function build_colors_sentido(sentido, value, meta) {
+    if (sentido === 'ascendente') {
+        if (value > meta) {
+            return '#689F38';
+        } else {
+            return '#D32F2F';
+        }
+    }
+    if (sentido === 'descendente') {
+        if (value < meta) {
+            return '#689F38';
+        } else {
+            return '#D32F2F';
+        }
+    }
+    return '#FFA000';
+}
 function get_line_data(data) {
     data.evaluation_results = data.evaluation_results.filter((evaluation) => evaluation.resultado != null);
     data.evaluation_results.sort((a, b) => {
@@ -156,58 +173,38 @@ function get_line_data(data) {
         fill: true,
         backgroundColor: "rgba(78, 115, 223, 0.05)",
         borderColor: "rgba(78, 115, 223, 1)",
-        lineTension: 0.3,
-        pointRadius: 3,
+        lineTension: 0,
+        pointRadius: 5,
         pointBackgroundColor: (context) => {
             const value = context.parsed.y;
             if (value === null || value === undefined) {
                 return null;
             }
-            if (sentido === 'ascendente') {
-                if (value > meta) {
-                    return 'rgba(0, 255, 0, 1)';
-                } else {
-                    return 'rgba(255, 0, 0, 1)';
-                }
-            }
-            if (sentido === 'descendente') {
-                if (value < meta) {
-                    return 'rgba(0, 255, 0, 1)';
-                } else {
-                    return 'rgba(255, 0, 0, 1)';
-                }
-            }
+            return build_colors_sentido(sentido, value, meta);
         },
         pointBorderColor: (context) => {
             const value = context.parsed.y;
             if (value === null || value === undefined) {
                 return null;
             }
-            if (sentido === 'ascendente') {
-                if (value > meta) {
-                    return 'rgba(0, 255, 0, 1)';
-                } else {
-                    return 'rgba(255, 0, 0, 1)';
-                }
-            }
-            if (sentido === 'descendente') {
-                if (value < meta) {
-                    return 'rgba(0, 255, 0, 1)';
-                } else {
-                    return 'rgba(255, 0, 0, 1)';
-                }
-            }
+            return build_colors_sentido(sentido, value, meta);
         },
         pointHoverRadius: 3,
         pointHoverBackgroundColor: "rgba(255, 255, 255, 1)",
         pointHoverBorderColor: "rgba(78, 115, 223, 1)",
         pointHitRadius: 10,
         pointBorderWidth: 2,
-        stepped: true,
+        stepped: false,
         pointStyle: (context) => {
             const value = context.parsed.y;
             if (value === null || value === undefined) {
                 return null;
+            }
+            if (context.raw.status === 'rechazado') {
+                return 'crossRot';
+            }
+            if (context.raw.status === 'pendiente') {
+                return '';
             }
             if (sentido === 'ascendente') {
                 if (value > meta) {
@@ -230,21 +227,13 @@ function get_line_data(data) {
                 if (value === null || value === undefined) {
                     return null;
                 }
-                if (sentido === 'ascendente') {
-
-                    if (value > meta) {
-                        return 'rgba(0, 255, 0, 1)';
-                    } else {
-                        return 'rgba(255, 0, 0, 1)';
-                    }
+                if (context.p1.raw.status === 'rechazado') {
+                    return build_colors_sentido(sentido, value, meta);
                 }
-                if (sentido === 'descendente') {
-                    if (value < meta) {
-                        return 'rgba(0, 255, 0, 1)';
-                    } else {
-                        return 'rgba(255, 0, 0, 1)';
-                    }
+                if (context.p1.raw.status === 'pendiente') {
+                    return build_colors_sentido(sentido, value, meta);
                 }
+                return build_colors_sentido(sentido, value, meta);
             },
             borderDash: (context) => {
                 const value = context.p1.parsed.y;
@@ -268,74 +257,20 @@ function get_line_data(data) {
             }
         }
     }
-    // yellowish colors
-    const envalidacion_data_set = {
-        label: 'En validación',
-        data: [],
-        fill: false,
-        backgroundColor: "rgba(255, 193, 7, 0.05)",
-        borderColor: "rgba(255, 193, 7, 1)",
-        lineTension: 0.3,
-        pointRadius: 3,
-        pointBackgroundColor: "rgba(255, 193, 7, 0.05)",
-        pointBorderColor: "rgba(255, 193, 7, 1)",
-        pointHoverRadius: 3,
-        pointHoverBackgroundColor: "rgba(255, 193, 7, 1)",
-        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-        pointHitRadius: 10,
-        pointBorderWidth: 2,
-        borderDash: [5, 5],
-        stepped: true,
-    }
-    const rechazados_data_set = {
-        label: 'Rechazados',
-        data: [],
-        fill: false,
-        backgroundColor: "rgba(255, 0, 0, 0.05)",
-        borderColor: "rgba(255, 0, 0, 1)",
-        pointBackgroundColor: "rgba(255, 0, 0, 0.05)",
-        pointBorderColor: "rgba(255, 0, 0, 1)",
-        pointHoverBackgroundColor: "rgba(255, 0, 0, 1)",
-        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-        lineTension: 0.3,
-        pointRadius: 3,
-        pointHoverRadius: 3,
-        pointHitRadius: 10,
-        pointBorderWidth: 2,
-        borderDash: [5, 5],
-        stepped: true,
-    }
 
     const data_set = [];
 
     let index = 0;
     for (const evaluation of data.evaluation_results) {
         labels.push(get_month_name_and_day(evaluation.fecha));
-        if (evaluation.status === 'aprobado') {
-            main_data_set.data.push({
-                x: labels[index],
-                y: evaluation.resultado,
-                status: evaluation.status
-            });
-        }
-        else if (evaluation.status === 'capturado') {
-            envalidacion_data_set.data.push({
-                x: labels[index],
-                y: evaluation.resultado,
-                status: evaluation.status
-            });
-        } else if (evaluation.status === 'rechazado') {
-            rechazados_data_set.data.push({
-                x: labels[index],
-                y: evaluation.resultado,
-                status: evaluation.status
-            });
-        }
+        main_data_set.data.push({
+            x: labels[index],
+            y: evaluation.resultado,
+            status: evaluation.status
+        });
         index++;
     }
     data_set.push(main_data_set);
-    //data_set.push(envalidacion_data_set);
-    //data_set.push(rechazados_data_set);
     return {
         labels,
         datasets: data_set
@@ -413,6 +348,7 @@ function line_chart(data) {
             plugins: {
                 legend: {
                     position: 'top',
+                    display: false,
                 },
                 zoom: {
                     limits: {

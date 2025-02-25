@@ -31,46 +31,45 @@
     <input type="hidden" id="indicadorId" value="{{ $indicador['id'] }}">
     <input type="hidden" id="evaluacionId" value="{{ $evaluacion['id'] }}">
 
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-2">
         <div class="card-header py3">
             <div class="flex align-middle items-center">
-                <span class="navbar-text text-bold ">
+                <span class="navbar-text ">
                     Ficha de Evaluación:
-                    <span class="font-bold">{{ $area['nombre'] }}</span> con
-                    <a href="{{ route('indicador.details', $indicador->id) }}"><span class="font-bold">{{ $indicador['nombre'] }}</span>
+                    <span class="text-tam-rojo-fuerte">{{ $area['nombre'] }}</span> con
+                    <a href="{{ route('indicador.details', $indicador->id) }}"><span class="text-tam-dorado-fuerte">{{ $indicador['nombre'] }}</span>
                     </a>
                 </span>
             </div>
         </div>
         <div class="card-body">
-            <div class="grid grid-cols-3">
+            <div class="grid grid-cols-3 text-md">
 
 
                 <div class="p-3">
-                    <h6><span class="font-bold">Area: </span>{{ $area['nombre'] }}</h6>
+                    <p class="text-md m-0"><span class="text-tam-rojo-fuerte">Area: </span>{{ $area['nombre'] }}</p>
                     @if ($area['responsable'] != null)
-                        <p class="m-0"><span class="font-bold">Responsable: </span>{{ $area['responsable'] }}</p>
+                        <p class="m-0 text-md"><span class="text-tam-rojo-fuerte">Responsable: </span>{{ $area['responsable'] }}</p>
                     @else
-                        <p class="m-0"><span class="font-bold">Responsable:</span> No asignado</p>
+                        <p class="m-0 text-md"><span class="text-tam-rojo-fuerte">Responsable:</span> No asignado</p>
                     @endif
-                    <p><span class="font-bold">Siglas:</span> {{ $area['siglas'] }}</p>
+                    <p class="m-0 text-md"><span class="text-tam-rojo-fuerte">Siglas:</span> {{ $area['siglas'] }}</p>
                 </div>
 
                 <div class="p-3">
-                    <h6><span class="font-bold">Indicador: </span>{{ $indicador['nombre'] }}</h6>
-                    <p><span class="font-bold">Descripción:</span> {{ $indicador['descripcion'] }}</p>
+                    <p><span class="text-tam-rojo-fuerte">Indicador: </span>{{ $indicador['nombre'] }}</p>
+                    <p><span class="text-tam-rojo-fuerte">Descripción:</span> {{ $indicador['descripcion'] }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 p-3">
 
-
                     <div class="text-center text-2xl">
                         <p>
-                            <span class="font-bold text-center text-tam-dorado-fuerte">Fecha de Inicio</span><br>
-                            <span class="font-bold text-tam-rojo-fuerte">{{ $evaluacion['fecha_inicio'] }}</span>
+                            <span class=" text-center text-tam-dorado-fuerte">Fecha de Inicio</span><br>
+                            <span class="text-tam-rojo-fuerte">{{ $evaluacion['fecha_inicio'] }}</span>
                             <br>
-                            <span class="font-bold text-center text-tam-dorado-fuerte">Fecha de Termino</span><br>
-                            <span class="font-bold text-tam-rojo-fuerte">{{ $evaluacion['fecha_fin'] }}</span>
+                            <span class="text-center text-tam-dorado-fuerte">Fecha de Termino</span><br>
+                            <span class="text-tam-rojo-fuerte">{{ $evaluacion['fecha_fin'] }}</span>
                         </p>
                     </div>
                 </div>
@@ -78,7 +77,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-3 mb-4">
+    <div class="grid grid-cols-3 mb-2">
 
         <div class="p-1 w-full">
             <div id="status" class="">
@@ -90,13 +89,13 @@
         </div>
     </div>
 
-    <div class="card shadow mb-4">
-        <div class="grid grid-cols-[70%_30%] mt-3">
+    <div class="card shadow">
+        <div class="grid grid-cols-1 mt-3">
             <div>
                 <canvas id="line-chart">
                 </canvas>
             </div>
-            <div class="grid grid-cols-1">
+            <div class="grid grid-cols-1 hidden">
 
                 <canvas id="donut-chart">
                 </canvas>
