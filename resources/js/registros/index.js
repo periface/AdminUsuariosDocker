@@ -17,7 +17,7 @@ const state = {
     repl: new Repl(),
     bearertoken: localStorage.getItem('token') || '',
     fecha: '',
-    validar_btns: document.getElementsByClassName('js-validar'),
+    validar_btns: document.getElementsByClassName('js-aprobar'),
     rechazar_btns: document.getElementsByClassName('js-rechazar'),
     evaluacionId: document.getElementById('evaluacionId')?.value || '',
     registros_table_container: document.getElementById('table-container'),
@@ -103,6 +103,7 @@ async function start_datatable() {
         await set_modal_event_listener();
         set_table_footer_events();
         await set_anexos_event_listener();
+        restart_popovers();
 
     } catch (error) {
         state.is_table_loading = false;
@@ -231,6 +232,28 @@ async function on_anexos_view_loaded() {
 
     }
 }
+async function open_rechazar_modal(id) {
+    const rechazar_modal = document.getElementById('rechazarModal');
+    const rechazar_form = document.getElementById('rechazarForm');
+    const registro_id = document.getElementById('registroId');
+    registro_id.value = id;
+    $(rechazar_modal).modal('show');
+    rechazar_form.onsubmit = async function(e) {
+        e.preventDefault();
+        const form_data = new FormData(e.target);
+        const response = await set_status(id, 'rechazado', form_data, state);
+        $(rechazar_modal).modal('hide');
+        if (response.error) {
+            createToast('Registros', response.error, false);
+        }
+        else {
+            createToast('Registros', 'Registro rechazado con éxito', 'success');
+            await start_datatable();
+            rechazar_form.reset();
+        }
+
+    }
+}
 async function set_modal_event_listener() {
     if (state.events_set) return;
     for await (const validar_btn of state.validar_btns) {
@@ -249,8 +272,9 @@ async function set_modal_event_listener() {
             }
             const espacio_obj = JSON.parse(espacio);
             espacio_obj.status = 'validado';
-            const json_response = await set_status(espacio_obj.id, 'aprobado', state);
-
+            const form_data = new FormData();
+            form_data.append('motivo', '');
+            const json_response = await set_status(espacio_obj.id, 'aprobado', form_data, state);
             $(state.modal).modal('hide');
             if (json_response.error) {
                 createToast('Registros', json_response.error, false);
@@ -265,31 +289,7 @@ async function set_modal_event_listener() {
     for await (const rechazar_btn of state.rechazar_btns) {
         rechazar_btn.addEventListener('click', async (e) => {
             const id = e.target.dataset.id;
-            console.log(id);
-            const response = await show_confirm_action(
-                'Rechazar Evaluación',
-                'Estas seguro de rechazar esta evaluación?',
-                'warning'
-            );
-            if (!response) {
-                return;
-            }
-            const espacio = e.target.dataset.espacio;
-            if (!espacio) {
-                return;
-            }
-            const espacio_obj = JSON.parse(espacio);
-            espacio_obj.status = 'rechazado';
-            const json_response = await set_status(espacio_obj.id, 'rechazado', state);
-
-            $(state.modal).modal('hide');
-            if (json_response.error) {
-                createToast('Registros', json_response.error, false);
-            }
-            else {
-                createToast('Registros', 'Registro rechazado con éxito', 'success');
-                await start_datatable();
-            }
+            await open_rechazar_modal(id);
         });
     }
     for await (const btn of state.registrar_btn) {
@@ -491,7 +491,7 @@ function donut_chart(data) {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    display:false
+                    display: false
                 },
                 title: {
                     display: false,

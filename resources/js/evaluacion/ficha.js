@@ -1,8 +1,8 @@
 import { UNIDADES } from '../UNIDADES.js';
 import { get_stats } from './cruds.js';
-import zoomPlugin from 'chartjs-plugin-zoom';
+//import zoomPlugin from 'chartjs-plugin-zoom';
 import { Chart } from "chart.js/auto";
-Chart.register(zoomPlugin);
+//Chart.register(zoomPlugin);
 const state = {
     API_URL: "/api/v1/evaluacion",
     WEB_URL: "/evaluacion",
@@ -293,13 +293,13 @@ function get_line_data(data) {
         fill: false,
         backgroundColor: "rgba(255, 0, 0, 0.05)",
         borderColor: "rgba(255, 0, 0, 1)",
-        lineTension: 0.3,
-        pointRadius: 3,
         pointBackgroundColor: "rgba(255, 0, 0, 0.05)",
         pointBorderColor: "rgba(255, 0, 0, 1)",
-        pointHoverRadius: 3,
         pointHoverBackgroundColor: "rgba(255, 0, 0, 1)",
         pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+        lineTension: 0.3,
+        pointRadius: 3,
+        pointHoverRadius: 3,
         pointHitRadius: 10,
         pointBorderWidth: 2,
         borderDash: [5, 5],
@@ -342,10 +342,6 @@ function get_line_data(data) {
     }
 }
 function line_chart(data) {
-    console.log(data);
-
-    const meta = parseFloat(data.metaValue);
-    const sentido = data.sentido;
     const line_data = get_line_data(data);
     const container = document.getElementById('line-chart');
     const unidad = UNIDADES.filter((unidad) => unidad.nombre === data.indicador.unidad_medida);

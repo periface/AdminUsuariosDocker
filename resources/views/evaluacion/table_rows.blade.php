@@ -122,10 +122,10 @@
                                     @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('GDI') || Auth::user()->hasRole('SPA'))
                                         @if ($evaluacion['finalizado'])
                                             <li><a class="dropdown-item js-cerrar-evaluacion" href="#"
-                                                    data-id="{{ $evaluacion->id }}">Abrir evaluación</a></li>
+                                                    data-id="{{ $evaluacion->id }}">Reabrir evaluación</a></li>
                                         @else
                                             <li><a class="dropdown-item js-cerrar-evaluacion" href="#"
-                                                    data-id="{{ $evaluacion->id }}">Cerrar evaluación</a></li>
+                                                    data-id="{{ $evaluacion->id }}">Finalizar evaluación</a></li>
                                         @endif
                                         <li><a class="dropdown-item js-delete-evaluacion" href="#"
                                                 data-id="{{ $evaluacion->id }}">Eliminar</a></li>

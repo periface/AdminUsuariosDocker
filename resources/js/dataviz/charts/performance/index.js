@@ -116,7 +116,11 @@ class PerformanceChart {
                 data: [],
                 backgroundColor: color.bgColor,
                 borderColor: color.borderColor,
-                borderWidth: 1
+                borderWidth: 1,
+                pointRadius: 3,
+                pointHoverRadius: 3,
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
             }
             for (let dimensionKey in area.dimensionesResult) {
                 const dimension = area.dimensionesResult[dimensionKey];

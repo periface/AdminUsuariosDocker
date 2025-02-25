@@ -111,9 +111,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/evaluacion/cerrar/{id}', [EvaluacionController::class, 'cerrar_evaluacion'])->name('cerrar_evaluacion');
         // Registros
         Route::post('/registro', [RegistrosController::class, 'post']);
-        Route::get('/registro/{id}/{status}', [RegistrosController::class, 'set_status']);
-
-        Route::get('/registro/{id}/{status}', [RegistrosController::class, 'set_status']);
+        Route::post('/registro/{id}/{status}', [RegistrosController::class, 'set_status']);
         Route::get('/dataviz/performance/{id}/{incluirTodasLasEtiquetas}/{incluirEvaluacionesAbiertas}/{tipo}', [DatavizController::class, 'getPerformanceReport']);
     });
 });

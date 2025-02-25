@@ -1,5 +1,5 @@
-import { delete_evaluacion, get_rows, cerrar_evaluacion, load_evaluacion_form, post_evaluacion, load_evaluacion_config } from './cruds.js';
-import { debounce, createToast, show_confirm_action, toggle_loading } from '../utils/helpers.js';
+import { delete_evaluacion, get_rows, cerrar_evaluacion, load_evaluacion_form, post_evaluacion, load_evaluacion_config, get_stats } from './cruds.js';
+import { debounce, createToast, show_confirm_action, toggle_loading, restart_off_canvas } from '../utils/helpers.js';
 import { check_date_validity_range, calcula_fechas_captura } from './helpers.js';
 import { PerformanceChart } from '../dataviz/charts';
 import Stepper from 'bs-stepper'
@@ -133,6 +133,8 @@ async function start_datatable() {
         await set_modal_trigger_evts();
         set_table_footer_events();
         state.restart_popovers();
+        restart_off_canvas();
+        off_canvas_evts();
     } catch (error) {
         state.is_table_loading = false;
         state.evaluacion_table_container.innerHTML = `
@@ -746,4 +748,99 @@ async function load_performance_charts() {
         }
     );
     await performanceChartCategory.init();
+}
+
+
+async function off_canvas_evts() {
+    const bdButtons = document.getElementsByClassName('js-backdrop');
+    const loader = `
+
+            <div class="w-full h-full grid grid-cols-1 items-center justify-items-center">
+
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+`
+    for await (let btnBd of bdButtons) {
+        btnBd.addEventListener('click', async (e) => {
+            document.getElementById('offCanvasBody').innerHTML = loader;
+
+            const id = e.target.dataset.id;
+            if (!id) {
+                return;
+            }
+            const { data: stats, error } = await get_stats(id, state);
+            if (error) {
+                console.error(error);
+                return;
+            }
+            const tableModel = {
+                indicador: stats.indicador,
+                rows: stats.evaluation_results,
+                meta: stats.meta,
+                metaValue: stats.metaValue,
+                formula: stats.non_evaluable_formula,
+                total: stats.total,
+                totalValue: stats.totalValue,
+            }
+            render_table(tableModel);
+        });
+    }
+}
+const simbolos_sentido = {
+    "ascendente": "↑",
+    "descendente": "↓",
+    "constante": "="
+}
+function render_table(tableModel) {
+    let unidad = UNIDADES.find((unidad) => unidad.nombre === tableModel.indicador.unidad_medida);
+    let sum = tableModel.rows.reduce((acc, row) => acc + parseFloat(row.resultado), 0);
+    if (!unidad) {
+        unidad = {
+            oracion_corta: '',
+        };
+    }
+    let char = simbolos_sentido[tableModel.indicador.sentido];
+    if (!char) {
+        char = '';
+    }
+    const table = `<table class="table table-sm max-h-[300px] overflow-scroll">
+    <thead>
+        <tr>
+            <th colspan="2" class="text-sm text-center">${unidad.oracion_corta} ${tableModel.indicador.nombre}</th>
+        <tr>
+            <th class="text-sm text-center" style="width:50%">Registro</th>
+            <th class="text-sm text-center" style="width:50%">Resultado</th>
+        </tr>
+    </thead>
+    <tbody>
+        ${tableModel.rows.map((row) => {
+        return `<tr class="text-sm text-center">
+            <td>${row.fecha}</td>
+            <td><span class="text-red-950">${row.resultado}${unidad.simbolo}</span></td>
+        </tr>`
+    }).join('')}
+        <tr class="text-sm text-center">
+            <td><span class="text-red-950 font-bold">Suma</span></td>
+            <td><span class="text-red-950 font-bold">${sum}${unidad.simbolo}</span></td>
+        </tr>
+        <tr class="text-sm text-center">
+
+            <td><span class="text-red-950 font-bold">Registros</span></td>
+            <td><span class="text-red-950 font-bold">${tableModel.rows.length}</span></td>
+</tr>
+<tr class="text-sm text-center">
+<td><span class="text-red-950 font-bold">Promedio Final</span></td>
+<td><span class="text-red-950 font-bold">${tableModel.total}</span></td>
+</tr>
+        <tr class="text-sm text-center">
+            <td><span class="text-teal-950 font-bold">Meta</span></td>
+            <td><span class="text-teal-950 font-bold">${char} ${tableModel.meta}</span></td>
+        </tr>
+
+    </table>`;
+    document.getElementById('offCanvasBody').innerHTML = table;
+    return table;
 }

@@ -246,10 +246,12 @@ class EvaluacionService
         $meta = $evaluacion["meta"];
         $resultados = EvaluacionResult::where('evaluacionId', $evaluacion->id)
             ->get();
-        // count only results with value
-        $resultados = $resultados->filter(function ($result) {
-            return $result["resultado"] != null && $result["status"] == "aprobado";
-        });
+        // Evaluamos todo, si no hay datos en el resultado, lo asignamos a 0
+        foreach ($resultados as $result) {
+            if ($result["resultado"] == null || $result["resultado"] == '') {
+                $result["resultado"] = 0;
+            }
+        }
         $suma_porcentaje = $resultados->sum('resultado');
         $resultados_count = $resultados->count();
         if ($resultados_count == 0 || $meta == 0 || $suma_porcentaje == 0) {
