@@ -12,9 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Ramsey\Uuid\Type\Decimal;
-
-use function Illuminate\Log\log;
 
 class VariableValueModel
 {
@@ -160,7 +157,6 @@ class RegistrosController extends BaseController
         $evaluacionId = $request_data["evaluacionId"];
         $evaluacion = Evaluacion::all()->find($evaluacionId);
         if ($evaluacion["finalizado"]) {
-
             return response()->json([
                 'status' => 'error',
                 'data' => null,
@@ -203,10 +199,12 @@ class RegistrosController extends BaseController
     {
         $evaluacion_result = EvaluacionResult::all()->find($id);
         $evaluacion = Evaluacion::all()->find($evaluacion_result["evaluacionId"]);
+        $user = Auth::user();
         if ($evaluacion["finalizado"]) {
             return response()->json(["error" => "La evaluación ya ha sido finalizada"]);
         }
         $evaluacion_result["status"] = $status;
+        $evaluacion_result["aprobado_por"] = $user["id"];
         $evaluacion_result->save();
         return json_encode($evaluacion_result);
     }
