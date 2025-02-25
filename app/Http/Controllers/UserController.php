@@ -97,9 +97,15 @@ class UserController extends Controller
             case 'ADM':
                 $users = $this->userService->getAllUsers();
                 break;
-                
-                default:
+            case 'RESP':
                 $users = $this->userService->getUsersByArea($user);
+                break;
+                
+            default:
+                return response()->json([
+                    'status' => 403,
+                    'redirect' => route('principal')
+                ]);
                 break;
         }
 
@@ -111,7 +117,6 @@ class UserController extends Controller
                 $user->rol = $role[0]->alias;
             }
         }
-
         return view('users.table', compact('users'));
 
     }

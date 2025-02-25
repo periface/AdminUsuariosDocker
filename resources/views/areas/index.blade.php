@@ -3,24 +3,6 @@
 @endsection
 @section('content')
 <div class="mt-3">
-    {{-- <div class="row">
-        <div class="col-12">
-            <nav class="navbar bg-body-tertiary bg-inst">
-                <div class="col-6">
-                    <div class="container-fluid">
-                        <span class="navbar-text text-bold text-white">
-                            <i class="fa-solid fa-sitemap"></i> | ÁREAS REGISTRADAS EN EL SISTEMA
-                        </span>
-                      </div>
-                </div>
-                <div class="col-6 d-flex justify-content-end pe-3 pt-2">
-                    <span class="mb-2 btn btn-sm add-area btn-inst2">
-                        <i class="fa-regular fa-plus"></i> | Agregar Área
-                    </span>
-                </div>
-            </nav>
-        </div>
-    </div> --}}
     <div class="row">
 
         <div class="col-12 mt-4">
@@ -29,12 +11,14 @@
                     <h6 class="m-0 font-weight-bold text-gray-800">
                         ÁREAS REGISTRADAS EN EL SISTEMA
                     </h6>
-                    <a class="btn bg-inst2 btn-icon-split btn-sm">
-                        <span class="icon text-white add-area">
-                            <i class="fa fa-plus"></i>
-                        </span>
-                        <span class="text text-white add-area">Agregar Área</span>
-                    </a>
+                    @if (Auth::user()->hasRole('ADM'))
+                        <a class="btn bg-inst2 btn-icon-split btn-sm">
+                            <span class="icon text-white add-area">
+                                <i class="fa fa-plus"></i>
+                            </span>
+                            <span class="text text-white add-area">Agregar Área</span>
+                        </a>
+                    @endif
                 </div>
                 <div class="card-body" id="table-area">
                     

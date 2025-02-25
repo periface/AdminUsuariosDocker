@@ -292,12 +292,12 @@ class EvaluacionController extends BaseController
             if (self::isAdmin($user)) {
                 $evaluaciones = Evaluacion::all();
             } else {
-                $evaluaciones = Evaluacion::where(function ($query) use ($user, $responsableArea) {
-                    $query->where('areaId', '=', $user->areaId)
-                        ->orWhere('areaId', '=', $responsableArea->id);
-                })->get();
+                // $evaluaciones = Evaluacion::where(function ($query) use ($user, $responsableArea) {
+                //     $query->where('areaId', '=', $user->areaId)
+                //         ->orWhere('areaId', '=', $responsableArea->id);
+                // })->get();
+                $evaluaciones = Evaluacion::whereIn('areaId', [$user->areaId])->get();
             }
-
             /**
              * Fin valida ROL
              */

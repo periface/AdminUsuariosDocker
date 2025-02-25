@@ -42,5 +42,23 @@ class RoleAndPermissionSeeder extends Seeder
             'description' => 'Este rol se encargará de administrar los catálogos del sistema, altas, bajas, actualizaciones y eliminaciones.',
             'alias' => 'Administrador de Catálogos'
         ]);
+
+        $roleCaptura = Role::create([
+            'name' => 'EVAL',
+            'description' => 'La función principal de este rol, es como su nombre lo indica realizar la captura de las evaluaciones para los indicadores asignados al área.',
+            'alias' => 'Evaluador'
+        ]);
+
+        $roleCaptura = Role::create([
+            'name' => 'RESP',
+            'description' => 'Este rol supervisa, realiza el seguimiento y evalúa los resultados de los indicadores en su área',
+            'alias' => 'Responsable de Área'
+        ]);
+
+        $roleCaptura = Role::create([
+            'name' => 'AUD',
+            'description' => 'La función principal de este rol es: Revisar las evaluaciones enviadas por los Responsables de Área. Aprobar o rechazar evaluaciones con comentarios.',
+            'alias' => 'Validador'
+        ]);
     }
 }

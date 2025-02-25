@@ -16,6 +16,7 @@ export const loadUsers = async () => {
         </div>
     `;
     const response = await fetchUsers();
+
     tableUsers.innerHTML = await response;
 }
 

@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Usuarios
     // Route::group(['middleware' => ['role:ADM']], function () {
-        Route::get('/users',                                         [UserController::class, 'index']);
+        Route::get('/users',                                         [UserController::class, 'index'])->name('usuarios');;
         Route::get('/users/create',                                  [UserController::class, 'add']);
         Route::get('/users/{user}/edit',                             [UserController::class, 'edit']);
         Route::get('/users/{user}/roles-permissions',                [UserController::class, 'userRolesAndPermissions']);
@@ -60,8 +60,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Accesos para responsables de área
     // Route::group(['middleware' => ['role:ADM|SPA']], function () {
-    Route::get('/users',                                         [UserController::class, 'index'])->middleware('role:SPA|ADM')->name('usuarios');
-    Route::get('/areas',                                         [AreaController::class, 'index'])->middleware('role:SPA|ADM')->name('areas');
     // });
 
     // Areas
@@ -104,7 +102,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/get_indicador_fields',  [IndicadorController::class, 'get_indicador_fields'])->name('get_indicador_fields');
     });
 
-    Route::prefix('evaluacion')->name("evaluacion.")->middleware(['role:ADM|REV'])->group(function () {
+    Route::prefix('evaluacion')->name("evaluacion.")->middleware(['role:ADM|RESP|AUD|EVAL'])->group(function () {
         Route::get('/',  [EvaluacionController::class, 'index'])->name('index');
         Route::post('/get_table_rows',  [EvaluacionController::class, 'get_rows'])->name('get_table_rows');
         Route::get('/get_evaluacion_fields',  [EvaluacionController::class, 'get_evaluacion_fields'])->name('get_evaluacion_fields');
@@ -113,7 +111,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}/ficha',  [EvaluacionController::class, 'ficha'])->name('ficha');
     });
 
-    Route::prefix('registro')->name("registro.")->middleware(['role:ADM|REV'])->group(function () {
+    Route::prefix('registro')->name("registro.")->middleware(['role:ADM|RESP|REV|AUD|EVAL'])->group(function () {
         Route::get('/get_registros_form/{id_evaluacion}/{fecha}',  [RegistrosController::class, 'get_registros_form'])->name('get_registros_form');
 
         Route::post('/get_table_rows/{id_evaluacion}',  [RegistrosController::class, 'get_rows'])->name('get_rows');

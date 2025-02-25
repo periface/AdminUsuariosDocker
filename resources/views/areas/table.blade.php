@@ -22,12 +22,12 @@
                 {{ $area->siglas }}
             </td>
             <td class=" w-1/7 text-center">
-                @if ($area->responsable == null)
+                @if ($area->responsable == 'Sin responsable asignado')
                     <span class=" badge bg-secondary">
                         Sin Asignar
                     </span>
                 @else
-                    <span class=" badge bg-success">
+                    <span class=" badge bg-info">
                         {{ $area->responsable }}
                     </span>
                 @endif
@@ -35,6 +35,20 @@
             <td class=" w-1/5 text-center">
                 {{ $area->fecha_creacion }}
             </td>
+            @if (Auth::user()->hasRole('RESP'))
+            <td>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">
+                    Administrar
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item edit-area" id="{{ $area->id }}" style="cursor: pointer">Editar</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            @elseif(Auth::user()->hasRole('ADM'))
             <td>
                 <div class="btn-group" role="group">
                     <button type="button" class="btn dropdown-toggle btn-sm btn-inst3" data-bs-toggle="dropdown">
@@ -50,6 +64,8 @@
                     </ul>
                 </div>
             </td>
+            @endif
+            
         </tr>
         @endforeach
     </tbody>

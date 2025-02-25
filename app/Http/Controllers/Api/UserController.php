@@ -95,9 +95,8 @@ class UserController extends Controller
 
             // 1.- Obtenemos el rol antes de proceder
             $role = Role::find($request->roleId);
-
             // 2.- Si el rol es SPA, validamos que no tenga un responsable ya asignado el área 
-            if($role->name === "SPA" && $this->areaService->hasResponsableArea($request->areaId)){
+            if($role->name === "SPA" || $role->name === "RESP" && $this->areaService->hasResponsableArea($request->areaId)){
                 return response()->json([
                     'data' => [
                     'attributes' => [
@@ -120,7 +119,7 @@ class UserController extends Controller
             $assignRoleResponse = $this->roleController->attachRole($user, $role);
 
             // 5.- Si el rol es SPA, lo establecemos como responsable del área
-            if($role->name == "SPA"){
+            if($role->name == "SPA" || $role->name === "RESP"){
                 $area = $this->areaService->setResponsableArea($user);
             }
             
@@ -197,8 +196,7 @@ class UserController extends Controller
             'name' => 'required',
             'apPaterno' => 'required'
         ]);
-
-        if($role->name !== 'SPA'){
+        if($role->name !== 'SPA' && $role->name !== 'RESP'){
             $responsable = $this->areaService->hasResponsableArea($request->areaId);
             if($responsable && $responsable === $user->id){
                 return response()->json([
@@ -215,6 +213,10 @@ class UserController extends Controller
         
         $user->update($request->all());
         $user->roles()->sync([$request->input('roleId')]);
+
+        if($role->name == "SPA" || $role->name === "RESP"){
+            $area = $this->areaService->setResponsableArea($user);
+        }
 
         return response()->json([
             'data' => [

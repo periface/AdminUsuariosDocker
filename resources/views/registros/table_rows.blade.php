@@ -43,12 +43,12 @@
                     ])
                 </td>
                 <td>
-
-                    @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('GDI') || Auth::user()->hasRole('SPA'))
+                    @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('GDI') || Auth::user()->hasRole('SPA') || 
+                         Auth::user()->hasRole('RESP'))
                         @include('partials.registro_buttons_admin', [
                             'espacio' => $espacio,
                         ])
-                    @elseif (Auth::user()->hasRole('REV'))
+                    @elseif (Auth::user()->hasRole('EVAL'))
                         @include('partials.registro_buttons_rev', [
                             'espacio' => $espacio,
                         ])

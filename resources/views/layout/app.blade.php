@@ -86,15 +86,16 @@
                     <span>Evaluaciones</span></a>
             </li>
 
+            @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('RESP'))
+            
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            <!-- Nav Item - Pages Collapse Menu -->
             <!-- Heading -->
             <div class="sidebar-heading">
                 Catálogos
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('areas') }}" data-toggle="collapse"
                     data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -102,6 +103,16 @@
                     <span>Áreas</span>
                 </a>
             </li>
+            @endif
+            @if (Auth::user()->hasRole('ADM'))
+            
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Catálogos
+            </div>
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('dimension.index') }}" data-toggle="collapse"
@@ -124,6 +135,26 @@
                     <i class="fas fa-cubes"></i>
                     <span>Indicadores</span></a>
             </li>
+            @endif
+            @if (Auth::user()->hasRole('RESP'))
+                <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Seguridad
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('usuarios') }}" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Usuarios</span>
+                </a>
+            </li>
+            @endif
+            
+            @if (Auth::user()->hasRole('ADM'))
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Heading -->
@@ -139,7 +170,6 @@
                     <span>Usuarios</span>
                 </a>
             </li>
-            @if (Auth::user()->hasRole('ADM'))
                 <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('roles') }}" data-toggle="collapse" data-target="#collapseUtilities"
@@ -247,7 +277,7 @@
                                     data-bs-display="static" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span
-                                        class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->name }}</span>
+                                        class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->name.' '.auth()->user()->apPaterno.' '.auth()->user()->apMaterno }}</span><br>
                                     <img class="img-profile rounded-circle"
                                         src="https://cdn-icons-png.flaticon.com/128/18913/18913740.png">
                                 </a>

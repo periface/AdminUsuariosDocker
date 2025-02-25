@@ -22,7 +22,7 @@
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between py-3">
 
-            @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('GDI') || Auth::user()->hasRole('SPA'))
+            @if (Auth::user()->hasRole('ADM') || Auth::user()->hasRole('GDI') || Auth::user()->hasRole('SPA')|| Auth::user()->hasRole('RESP'))
                 <h6 class="m-0 font-weight-bold text-gray-800">
                     EVALUACIONES INICIADAS
                 </h6>
