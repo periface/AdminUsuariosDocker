@@ -40,30 +40,36 @@
             @foreach ($evaluaciones as $evaluacion)
                 <tr>
                     <td class="text-sm text-center">
-                            @if ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 1)
-                                <a href="#" class="btn btn-success btn-circle btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a><br>
-                                <span class="text-sm text-tam-rojo">Finalizado</span>
-                            @elseif ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 0)
-                                <a href="#" class="btn btn-warning btn-circle btn-sm">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </a><br>
-                                <span class="text-sm text-tam-rojo">Finalizado</span>
-                            @elseif ($evaluacion['finalizado'] == 0)
-                                <a href="#" class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-sync animate-spin"></i>
-                                </a><br>
-                                <span class="text-sm text-tam-rojo">En proceso</span>
-                            @endif
+                        @if ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 1)
+                            <a href="#" class="btn btn-success btn-circle btn-sm">
+                                <i class="fas fa-check"></i>
+                            </a><br>
+                            <span class="text-sm text-tam-rojo">Finalizado</span>
+                        @elseif ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 0)
+                            <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </a><br>
+                            <span class="text-sm text-tam-rojo">Finalizado</span>
+                        @elseif ($evaluacion['finalizado'] == 0)
+                            <a href="#" class="btn btn-info btn-circle btn-sm">
+                                <i class="fas fa-sync animate-spin"></i>
+                            </a><br>
+                            <span class="text-sm text-tam-rojo">En proceso</span>
+                        @endif
                     </td>
                     @if ($evaluacion->indicador)
-                        <td class="text-sm text-tam-rojo">
-                            <a href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}">
-                                {{ $evaluacion->indicador['nombre'] }}
-                            </a>
+                        @if (Auth::user()->hasRole('ADM'))
+                            <td class="text-sm text-tam-rojo">
+                                <a href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}">
+                                    {{ $evaluacion->indicador['nombre'] }}
+                                </a>
 
-                        </td>
+                            </td>
+                        @else
+                            <td class="text-sm text-tam-rojo">
+                                {{ $evaluacion->indicador['nombre'] }}
+                            </td>
+                        @endif
                     @else
                         <td> Error: el indicador de esta evaluación no existe, por favor contacte al administrador del
                             sistema.
@@ -109,8 +115,8 @@
                             <button type="button" class="btn btn-sm btn-inst3 js-view-registros"
                                 data-id="{{ $evaluacion->id }}">Registros</button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-inst3 dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <button type="button" class="btn btn-inst3 dropdown-toggle btn-sm"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
 

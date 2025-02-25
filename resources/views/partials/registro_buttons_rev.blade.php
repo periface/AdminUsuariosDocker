@@ -4,14 +4,18 @@
     <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
         @if (new DateTime($espacio['fecha']) == new DateTime('today'))
             @if ($espacio['status'] == 'capturado')
-                <button type="button" class="btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
+                <button type="button" class="btn btn btn-inst3 btn-sm indicadorModalBtn">
                     <i class="fa fa-plus
                                 "></i>
                     En validación
                 </button>
+            @elseif ($espacio['status'] == 'aprobado')
+                <button type="button" disabled class="btn btn btn-inst3 btn-sm indicadorModalBtn">
+                    Aprobado
+                </button>
             @else
                 <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
-                    class="js-registrar btn btnSecondaryOficial btn-primary btn-sm indicadorModalBtn">
+                    class="js-registrar btn btn-inst3 btn-sm indicadorModalBtn">
                     <i class="fa fa-plus
                                 "></i>
                     Registrar
@@ -20,17 +24,17 @@
         @else
             <div class="btn-group" role="group">
                 @if ($espacio['status'] == 'capturado')
-                    <button type="button" class="btn btnSecondaryOficial btn-primary dropdown-toggle"
+                    <button type="button" class="btn btn-inst3 btn-sm dropdown-toggle"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         En validación
                     </button>
                 @elseif ($espacio['status'] == 'aprobado')
-                    <button type="button" class="btn btnSecondaryOficial btn-success dropdown-toggle"
+                    <button type="button" class="btn btn-sm btn-inst3 dropdown-toggle"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Aprobado
                     </button>
                 @else
-                    <button disabled type="button" class="btn btnSecondaryOficial btn-warning dropdown-toggle"
+                    <button disabled type="button" class="btn btn-sm btn-inst3 dropdown-toggle"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         No disponible
                     </button>
