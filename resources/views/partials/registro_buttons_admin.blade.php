@@ -3,23 +3,26 @@
         @if ($espacio['status'] == 'capturado')
             <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
                 class="js-registrar btn btn-inst3 btn-sm indicadorModalBtn">
-                <i class="fa fa-plus
-                                "></i>
+                <i class="fa fa-plus js-registrar
+                                "
+                    data-id="{{ $espacio['evaluacionId'] }}"data-fecha="{{ $espacio['fecha'] }}"></i>
                 Editar
             </button>
         @else
             <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
                 class="js-registrar btn btn-inst3 btn-sm indicadorModalBtn">
-                <i class="fa fa-plus
-                                "></i>
+                <i class="fa fa-plus js-registrar
+                                "
+                    data-id="{{ $espacio['evaluacionId'] }}"data-fecha="{{ $espacio['fecha'] }}"></i>
                 Registrar
             </button>
         @endif
     @else
         <button type="button" data-id="{{ $espacio['evaluacionId'] }}" data-fecha="{{ $espacio['fecha'] }}"
             class="js-registrar btn btn-inst3 btn-sm indicadorModalBtn">
-            <i class="fa fa-plus
-                                "></i>
+            <i class="fa fa-plus js-registrar
+                                "
+                data-id="{{ $espacio['evaluacionId'] }}"data-fecha="{{ $espacio['fecha'] }}"></i>
             Editar
         </button>
     @endif

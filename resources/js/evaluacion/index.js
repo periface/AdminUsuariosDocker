@@ -753,11 +753,29 @@ async function load_performance_charts() {
 
 async function off_canvas_evts() {
     const bdButtons = document.getElementsByClassName('js-backdrop');
+    const loader = `
+
+            <div class="w-full h-full grid grid-cols-1 items-center justify-items-center">
+
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+`
     for await (let btnBd of bdButtons) {
         btnBd.addEventListener('click', async (e) => {
+            document.getElementById('offCanvasBody').innerHTML = loader;
+
             const id = e.target.dataset.id;
-            const { data: stats } = await get_stats(id, state);
-            console.log(stats);
+            if (!id) {
+                return;
+            }
+            const { data: stats, error } = await get_stats(id, state);
+            if (error) {
+                console.error(error);
+                return;
+            }
             const tableModel = {
                 indicador: stats.indicador,
                 rows: stats.evaluation_results,
@@ -767,8 +785,7 @@ async function off_canvas_evts() {
                 total: stats.total,
                 totalValue: stats.totalValue,
             }
-            console.log(tableModel);
-            console.log(render_table(tableModel));
+            render_table(tableModel);
         });
     }
 }
@@ -792,8 +809,10 @@ function render_table(tableModel) {
     const table = `<table class="table table-sm max-h-[300px] overflow-scroll">
     <thead>
         <tr>
-            <th class="text-sm text-center" style="width:30%">Registro</th>
-            <th class="text-sm text-center" style="width:60%">${unidad.oracion_corta} ${tableModel.indicador.nombre}</th>
+            <th colspan="2" class="text-sm text-center">${unidad.oracion_corta} ${tableModel.indicador.nombre}</th>
+        <tr>
+            <th class="text-sm text-center" style="width:50%">Registro</th>
+            <th class="text-sm text-center" style="width:50%">Resultado</th>
         </tr>
     </thead>
     <tbody>
