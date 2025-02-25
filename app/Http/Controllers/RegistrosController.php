@@ -88,8 +88,10 @@ class RegistrosController extends BaseController
                 $espacio["requiere_anexo"] = $indicador["requiere_anexo"];
                 $espacio["value"] = Indicador::get_value(floatval($espacio["resultado"]), $unidad_medida);
                 $espacio["finalizado"] = $evaluacion["finalizado"];
-                $aprobadoPorUser = User::all()->find($espacio["aprobadoPorId"]);
-                $espacio["aprobadoPor"] = $aprobadoPorUser["name"];
+                if ($espacio["aprobadoPorId"] !== null) {
+                    $aprobadoPorUser = User::all()->find($espacio["aprobadoPorId"]);
+                    $espacio["aprobadoPor"] = $aprobadoPorUser["name"];
+                }
             }
             return view('registros.table_rows', [
                 'frecuencia_medicion' => $frecuencia_medicion,

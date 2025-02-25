@@ -3,7 +3,6 @@
         <span class="text-blue-900 text-sm" title="{{ $espacio['used_formula'] }}">{{ $espacio['value'] }}</span>
         <br>
     @break
-
     @case ('rechazado')
         <span class="text-yellow-900 text-sm" title="{{ $espacio['used_formula'] }}">{{ $espacio['value'] }}</span>
     @break

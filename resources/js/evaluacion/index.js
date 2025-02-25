@@ -747,3 +747,8 @@ async function load_performance_charts() {
     );
     await performanceChartCategory.init();
 }
+
+
+function off_canvas_evts(){
+
+}
