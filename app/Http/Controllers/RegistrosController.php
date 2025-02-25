@@ -185,6 +185,13 @@ class RegistrosController extends BaseController
         $evaluacionId = $request_data["evaluacionId"];
         $fecha = $request_data["fecha"];
         $used_formula = $request_data["used_formula"];
+        if (
+            $request_data["result"] == "Infinity"
+                || $request_data["result"] == "-Infinity"
+                || $request_data["result"] == "NaN"
+        ) {
+            $request_data["result"] = 0;
+        }
         $result = $request_data["result"];
         $evaluacion_result = EvaluacionResult::all()->where('evaluacionId', $evaluacionId)->where('fecha', $fecha)->first();
         $evaluacion_result["evaluacionId"] = $evaluacionId;

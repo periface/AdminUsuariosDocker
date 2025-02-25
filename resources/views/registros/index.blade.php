@@ -181,6 +181,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Contenedor para los toasts -->
         <div class="toast-container position-fixed top-0 end-0 p-3">
             <!-- Aquí se inyectarán los toasts dinámicamente -->

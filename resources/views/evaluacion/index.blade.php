@@ -6,6 +6,7 @@
             font-weight: normal !important;
             font-size: 14px;
         }
+
         canvas {
             width: 50% !important;
             height: 50% !important;
@@ -67,8 +68,8 @@
                             <button type="button" id="js-step" disabled
                                 class="btn btn-primary bg-tam-rojo-fuerte btn-sm js-step">Siguiente</button>
 
-                            <button type="submit" id="js-submit" disabled
-                                class="btn btn-primary btn-sm js-submit">Empezar evaluacion</button>
+                            <button type="submit" id="js-submit" disabled class="btn btn-primary btn-sm js-submit">Empezar
+                                evaluacion</button>
                         </div>
                     </form>
                 </div>
@@ -84,6 +85,18 @@
     <canvas id="radar"></canvas>
 
     <canvas id="radar2"></canvas>
+
+    <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
+        aria-labelledby="title">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offCanvasTitle">Total</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body" id="offCanvasBody">
+            <div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
