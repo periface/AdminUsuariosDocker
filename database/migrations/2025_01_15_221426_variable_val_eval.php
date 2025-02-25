@@ -46,6 +46,7 @@ return new class extends Migration
             $table->foreign("evaluacionId")->references("id")->on("evaluacion")->onDelete("cascade");
             $table->foreign("aprobadoPorId")->references("id")->on("users")->onDelete("cascade");
             $table->string("used_formula")->nullable();
+            $table->string("motivo")->nullable();
             $table->timestamps();
         });
         Schema::create("variable_valor", function (Blueprint $table) {

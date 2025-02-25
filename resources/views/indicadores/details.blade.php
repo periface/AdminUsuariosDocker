@@ -71,44 +71,62 @@
                 <table class="table table-striped projects" id="evaluacionesTable">
                     <thead class="small">
                         <tr class="w-full">
-                            <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
-                                Periodo
+                            <th style="width: 10%" data-sort="id" data-order="asc" class="cursor-pointer sort">
+                                Estado
                             </th>
-                            <th style="width: 30%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
 
+                            <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
+                                Indicador
+                            </th>
+                            <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
                                 Area
                             </th>
-                            <th style="width: 20%" data-sort="meta" data-order="asc" class="cursor-pointer sort"> Total
-                                Alcanzado
+
+                            <th style="width: 10%" data-sort="id" data-order="asc" class="cursor-pointer sort">
+                                Total
+                            </th>
+                            <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
+                                Meta
                             </th>
 
-                            <th style="width: 20%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
-                                Meta Esperada
-                            </th>
-                            <th style="width: 30%" data-sort="nombre" data-order="asc" class="cursor-pointer sort">
-                                Periodos
+                            <th style="width: 10%" data-sort="meta" data-order="asc" class="cursor-pointer sort">
+                                Rendimiento
                             </th>
                         </tr>
                     </thead>
                     <tbody id="evaluacionesTableBody">
                         @if (count($evaluaciones) === 0)
                             <tr>
-                                <td colspan="6" class="text-center">No hay evaluaciones registradas</td>
+                                <td colspan="6" class="text-center">No hay evaluaciones registrados</td>
                             </tr>
                         @else
                             @foreach ($evaluaciones as $evaluacion)
                                 <tr>
-                                    <td class="text-sm text-tam-rojo font-bold">
-                                        {{ $evaluacion['fecha_inicio'] }} - {{ $evaluacion['fecha_fin'] }}
-                                        @if ($evaluacion['finalizado'])
-                                            <span class="badge bg-tam-dorado text-tam-rojo">Evaluación Cerrada el
-                                                {{ $evaluacion['finalizado_en'] }}</span>
+                                    <td class="text-sm text-center">
+                                        @if ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 1)
+                                            <a href="#" class="btn btn-success btn-circle btn-sm">
+                                                <i class="fas fa-check"></i>
+                                            </a><br>
+                                            <span class="text-sm text-tam-rojo">Finalizado</span>
+                                        @elseif ($evaluacion['finalizado'] == 1 && $evaluacion['meta_alcanzada'] == 0)
+                                            <a href="#" class="btn btn-warning btn-circle btn-sm">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </a><br>
+                                            <span class="text-sm text-tam-rojo">Finalizado</span>
+                                        @elseif ($evaluacion['finalizado'] == 0)
+                                            <a href="#" class="btn btn-info btn-circle btn-sm">
+                                                <i class="fas fa-sync animate-spin"></i>
+                                            </a><br>
+                                            <span class="text-sm text-tam-rojo">En proceso</span>
                                         @endif
                                     </td>
                                     @if ($evaluacion->indicador)
-                                        <td>
-                                            <span
-                                                class="font-bold text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                                        <td class="text-sm text-tam-rojo">
+                                            <a
+                                                href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}">
+                                                {{ $evaluacion->indicador['nombre'] }}
+                                            </a>
+
                                         </td>
                                     @else
                                         <td> Error: el indicador de esta evaluación no existe, por favor contacte al
@@ -116,30 +134,43 @@
                                             sistema.
                                         </td>
                                     @endif
-                                    <td class="font-bold">
+
+                                    <td class="">
+                                        <span class="text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                                    </td>
+                                    <td class="">
                                         @include('partials.evaluacion_total', [
                                             'evaluacion' => $evaluacion,
                                         ])
                                     </td>
-                                    <td class="font-bold">
+                                    <td class="">
 
                                         @include('partials.evaluacion_meta', [
                                             'evaluacion' => $evaluacion,
                                         ])
                                     </td>
-                                    <td>
-                                        <span class="">
-                                            {{ $evaluacion['results'] }}
-                                        </span>
-                                        @include('partials.periodos_names', [
-                                            'frecuencia_medicion' => $evaluacion['frecuencia_medicion'],
-                                        ])
 
+                                    <td class="">
+
+                                        @if ($evaluacion['rendimiento'] == null)
+                                            <span class="badge badge-danger">Sin rendimiento</span>
+                                        @elseif ($evaluacion['rendimiento'] < 0.7)
+                                            <span class="badge badge-danger">
+                                                {{ $evaluacion['rendimiento'] }}%
+                                            </span>
+                                        @elseif ($evaluacion['rendimiento'] < 0.85)
+                                            <span class="badge badge-warning">
+                                                {{ $evaluacion['rendimiento'] }}%
+                                            </span>
+                                        @else
+                                            <span class="badge badge-success">
+                                                {{ $evaluacion['rendimiento'] }}%
+                                            </span>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
                         @endif
-
                     </tbody>
                 </table>
             </div>
@@ -160,8 +191,10 @@
                         </div>
                         <div class="modal-footer mt-4">
                             <hr>
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary btn-sm" id="js-guardar-indicador">Guardar</button>
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary btn-sm"
+                                id="js-guardar-indicador">Guardar</button>
                             <button type="button" class="btn btn-success btn-sm" id="js-confirm-indicador">Guardar y
                                 confirmar</button>
                         </div>

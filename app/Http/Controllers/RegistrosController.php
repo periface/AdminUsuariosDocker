@@ -8,6 +8,7 @@ use App\Models\Indicador;
 use App\Models\Variable;
 use App\Models\VariableValue;
 use App\Models\EvaluacionResult;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
@@ -87,6 +88,8 @@ class RegistrosController extends BaseController
                 $espacio["requiere_anexo"] = $indicador["requiere_anexo"];
                 $espacio["value"] = Indicador::get_value(floatval($espacio["resultado"]), $unidad_medida);
                 $espacio["finalizado"] = $evaluacion["finalizado"];
+                $aprobadoPorUser = User::all()->find($espacio["aprobadoPorId"]);
+                $espacio["aprobadoPor"] = $aprobadoPorUser["name"];
             }
             return view('registros.table_rows', [
                 'frecuencia_medicion' => $frecuencia_medicion,
@@ -195,8 +198,9 @@ class RegistrosController extends BaseController
             'error' => null
         ], 200);
     }
-    public function set_status($id, $status)
+    public function set_status(Request $request, $id, $status)
     {
+        $form = $request->all();
         $evaluacion_result = EvaluacionResult::all()->find($id);
         $evaluacion = Evaluacion::all()->find($evaluacion_result["evaluacionId"]);
         $user = Auth::user();
@@ -204,7 +208,8 @@ class RegistrosController extends BaseController
             return response()->json(["error" => "La evaluación ya ha sido finalizada"]);
         }
         $evaluacion_result["status"] = $status;
-        $evaluacion_result["aprobado_por"] = $user["id"];
+        $evaluacion_result["motivo"] = $form["motivo"];
+        $evaluacion_result["aprobadoPorId"] = $user["id"];
         $evaluacion_result->save();
         return json_encode($evaluacion_result);
     }

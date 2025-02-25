@@ -108,12 +108,13 @@ async function post_registros(form_data, state) {
     }
 }
 
-async function set_status(id, status, state) {
+async function set_status(id, status, form_data, state) {
     try {
         toggle_loading(true);
 
         const response = await fetch(state.API_URL + '/' + id + '/' + status, {
-            method: 'GET',
+            method: 'POST',
+            body: form_data,
             headers: {
                 'X-CSRF-TOKEN': state.xcsrftoken,
                 'Authorization': 'Bearer ' + state.bearertoken

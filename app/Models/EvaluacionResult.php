@@ -14,8 +14,9 @@ class EvaluacionResult extends Model
     public $resultado;
     public $fecha;
     public $status;
-    public $aprobado_por;
+    public $aprobadoPorId;
     public $used_formula;
+    public $motivo;
     protected $table = 'evaluacion_result';
     protected $fillable = [
         'resultNumber',
@@ -23,6 +24,7 @@ class EvaluacionResult extends Model
         'resultado',
         'fecha',
         'status',
+        'motivo'
     ];
     public function anexos()
     {
