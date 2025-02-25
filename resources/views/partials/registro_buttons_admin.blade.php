@@ -27,7 +27,6 @@
         </button>
     @endif
     <div class="btn-group" role="group">
-
         @if ($espacio['status'] == 'pendiente')
             <button type="button" disabled class="btn btn-inst3 btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                 aria-expanded="false">
