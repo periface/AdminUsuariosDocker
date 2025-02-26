@@ -33,9 +33,27 @@
                                         Sin Asignar
                                     </span>
                                 @else
-                                    <span class="badge bg-primary">
-                                        {{ $user->rol }}
-                                    </span>
+                                 @switch($user->rol)
+                                     @case("Evaluador")
+                                            <span class="badge bg-primary">
+                                                {{ $user->rol }}
+                                            </span>
+                                         @break
+                                     @case("Validador")
+                                        <span class="badge bg-success">
+                                            {{ $user->rol }}
+                                        </span>
+                                         @break
+                                    @case("Responsable de Área")
+                                        <span class="badge bg-danger">
+                                            {{ $user->rol }}
+                                        </span>
+                                        @break
+                                     @default
+                                        <span class="badge bg-info">
+                                            {{ $user->rol }}
+                                        </span>
+                                 @endswitch
                                 @endif
                             </td>
                             <td class="text-center">{{ $user->email }}</td>
