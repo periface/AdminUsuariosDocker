@@ -2,6 +2,7 @@
     <thead class="thead small">
         <tr>
             <th class=" w-1/12 text-center">#</th>
+            <th>Secretaría</th>
             <th class=" w-1/3">Nombre</th>
             <th class=" w-1/5 text-center">Siglas</th>
             <th class=" w-1/7 text-center">Responsable</th>
@@ -14,6 +15,9 @@
         <tr>
             <td class=" w-1/12 text-center">
                 {{ $loop->iteration }}
+            </td>
+            <td>
+                {{ $area->secretaria }}
             </td>
             <td class=" w-1/3">
                 {{ $area->nombre }}

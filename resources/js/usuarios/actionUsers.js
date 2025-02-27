@@ -155,7 +155,7 @@ let prevRolText = null;
 // Capturar el valor previo antes de que el usuario cambie la opción
 document.addEventListener('focus', function (event) {
     if (event.target.id === 'roleId') {
-        const selectedOption = event.target.selectedOptions[0]; // Almacena el valor actual cuando el select gana el foco
+        const selectedOption = event.target.selectedOptions[0];
         prevRolText = selectedOption.text;
     }
 }, true);
@@ -170,7 +170,7 @@ document.addEventListener('change', function (event) {
         console.log('Valor actual:', currentRolText);
 
         // Hacer la comparación
-        if (prevRolText === 'Supervisor de Área' && currentRolText !== prevRolText) {
+        if ((prevRolText === 'Supervisor de Área' || prevRolText === 'Responsable de Área') && currentRolText !== prevRolText) {
             confirmAction('¿Desea continuar?', 'Si cambias el rol del usuario, el área quedará sin un responsable asignado.', 'warning');
         } else {
             console.log('El valor no cambió de "Supervisor de Área"');
@@ -180,6 +180,7 @@ document.addEventListener('change', function (event) {
 
 const confirmAction = (title, text, icon) => {
     Swal.fire({
+        title: title,
         text: text,
         icon: icon,
         showCancelButton: true,

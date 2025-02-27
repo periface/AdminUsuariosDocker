@@ -22,8 +22,7 @@ class AreasSeeder extends Seeder
             'responsableId' => null,
             'siglas' => 'DGCYOP',
             'secretariaId' => $secretaria->id,
-            'status' => 1,
-            'departamento' => ''
+            'status' => 1
         ]);
 
         \App\Models\Area::factory()->create([
@@ -31,8 +30,7 @@ class AreasSeeder extends Seeder
             'responsableId' => null,
             'siglas' => 'DGRH',
             'secretariaId' => $secretaria->id,
-            'status' => 1,
-            'departamento' => ''
+            'status' => 1
         ]);
 
         \App\Models\Area::factory()->create([
@@ -40,8 +38,7 @@ class AreasSeeder extends Seeder
             'responsableId' => null,
             'siglas' => 'DPATRIMONIO',
             'secretariaId' => $secretaria->id,
-            'status' => 1,
-            'departamento' => ''
+            'status' => 1
         ]);
 
         \App\Models\Area::factory()->create([
@@ -49,8 +46,7 @@ class AreasSeeder extends Seeder
             'responsableId' => null,
             'siglas' => 'DCONTRATOS',
             'secretariaId' => $secretaria->id,
-            'status' => 1,
-            'departamento' => ''
+            'status' => 1
         ]);
 
         \App\Models\Area::factory()->create([
@@ -58,8 +54,7 @@ class AreasSeeder extends Seeder
             'responsableId' => null,
             'siglas' => 'DCONTROLPLANEACION',
             'secretariaId' => $secretaria->id,
-            'status' => 1,
-            'departamento' => ''
+            'status' => 1
         ]);
     }
 }

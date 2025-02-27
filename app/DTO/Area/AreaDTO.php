@@ -6,6 +6,8 @@ class AreaDTO
 {
 
     public $id;
+    public $secretaria;
+    public $sria_siglas;
     public $nombre;
     public $siglas;
     public $responsable;
@@ -14,6 +16,8 @@ class AreaDTO
 
     public function __construct(
         int $id, 
+        string $secretaria,
+        string $sria_siglas,
         string $nombre, 
         string $siglas, 
         ?string $responsable, 
@@ -21,6 +25,8 @@ class AreaDTO
         int $secretariaId)
     {
         $this->id = $id; 
+        $this->secretaria = $secretaria;
+        $this->sria_siglas = $sria_siglas;
         $this->nombre = $nombre;
         $this->siglas = $siglas;
         $this->responsable = $responsable;
