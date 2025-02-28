@@ -13,4 +13,10 @@ class Secretaria extends Model
     public $type;
     protected $table = 'secretaria';
     protected $fillable = ['nombre', 'siglas', 'type'];
+
+    public function areas()
+    {
+        return $this->hasMany(Area::class, 'secretariaId', 'id');
+    }
+
 }

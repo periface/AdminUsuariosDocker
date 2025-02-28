@@ -2,26 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Area;
+use App\Services\AreaService;
 use App\Services\RoleService;
 use App\Services\UserService;
 use App\Services\PermissionService;
+use App\Services\SecretariaService;
 
 class UserController extends Controller
 {
     //
 
+    protected $secretariaService;
+    protected $areaService;
     protected $userService;
     protected $roleService;
     protected $permissionService;
 
-    public function __construct(UserService $userService, RoleService $roleService, PermissionService $permissionService)
+    public function __construct(SecretariaService $secretariaService, AreaService $areaService, UserService $userService, RoleService $roleService, PermissionService $permissionService)
     {
+        $this->secretariaService = $secretariaService;
         $this->userService       = $userService;
         $this->roleService       = $roleService;
         $this->permissionService = $permissionService;
+        $this->areaService       = $areaService;
     }
 
     public function index()
@@ -31,10 +37,11 @@ class UserController extends Controller
 
     public function add(Request $request)
     {
-        $areas = Area::all();
+        $areas = $this->areaService->getAllAreas();
         $roles = $this->roleService->getAllRoles();
-
-        return view('users.add', compact('areas', 'roles'));
+        $secretarias = $this->secretariaService->getAllSecretariasWithAreas();
+        
+        return view('users.add', compact('areas', 'roles', 'secretarias'));
     }
 
     public function edit(User $user)

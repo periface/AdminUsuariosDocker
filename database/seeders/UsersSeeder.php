@@ -13,7 +13,11 @@ class UsersSeeder extends Seeder
     public function run(): void
     {
 
-        $area = \App\Models\Area::where('siglas', 'DGRH')->first();
+        // $area = \App\Models\Area::where('siglas', 'DGRH')->first();
+        $areas = \App\Models\Area::all();
+
+        $area = $areas->where('siglas', 'DGRH')->first();
+        
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -23,16 +27,20 @@ class UsersSeeder extends Seeder
             'is_active' => 1,
         ])->assignRole('ADM');
 
-        User::factory()->create([
+        $area = $areas->where('siglas', 'DGCYOP')->first();
+        $user = User::factory()->create([
             'name' => 'Jose',
             'email' => 'user@example.com',
             'apPaterno' => 'User',
             'apMaterno' => 'Captura',
-            'areaId' => $area->id,
+            'areaId' =>  $area->id,
 
             'is_active' => 1,
-        ])->assignRole('ADC');
+        ])->assignRole('RESP');
 
+        if($user->hasRole('RESP')){
+            $area->update(['responsableId' => $user->id]);
+        }
 
         // usuarios por rol ADM, GDI, REV, SPA, ADC
 
@@ -44,7 +52,7 @@ class UsersSeeder extends Seeder
             'areaId' => $area->id,
 
             'is_active' => 1,
-        ])->assignRole('ADM');
+        ])->assignRole('EVAL');
 
         User::factory()->create([
             'name' => 'Pedro',
@@ -54,9 +62,10 @@ class UsersSeeder extends Seeder
             'areaId' => $area->id,
 
             'is_active' => 1,
-        ])->assignRole('GDI');
+        ])->assignRole('AUD');
 
-        User::factory()->create([
+        $area = $areas->where('siglas', 'DPATRIMONIO')->first();
+        $user = User::factory()->create([
             'name' => 'Juan',
             'email' => 'rev@tam.com',
             'apPaterno' => 'Torres',
@@ -64,7 +73,11 @@ class UsersSeeder extends Seeder
             'areaId' => $area->id,
 
             'is_active' => 1,
-        ])->assignRole('REV');
+        ])->assignRole('RESP');
+
+        if($user->hasRole('RESP')){
+            $area->update(['responsableId' => $user->id]);
+        }
 
         User::factory()->create([
             'name' => 'Juan',
@@ -74,7 +87,7 @@ class UsersSeeder extends Seeder
             'areaId' => $area->id,
 
             'is_active' => 1,
-        ])->assignRole('SPA');
+        ])->assignRole('EVAL');
 
         User::factory()->create([
             'name' => 'Juan',
@@ -84,6 +97,6 @@ class UsersSeeder extends Seeder
             'areaId' => $area->id,
 
             'is_active' => 1,
-        ])->assignRole('ADC');
+        ])->assignRole('AUD');
     }
 }

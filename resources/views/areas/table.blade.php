@@ -3,7 +3,7 @@
         <tr>
             <th class=" w-1/12 text-center">#</th>
             <th>Secretaría</th>
-            <th class=" w-1/3">Nombre</th>
+            <th class=" w-1/3">Área</th>
             <th class=" w-1/5 text-center">Siglas</th>
             <th class=" w-1/7 text-center">Responsable</th>
             <th class=" w-1/5 text-center">Fecha registro</th>

@@ -28,7 +28,25 @@
             <input type="password" name="password" class="form-control" placeholder="Contraseña">
         </div>
     </div>
-    <input type="hidden" name="secretariaId" value="4">
+    <div class="row mt-2">
+        <div class="col">
+            <label for="area">Seleccione la secretaría:</label>
+            <select class="form-select" id="indicadorId" name="indicadorId">
+                <option value="">Seleccione su secretaría</option>
+                @foreach ($secretarias as $secretaria)
+                    @if (count($secretaria->areas) == 0)
+                        @continue
+                    @endif
+                    <optgroup label="{{ $secretaria->nombre }}">
+                        @foreach ($secretaria->areas as $area)
+                                <option value="0">
+                                    {{ $area->nombre }} </option>
+                        @endforeach
+                    </optgroup>
+                @endforeach
+            </select>
+        </div>
+    </div>
     <div class="row mt-2">
         <div class="col">
             <label for="area">Area a la que pertenece:</label>
@@ -36,7 +54,7 @@
                 <option value="0">Seleccione</option>
                 @foreach ($areas as $area)
                     <option value="{{ $area->id }}">
-                            {{ $area["nombre"]}}
+                            {{ $area->sria_siglas.' - '.$area->nombre}}
                     </option>
                 @endforeach
             </select>
