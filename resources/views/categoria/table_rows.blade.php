@@ -42,12 +42,12 @@
                     <td class="text-sm">
                         <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
-                            <button class="btn btn-primary text-white btn-primary btn-sm js-details">
+                            <button class="btn btn-inst3 btn-sm text-white  js-details">
                                 <a class="categoriaModalBtn text-white"
                                     data-id="{{ $categoria->id }}">Editar</a>
                             </button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                <button type="button" class="btn btn-inst3 btn-sm dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">

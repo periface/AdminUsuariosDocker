@@ -88,10 +88,10 @@
                     <td class="text-sm">
                         <div class="btn-group btn-group-sm" role="group"
                             aria-label="Button group with nested dropdown">
-                            <button type="button" class="btn btn-primary indicadorModalBtn"
+                            <button type="button" class="btn btn-inst3 btn-sm indicadorModalBtn"
                                 data-id="{{ $indicador->id }}">Editar</button>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                <button type="button" class="btn btn-inst3 btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
