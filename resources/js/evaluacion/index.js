@@ -776,6 +776,14 @@ async function off_canvas_evts() {
                 console.error(error);
                 return;
             }
+            if (stats.evaluation_results.length === 0) {
+                document.getElementById('offCanvasBody').innerHTML = `
+                <h1 class="text-center">
+                    <p colspan="5"
+                     class="text-center">No hay registros para mostrar
+                    </p>
+                </h1>`;
+            }
             const tableModel = {
                 indicador: stats.indicador,
                 rows: stats.evaluation_results,
