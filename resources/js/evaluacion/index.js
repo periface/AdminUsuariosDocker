@@ -719,7 +719,7 @@ async function start_view() {
         e.preventDefault();
         move_to_step(state.current_step - 1);
     });
-    await load_performance_charts();
+    //await load_performance_charts();
 }
 async function load_performance_charts() {
     const performanceChartDimension =

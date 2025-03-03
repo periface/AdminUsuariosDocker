@@ -82,9 +82,6 @@
     <div class="top-0 p-3 toast-container position-fixed end-0">
         <!-- Aquí se inyectarán los toasts dinámicamente -->
     </div>
-    <canvas id="radar"></canvas>
-
-    <canvas id="radar2"></canvas>
 
     <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
         aria-labelledby="title">
