@@ -39,23 +39,23 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Usuarios
     // Route::group(['middleware' => ['role:ADM']], function () {
-        Route::get('/users',                                         [UserController::class, 'index'])->name('usuarios');;
-        Route::get('/users/create',                                  [UserController::class, 'add']);
-        Route::get('/users/{user}/edit',                             [UserController::class, 'edit']);
-        Route::get('/users/{user}/roles-permissions',                [UserController::class, 'userRolesAndPermissions']);
-        Route::get('/users/fetchUsers',                              [UserController::class, 'fetchUsers']);
+    Route::get('/users',                                         [UserController::class, 'index'])->name('usuarios');;
+    Route::get('/users/create',                                  [UserController::class, 'add']);
+    Route::get('/users/{user}/edit',                             [UserController::class, 'edit']);
+    Route::get('/users/{user}/roles-permissions',                [UserController::class, 'userRolesAndPermissions']);
+    Route::get('/users/fetchUsers',                              [UserController::class, 'fetchUsers']);
 
-        // Roles
-        Route::get('/roles',                                         [RoleController::class, 'index'])->name('roles');
-        Route::get('/roles/create',                                  [RoleController::class, 'add']);
-        Route::get('/roles/{role}/edit',                             [RoleController::class, 'edit']);
-        Route::get('/roles/{role}/permissions',                      [RoleController::class, 'rolePermissions']);
+    // Roles
+    Route::get('/roles',                                         [RoleController::class, 'index'])->name('roles');
+    Route::get('/roles/create',                                  [RoleController::class, 'add']);
+    Route::get('/roles/{role}/edit',                             [RoleController::class, 'edit']);
+    Route::get('/roles/{role}/permissions',                      [RoleController::class, 'rolePermissions']);
 
-        // Permissions
-        Route::get('/permissions',                                   [PermissionController::class, 'index'])->name('permisos');
-        Route::get('/permissions/{user}/available-permissions',      [PermissionController::class, 'getAvailablePermissions']);
-        Route::get('/permissions/{role}/available-permissions-role', [PermissionController::class, 'getAvailablePermissionsRole']);
-        Route::get('/permissions/add',                               [PermissionController::class, 'addPermissionForm']);
+    // Permissions
+    Route::get('/permissions',                                   [PermissionController::class, 'index'])->name('permisos');
+    Route::get('/permissions/{user}/available-permissions',      [PermissionController::class, 'getAvailablePermissions']);
+    Route::get('/permissions/{role}/available-permissions-role', [PermissionController::class, 'getAvailablePermissionsRole']);
+    Route::get('/permissions/add',                               [PermissionController::class, 'addPermissionForm']);
     // });
 
     // Accesos para responsables de área
@@ -67,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/areas',                                          [AreaController::class, 'index'])->name('areas');
     Route::get('/areas/{area}/edit',                              [AreaController::class, 'createOrEdit']);
     Route::get('/areas/create',                                   [AreaController::class, 'create']);
+    Route::get('/areas/details/{id}',                             [AreaController::class, 'details']);
     Route::get('/areas/fetchAreas',                               [AreaController::class, 'fetchAreas']);
 
     // });

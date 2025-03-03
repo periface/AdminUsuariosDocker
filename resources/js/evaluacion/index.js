@@ -721,34 +721,6 @@ async function start_view() {
     });
     //await load_performance_charts();
 }
-async function load_performance_charts() {
-    const performanceChartDimension =
-        new PerformanceChart(
-            {
-                canvas: document.getElementById('radar'),
-                id: 0,
-                tipo: "dimensiones",
-                title: 'Rendimiento por dimensiones',
-                bearertoken: state.bearertoken,
-                xcsrftoken: state.xcsrftoken,
-                nivel: "area",
-            }
-        );
-    await performanceChartDimension.init();
-
-    const performanceChartCategory = new PerformanceChart(
-        {
-            canvas: document.getElementById('radar2'),
-            id: 0,
-            tipo: "categorias",
-            title: 'Rendimiento por categorías',
-            bearertoken: state.bearertoken,
-            xcsrftoken: state.xcsrftoken,
-            nivel: "area",
-        }
-    );
-    await performanceChartCategory.init();
-}
 
 
 async function off_canvas_evts() {

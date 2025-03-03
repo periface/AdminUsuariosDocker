@@ -2,7 +2,6 @@ import { eventListener } from "../utils/event";
 import { openModal, closeModal } from "../utils/modal";
 import { showNotification } from "../utils/notification";
 import { loadAreas } from "./actionArea";
-
 // const areas = document.getElementById('areas');
 
 const attachEventListeners = () => {

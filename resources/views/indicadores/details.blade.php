@@ -76,9 +76,6 @@
                             </th>
 
                             <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
-                                Indicador
-                            </th>
-                            <th style="width: 20%" data-sort="id" data-order="asc" class="cursor-pointer sort">
                                 Area
                             </th>
 
@@ -120,23 +117,11 @@
                                             <span class="text-sm text-tam-rojo">En proceso</span>
                                         @endif
                                     </td>
-                                    @if ($evaluacion->indicador)
-                                        <td class="text-sm text-tam-rojo">
-                                            <a
-                                                href="{{ route('indicador.details', ['id' => $evaluacion->indicador['id']]) }}">
-                                                {{ $evaluacion->indicador['nombre'] }}
-                                            </a>
-
-                                        </td>
-                                    @else
-                                        <td> Error: el indicador de esta evaluación no existe, por favor contacte al
-                                            administrador del
-                                            sistema.
-                                        </td>
-                                    @endif
 
                                     <td class="">
-                                        <span class="text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                        <a href="/areas/details/{{$evaluacion->area["id"]}}">
+                            {{ $evaluacion->area['nombre'] }}
+                        </a>
                                     </td>
                                     <td class="">
                                         @include('partials.evaluacion_total', [

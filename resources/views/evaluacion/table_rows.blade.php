@@ -76,8 +76,10 @@
                         </td>
                     @endif
 
-                    <td class="">
-                        <span class="text-sm text-pink-950">{{ $evaluacion->area['nombre'] }}</span>
+                    <td class="text-sm text-tam-rojo">
+                        <a href="/areas/details/{{$evaluacion->area["id"]}}">
+                            {{ $evaluacion->area['nombre'] }}
+                        </a>
                     </td>
                     <td class="">
                         @include('partials.evaluacion_total', [
