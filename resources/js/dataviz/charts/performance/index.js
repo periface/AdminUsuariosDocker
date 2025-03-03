@@ -72,8 +72,8 @@ class PerformanceChart {
             options.id,
             options.tipo);
         this.#validateOptions(options);
-        console.log(options);
         this.options = options;
+        console.log(options);
     }
     #validateInput(canvas, id, tipo) {
         if (!canvas || !tipo) {

@@ -31,6 +31,12 @@ return [
 
     'connections' => [
 
+        "libsql" => [
+            "driver" => "libsql",
+            "url" => env("TURSO_DATABASE_URL"),
+            "password" => env("TURSO_AUTH_TOKEN"),
+            "database" => env("TURSO_DATABASE"),
+        ],
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
@@ -84,12 +90,12 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
+            'url' => env('DB_URL','postgres://neondb_owner:npg_3Lv2DkzIPZqK@ep-long-frog-a5mk4kgq-pooler.us-east-2.aws.neon.tech/neondb'),
+            'host' => env('DB_HOST', 'ep-long-frog-a5mk4kgq-pooler.us-east-2.aws.neon.tech'),
+            'port' => env('DB_PORT', ''),
+            'database' => env('DB_DATABASE', 'neondb'),
+            'username' => env('DB_USERNAME', 'neondb_owner'),
+            'password' => env('DB_PASSWORD', 'npg_3Lv2DkzIPZqK'),
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
