@@ -79,7 +79,7 @@
                         @endif
                     </td>
                     <td class="text-sm">
-                        @if ($indicador['status'] === 1)
+                        @if ($indicador['status'])
                             <span class="badge badge-success">Activo</span>
                         @else
                             <span class="badge badge-danger">Inactivo</span>
