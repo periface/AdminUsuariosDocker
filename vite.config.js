@@ -22,7 +22,8 @@ export default defineConfig({
                 'resources/js/evaluacion/index.js',
                 'resources/js/areas/details.js',
                 'resources/js/indicadores/details.js',
-                'resources/js/registros/index.js'
+                'resources/js/registros/index.js',
+                'resources/js/evaluacion/ficha.js'
             ],
             refresh: true,
         }),
