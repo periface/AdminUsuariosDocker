@@ -6,13 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    public function __construct()
+    {
+        $this->withinTransaction = false;
+    }
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         //
-        Schema::table('area', function(Blueprint $table){
+        Schema::table('area', function (Blueprint $table) {
             $table->boolean('status')->default(true)->change();
         });
     }

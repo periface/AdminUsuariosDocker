@@ -105,7 +105,6 @@ class EvaluacionesSeeder extends Seeder
 
             $result = $random1 / $random2 * 100;
             $evaluacion_result = [
-                'id' => null,
                 'resultNumber' => $evaluation_result_number,
                 'evaluacionId' => $evaluacion_id,
                 'resultado' => $result,

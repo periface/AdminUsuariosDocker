@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    public function __construct()
+    {
+        $this->withinTransaction = false;
+    }
     public function up(): void
     {
         Schema::create("dimension", function (Blueprint $table) {
@@ -39,4 +43,3 @@ return new class extends Migration
         Schema::dropIfExists("dimension");
     }
 };
-

@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    public function __construct()
+    {
+        $this->withinTransaction = false;
+    }
     /**
      * Run the migrations.
      */

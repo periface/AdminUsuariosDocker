@@ -6,14 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    public function __construct()
+    {
+        $this->withinTransaction = false;
+    }
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         //
-        Schema::table('area', function(Blueprint $table){
-            $table->string('tipo',20)->nullable();
+        Schema::table('area', function (Blueprint $table) {
+            $table->string('tipo', 20)->nullable();
         });
     }
 

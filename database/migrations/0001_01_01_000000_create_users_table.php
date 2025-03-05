@@ -9,6 +9,11 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+    public function __construct()
+    {
+        $this->withinTransaction = false;
+    }
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {

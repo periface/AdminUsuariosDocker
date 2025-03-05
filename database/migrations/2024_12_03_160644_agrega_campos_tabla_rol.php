@@ -6,13 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    public function __construct()
+    {
+        $this->withinTransaction = false;
+    }
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         //
-        Schema::table('roles', function(Blueprint $table){
+        Schema::table('roles', function (Blueprint $table) {
             $table->string('alias')->nullable();
             $table->text('description')->nullable();
         });
