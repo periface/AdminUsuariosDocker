@@ -19,6 +19,7 @@ export default defineConfig({
                 'resources/js/categorias/index.js',
                 'resources/js/areas/index.js',
                 'resources/js/indicadores/index.js',
+                'resources/js/evaluacion/index.js',
             ],
             refresh: true,
         }),
