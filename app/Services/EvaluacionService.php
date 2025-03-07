@@ -62,7 +62,7 @@ class EvaluacionService
             'evaluacionResultId' => $evaluacion_result->id,
             'fecha' => $fecha->fecha_captura,
             'valor' => 0,
-            'meta_esperada' => floatval($fecha->meta),
+            'meta_esperada' => 0,
             'evaluacionId' => $evaluacion_id,
             'variableId' => $variable->id,
             'usuarioId' => $user_id,
