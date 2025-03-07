@@ -453,7 +453,7 @@ class EvaluacionController extends BaseController
         foreach ($variables as $variable) {
             $variable_valor = [
                 'valor' => $variable["valor"],
-                'meta_esperada' => $variable["meta_esperada"],
+                'meta_esperada' => 0, //$variable["meta_esperada"],
                 'fecha' => $variable["fecha"],
                 'status' => 'pendiente',
                 'evaluacionId' => $evaluacion_id,
