@@ -4,8 +4,12 @@
                     value="{{ $indicador['metodo_calculo'] ?? '' }}">
                 <input type="hidden" name="evaluable_formula" value="{{ $indicador['evaluable_formula'] }}">
                 <input type="hidden" name="non_evaluable_formula" value="{{ $indicador['non_evaluable_formula'] }}">
-                <input type="hidden" id="indicador_confirmado" name="indicador_confirmado"
-                    value="{{ $indicador['indicador_confirmado'] }}">
+                @if ($indicador['indicador_confirmado'])
+                    <input type="hidden" id="indicador_confirmado" name="indicador_confirmado"
+                        value="{{ $indicador['indicador_confirmado'] }}">
+                @else
+                    <input type="hidden" id="indicador_confirmado" name="indicador_confirmado" value="0">
+                @endif
                 <input type="hidden" id="clave" name="clave" value="{{ $indicador['clave'] }}">
             @endif
             @if (!$indicador || !$indicador->id)

@@ -3,9 +3,12 @@
                 <input type="hidden" name="dimensionId" value="{{ $indicador['dimensionId'] }}">
 
                 <input type="hidden" name="categoriaId" value="{{ $indicador['dimensionId'] }}">
-                <input type="hidden" id="indicador_confirmado" name="indicador_confirmado"
-                    value="{{ $indicador['indicador_confirmado'] }}">
-
+                @if ($indicador['indicador_confirmado'])
+                    <input type="hidden" id="indicador_confirmado" name="indicador_confirmado"
+                        value="{{ $indicador['indicador_confirmado'] }}">
+                @else
+                    <input type="hidden" id="indicador_confirmado" name="indicador_confirmado" value="0">
+                @endif
                 <input type="hidden" id="clave" name="clave" value="{{ $indicador['clave'] }}">
 
             @endif
@@ -24,8 +27,13 @@
                 value="{{ $indicador['status'] ?? '' }}">
             <input class="form-control" type="hidden" id="sentido" name="sentido"
                 value="{{ $indicador['sentido'] ?? '' }}">
-            <input class="form-control" type="hidden" id="requiere_anexo" name="requiere_anexo"
-                value="{{ $indicador['requiere_anexo'] ?? '' }}">
+            @if ($indicador['requiere_anexo'])
+                <input class="form-control" type="hidden" id="requiere_anexo" name="requiere_anexo"
+                    value="{{ $indicador['requiere_anexo'] }}">
+            @else
+                <input class="form-control" type="hidden" id="requiere_anexo" name="requiere_anexo"
+                    value="0">
+            @endif
             <input class="form-control" type="hidden" id="medio_verificacion" name="medio_verificacion"
                 value="{{ $indicador['medio_verificacion'] ?? '' }}">
             <div class="mt-2">

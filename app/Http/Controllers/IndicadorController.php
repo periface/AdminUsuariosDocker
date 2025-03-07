@@ -102,7 +102,9 @@ class IndicadorController extends BaseController
                     'statusCode' => 404
                 ], 404);
             }
+
             $dimension = Dimension::find($data["dimensionId"]);
+
             if (!$dimension) {
                 return response()->json([
                     'status' => 'error',
@@ -114,6 +116,7 @@ class IndicadorController extends BaseController
             $data["categoria"] =  $categoria["nombre"];;
             $data["dimension"] =  $dimension["nombre"];;
             $variables = $request->variables;
+
             if (!$variables) {
                 $variables = "[]";
             }
@@ -460,7 +463,9 @@ class IndicadorController extends BaseController
             'categoriaId' => 'required',
         ]);
         $input_id = $request->id ?? null;
+
         if ($validator->fails()) {
+            dd($validator->errors());
             return [null, null, $validator->errors()];
         }
         if ($input_id) {
